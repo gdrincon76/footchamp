@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Fut champ</string>
+    <string name="title_activity_league_detail">LeagueDetailActivity</string>
+    <string name="title_jornada">Jornada</string>
+    <string name="title_equipos">Equipos</string>
+    <string name="title_jugadores">jugadores</string>
+    <string name="league_json">LEAGUE_JSON</string>
+</resources>

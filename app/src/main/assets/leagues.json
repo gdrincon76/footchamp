@@ -1,0 +1,34 @@
+[
+  {
+    "name" : "Primera Catalana",
+    "logo" : "https://resfu.thumbr.io/media/img/league_logos/fcf.png?size=120x&5"
+  },
+  {
+    "name" : "Primera Andaluza",
+    "logo" : "https://resfu.thumbr.io/media/img/league_logos/rfaf.png?size=120x&5"
+  },
+  {
+    "name" : "Preferente Valencia",
+    "logo" : "https://resfu.thumbr.io/media/img/league_logos/fvalf.png?size=120x&5"
+  },
+  {
+    "name" : "Preferente Madrid",
+    "logo" : "https://resfu.thumbr.io/media/img/league_logos/ffm.png?size=120x&5"
+  },
+  {
+    "name" : "Preferente Pais Vasco",
+    "logo" : "https://resfu.thumbr.io/media/img/league_logos/fvasf.png?size=120x&5"
+  },
+  {
+    "name" : "Preferente C. La Mancha",
+    "logo" : "https://resfu.thumbr.io/media/img/league_logos/fcmf.png?size=120x&5"
+  },
+  {
+    "name" : "Preferente Galicia",
+    "logo" : "https://resfu.thumbr.io/media/img/league_logos/fgf.png?size=120x&5"
+  },
+  {
+    "name" : "Preferente Baleares",
+    "logo" : "https://resfu.thumbr.io/media/img/league_logos/fbalf.png?size=120x&5"
+  }
+]

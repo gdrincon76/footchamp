@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_jornada"
+        android:icon="@drawable/baseline_date_range_black_24dp"
+        android:title="@string/title_jornada"/>
+
+    <item
+        android:id="@+id/navigation_equipos"
+        android:icon="@drawable/team_icon"
+        android:title="@string/title_equipos"/>
+
+    <item
+        android:id="@+id/navigation_jugadores"
+        android:icon="@drawable/baseline_person_black_24dp"
+        android:title="@string/title_jugadores"/>
+
+</menu>
