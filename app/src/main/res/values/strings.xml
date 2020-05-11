@@ -4,5 +4,12 @@
     <string name="title_jornada">Jornada</string>
     <string name="title_equipos">Equipos</string>
     <string name="title_jugadores">jugadores</string>
+    <string name="search_icon">Buscar</string>
+    <string name="login_icon">Login</string>
+    <string name="login_username_hint">Nombre de usuario</string>
+    <string name="login_pwd_hint">Password</string>
+    <string name="login_txt">Login</string>
+    <string name="cancel_txt">Cancelar</string>
+
     <string name="league_json">LEAGUE_JSON</string>
 </resources>
