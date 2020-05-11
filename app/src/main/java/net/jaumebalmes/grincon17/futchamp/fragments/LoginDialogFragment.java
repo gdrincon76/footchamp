@@ -23,17 +23,6 @@ public class LoginDialogFragment extends DialogFragment {
     private OnLoginDialogListener mListener;
     private EditText userName;
     private EditText pwd;
-/*
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_login_dialog, container, false);
-        userName = view.findViewById(R.id.textEditNewUserName);
-        pwd = view.findViewById(R.id.textEditNewPwd);
-        return view;
-    }
-*/
 
     @SuppressLint("InflateParams")
     @NonNull
