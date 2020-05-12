@@ -13,6 +13,10 @@ import androidx.lifecycle.ViewModelProviders;
 import net.jaumebalmes.grincon17.futchamp.R;
 import net.jaumebalmes.grincon17.futchamp.models.JugadoresViewModel;
 
+/**
+ * PRUEBAS DE CONEXION AQUI PARA LA LISTA DE JUGADORES
+ */
+
 public class JugadoresFragment extends Fragment {
 
     private JugadoresViewModel equiposViewModel;

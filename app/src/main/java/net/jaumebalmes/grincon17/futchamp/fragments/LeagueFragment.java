@@ -29,7 +29,7 @@ import java.util.Objects;
 public class LeagueFragment extends Fragment {
 
     private int mColumnCount = 2;
-    private List<League> leagueList;
+    private List<League> leagueList;  // Papa obtener la lista de url de las imagene en el JSON 'leagues.json'
     private OnLeagueListInteractionListener mListener;
 
     public LeagueFragment() {
@@ -40,12 +40,13 @@ public class LeagueFragment extends Fragment {
         super.onCreate(savedInstanceState);
         leagueList = new ArrayList<>();
         try {
-            InputStream stream = Objects.requireNonNull(getActivity()).getAssets().open("leagues.json");
+            // Aqui se obtiene las url para las imagenes
+            InputStream stream = Objects.requireNonNull(getActivity()).getAssets().open("leagues.json"); // se agrega el archivo que contien las url
             int size = stream.available();
             byte[] buffer = new byte[size];
             stream.read(buffer);
-            String json  = new String(buffer);
-            leagueList = Arrays.asList(new Gson().fromJson(json, League[].class));
+            String json = new String(buffer);
+            leagueList = Arrays.asList(new Gson().fromJson(json, League[].class)); // se extrae los datos y se guarda en el arrayList
             stream.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -66,6 +67,7 @@ public class LeagueFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
+            // Aqui se pasa los datos al daptador de la vista
             recyclerView.setAdapter(new MyLeagueRecyclerViewAdapter(getActivity(), leagueList, mListener));
         }
         return view;

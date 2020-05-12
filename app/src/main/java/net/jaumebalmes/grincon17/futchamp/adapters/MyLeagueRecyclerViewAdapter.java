@@ -36,7 +36,7 @@ public class MyLeagueRecyclerViewAdapter extends RecyclerView.Adapter<MyLeagueRe
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.mNameView.setText(holder.mItem.getName());
-        Glide.with(mContent).load(holder.mItem.getLogo()).into(holder.mLogoView);
+        Glide.with(mContent).load(holder.mItem.getLogo()).into(holder.mLogoView); // Se asigna la imagen a la vista
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -23,11 +23,21 @@ android {
 
 }
 
+// Estas son variables para aplicar las versiones de cada repositorio agregado
+def Retrofit = '2.6.0'
+def RetrofitJson = '2.6.0'
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    // Dependencias agregadas por defecto
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    testImplementation 'junit:junit:4.13'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    // Dependencias agregadas para el proyecto
+
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.cardview:cardview:1.0.0'
@@ -38,7 +48,13 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui:2.2.2'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
-    testImplementation 'junit:junit:4.13'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    // Libreria de repositorio para poder usar Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$Retrofit"
+
+    // Libreria de repositorio para poder usar y convertir el formato JSON
+    implementation "com.squareup.retrofit2:converter-gson:$RetrofitJson"
+
+
+
 }
