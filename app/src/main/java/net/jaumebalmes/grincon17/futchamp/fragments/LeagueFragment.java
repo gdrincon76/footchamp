@@ -41,7 +41,8 @@ public class LeagueFragment extends Fragment {
         leagueList = new ArrayList<>();
         try {
             // Aqui se obtiene las url para las imagenes
-            InputStream stream = Objects.requireNonNull(getActivity()).getAssets().open("leagues.json"); // se agrega el archivo que contien las url
+//            InputStream stream = Objects.requireNonNull(getActivity()).getAssets().open("leagues.json"); // se agrega el archivo que contien las url
+            InputStream stream = requireActivity().getAssets().open("leagues.json"); // se agrega el archivo que contien las url
             int size = stream.available();
             byte[] buffer = new byte[size];
             stream.read(buffer);
