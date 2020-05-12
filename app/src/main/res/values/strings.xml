@@ -10,6 +10,5 @@
     <string name="login_pwd_hint">Password</string>
     <string name="login_txt">Login</string>
     <string name="cancel_txt">Cancelar</string>
-
     <string name="league_json">LEAGUE_JSON</string>
 </resources>
