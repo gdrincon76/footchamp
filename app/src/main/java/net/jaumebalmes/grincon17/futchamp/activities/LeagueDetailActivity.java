@@ -15,7 +15,10 @@ import androidx.navigation.ui.NavigationUI;
 import net.jaumebalmes.grincon17.futchamp.R;
 import net.jaumebalmes.grincon17.futchamp.fragments.LoginDialogFragment;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnLoginDialogListener;
-
+/**
+ * Esta activity carga la vista principal que consiste en un menu inferior de navegación de tres pestañas
+ * @author guillermo
+ */
 public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDialogListener {
     LoginDialogFragment loginDialogFragment;
     @Override
@@ -32,16 +35,25 @@ public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDi
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
-
     }
-
+    /**
+     * Este método crea el menú del toolbar
+     * @param menu el menú del sistema
+     * @return true para que muestre el menú
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        // TODO: implementar una condición si el usuario es coordinador y está logueado usar su menú,
+        //  en caso contrario cargar el menú de login
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.toolbar_login_menu, menu);
         return true;
     }
-
+    /**
+     * Este método sirve para elegir un elemento del menú
+     * @param item los elementos del menú
+     * @return el padre
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -56,9 +68,15 @@ public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDi
                 return super.onOptionsItemSelected(item);
         }
     }
-
+    /**
+     * Es la implementación del click del login de la ventana flotante
+     * @param userName el nombre de usuario introducido en el campo de TextEdit
+     * @param pwd la contraseña introducida en el campo de TextEdit
+     */
     @Override
     public void onLoginClickListener(String userName, String pwd) {
-        Toast.makeText(this, "Name: " + userName + "pwd: " + pwd, Toast.LENGTH_SHORT).show();
+        // TODO: aquí se debe implementar la llamada a la api para comprobar que el usuario se loguea,
+        //  guardarlo en el shared preferences cargar el nuevo menú de usuario autenticado
+        Toast.makeText(this, "Name: " + userName + "pwd: " + pwd, Toast.LENGTH_LONG).show();
     }
 }

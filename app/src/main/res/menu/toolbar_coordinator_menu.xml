@@ -1,4 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/search_icon"
+        android:icon="@drawable/ic_search_white_24dp"
+        android:title="@string/search_icon"
+        app:showAsAction="ifRoom"/>
+    <item android:id="@+id/add_league"
+        android:title="@string/add_new_league"
+        app:showAsAction="never"/>
+    <item android:id="@+id/add_team"
+        android:title="@string/add_new_team"
+        app:showAsAction="never"/>
+    <item android:id="@+id/add_player"
+        android:title="@string/add_new_player"
+        app:showAsAction="never"/>
+    <item android:id="@+id/settings"
+        android:title="@string/settings"
+        app:showAsAction="never"/>
 </menu>

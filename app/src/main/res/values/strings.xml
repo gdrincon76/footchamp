@@ -10,5 +10,9 @@
     <string name="login_pwd_hint">Password</string>
     <string name="login_txt">Login</string>
     <string name="cancel_txt">Cancelar</string>
+    <string name="add_new_league">Añadir liga</string>
+    <string name="add_new_team">Añadir equipo</string>
+    <string name="add_new_player">Añadir jugador</string>
+    <string name="settings">Ajustes</string>
     <string name="league_json">LEAGUE_JSON</string>
 </resources>

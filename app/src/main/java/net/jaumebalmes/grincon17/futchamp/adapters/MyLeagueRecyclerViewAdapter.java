@@ -1,5 +1,6 @@
 package net.jaumebalmes.grincon17.futchamp.adapters;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,6 +14,10 @@ import net.jaumebalmes.grincon17.futchamp.interfaces.OnLeagueListInteractionList
 import net.jaumebalmes.grincon17.futchamp.models.League;
 import java.util.List;
 
+/**
+ * Adaptador para la vista de la lista de ligas
+ * @author guillermo
+ */
 public class MyLeagueRecyclerViewAdapter extends RecyclerView.Adapter<MyLeagueRecyclerViewAdapter.ViewHolder> {
 
     private final List<League> mValues;
@@ -25,6 +30,7 @@ public class MyLeagueRecyclerViewAdapter extends RecyclerView.Adapter<MyLeagueRe
         mListener = listener;
     }
 
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
@@ -36,7 +42,7 @@ public class MyLeagueRecyclerViewAdapter extends RecyclerView.Adapter<MyLeagueRe
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.mNameView.setText(holder.mItem.getName());
-        Glide.with(mContent).load(holder.mItem.getLogo()).into(holder.mLogoView); // Se asigna la imagen a la vista
+        Glide.with(mContent).load(holder.mItem.getLogo()).into(holder.mLogoView);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,13 +59,13 @@ public class MyLeagueRecyclerViewAdapter extends RecyclerView.Adapter<MyLeagueRe
         return mValues.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public final TextView mNameView;
-        public final ImageView mLogoView;
-        public League mItem;
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        final View mView;
+        final TextView mNameView;
+        final ImageView mLogoView;
+        League mItem;
 
-        public ViewHolder(View view) {
+        ViewHolder(View view) {
             super(view);
             mView = view;
             mNameView = view.findViewById(R.id.textViewLeagueName);
