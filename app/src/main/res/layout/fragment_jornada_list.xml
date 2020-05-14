@@ -2,10 +2,11 @@
 <androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/league_list"
-    android:name="net.jaumebalmes.grincon17.futchamp.LeagueFragment"
+    android:name="net.jaumebalmes.grincon17.futchamp.JornadaFragment"
+    android:id="@+id/jornada_list"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-    tools:context=".fragments.LeagueFragment"
-    tools:listitem="@layout/fragment_league" />
+    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+    tools:context=".fragments.JornadaFragment"
+    tools:listitem="@layout/fragment_jornada">
+</androidx.recyclerview.widget.RecyclerView>

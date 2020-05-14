@@ -14,12 +14,21 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import net.jaumebalmes.grincon17.futchamp.R;
 import net.jaumebalmes.grincon17.futchamp.fragments.LoginDialogFragment;
+import net.jaumebalmes.grincon17.futchamp.interfaces.OnListEquipoInteractionListener;
+import net.jaumebalmes.grincon17.futchamp.interfaces.OnListJornadaInteractionListener;
+import net.jaumebalmes.grincon17.futchamp.interfaces.OnListJugadorInteractionListener;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnLoginDialogListener;
+import net.jaumebalmes.grincon17.futchamp.models.Equipo;
+import net.jaumebalmes.grincon17.futchamp.models.Jornada;
+import net.jaumebalmes.grincon17.futchamp.models.Jugador;
+import net.jaumebalmes.grincon17.futchamp.models.League;
+
 /**
  * Esta activity carga la vista principal que consiste en un menu inferior de navegación de tres pestañas
  * @author guillermo
  */
-public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDialogListener {
+public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDialogListener,
+        OnListJornadaInteractionListener, OnListEquipoInteractionListener, OnListJugadorInteractionListener {
     LoginDialogFragment loginDialogFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,5 +87,20 @@ public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDi
         // TODO: aquí se debe implementar la llamada a la api para comprobar que el usuario se loguea,
         //  guardarlo en el shared preferences cargar el nuevo menú de usuario autenticado
         Toast.makeText(this, "Name: " + userName + "pwd: " + pwd, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onJornadaClickListener(Jornada jornada) {
+
+    }
+
+    @Override
+    public void onEquipoClickListener(Equipo equipo) {
+
+    }
+
+    @Override
+    public void onJugadorClickListener(Jugador jugador) {
+
     }
 }

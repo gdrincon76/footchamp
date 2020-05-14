@@ -3,20 +3,18 @@ package net.jaumebalmes.grincon17.futchamp.activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
-import android.widget.ImageView;
 
 import com.google.gson.Gson;
 
 import net.jaumebalmes.grincon17.futchamp.R;
-import net.jaumebalmes.grincon17.futchamp.interfaces.OnLeagueListInteractionListener;
+import net.jaumebalmes.grincon17.futchamp.interfaces.OnListLeagueInteractionListener;
 import net.jaumebalmes.grincon17.futchamp.models.League;
 /**
  * Esta activity carga las listas de ligas
  * @author guillermo
  */
-public class LeaguesActivity extends AppCompatActivity implements OnLeagueListInteractionListener {
+public class LeaguesActivity extends AppCompatActivity implements OnListLeagueInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +24,7 @@ public class LeaguesActivity extends AppCompatActivity implements OnLeagueListIn
         // TODO -> Aquí se debería comprobar con Shared preference si hay un usuario autenticado.
     }
     /**
-     * Este método es la implementación de la interfaz OnLeagueListInteractionListener
+     * Este método es la implementación de la interfaz OnListJugadorInteractionListener
      * que abre la liga seleccionada de la lista
      * @param league la liga seleccionada
      */

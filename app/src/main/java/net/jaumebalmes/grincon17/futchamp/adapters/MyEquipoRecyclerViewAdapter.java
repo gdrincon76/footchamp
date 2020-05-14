@@ -1,30 +1,29 @@
 package net.jaumebalmes.grincon17.futchamp.adapters;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-import com.bumptech.glide.Glide;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import net.jaumebalmes.grincon17.futchamp.R;
-import net.jaumebalmes.grincon17.futchamp.interfaces.OnListLeagueInteractionListener;
-import net.jaumebalmes.grincon17.futchamp.models.League;
+import net.jaumebalmes.grincon17.futchamp.interfaces.OnListEquipoInteractionListener;
+import net.jaumebalmes.grincon17.futchamp.interfaces.OnListJugadorInteractionListener;
+import net.jaumebalmes.grincon17.futchamp.models.Equipo;
 import java.util.List;
 
 /**
- * Adaptador para la vista de la lista de ligas
+ * Adaptador para la vista de la lista de equipos
  * @author guillermo
  */
-public class MyLeagueRecyclerViewAdapter extends RecyclerView.Adapter<MyLeagueRecyclerViewAdapter.ViewHolder> {
+public class MyEquipoRecyclerViewAdapter extends RecyclerView.Adapter<MyEquipoRecyclerViewAdapter.ViewHolder> {
 
-    private final List<League> mValues;
-    private final OnListLeagueInteractionListener mListener;
+    private final List<Equipo> mValues;
+    private final OnListEquipoInteractionListener mListener;
     private final Context mContent;
 
-    public MyLeagueRecyclerViewAdapter(Context context, List<League> items, OnListLeagueInteractionListener listener) {
+    public MyEquipoRecyclerViewAdapter(Context context, List<Equipo> items, OnListEquipoInteractionListener listener) {
         mContent = context;
         mValues = items;
         mListener = listener;
@@ -34,7 +33,7 @@ public class MyLeagueRecyclerViewAdapter extends RecyclerView.Adapter<MyLeagueRe
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_league, parent, false);
+                .inflate(R.layout.fragment_equipo, parent, false);
         return new ViewHolder(view);
     }
 
@@ -42,13 +41,12 @@ public class MyLeagueRecyclerViewAdapter extends RecyclerView.Adapter<MyLeagueRe
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.mNameView.setText(holder.mItem.getName());
-        Glide.with(mContent).load(holder.mItem.getLogo()).into(holder.mLogoView); // Hay que pasarle el contexto
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    mListener.onLeagueClickListener(holder.mItem);
+                    mListener.onEquipoClickListener(holder.mItem);
                 }
             }
         });
@@ -62,14 +60,12 @@ public class MyLeagueRecyclerViewAdapter extends RecyclerView.Adapter<MyLeagueRe
     static class ViewHolder extends RecyclerView.ViewHolder {
         final View mView;
         final TextView mNameView;
-        final ImageView mLogoView;
-        League mItem;
+        Equipo mItem;
 
         ViewHolder(View view) {
             super(view);
             mView = view;
-            mNameView = view.findViewById(R.id.textViewLeagueName);
-            mLogoView = view.findViewById(R.id.imageViewLogo);
+            mNameView = view.findViewById(R.id.text_equipo_name);
         }
 
     }
