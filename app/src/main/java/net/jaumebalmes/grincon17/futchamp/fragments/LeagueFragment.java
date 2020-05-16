@@ -15,8 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-
 import net.jaumebalmes.grincon17.futchamp.R;
 import net.jaumebalmes.grincon17.futchamp.adapters.MyLeagueRecyclerViewAdapter;
 import net.jaumebalmes.grincon17.futchamp.conexion.Api;
@@ -25,9 +23,7 @@ import net.jaumebalmes.grincon17.futchamp.interfaces.OnListLeagueInteractionList
 import net.jaumebalmes.grincon17.futchamp.models.League;
 import net.jaumebalmes.grincon17.futchamp.repositoryApi.LeagueRepositoryApi;
 
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
@@ -64,11 +60,7 @@ public class LeagueFragment extends Fragment {
         leagueList = new ArrayList<>();
 
 
-        for (int i = 0; i < leagueList.size(); i++) {
-            Log.e(TAG, "AAAAAA: " + leagueList.get(i).getLogo());
-        }
-
-        // TODO: esto hay que sustituirlo por retrofit
+        // Para usar con archivo JSON en aplicacion
 //        try {
 //            // Aqui se obtiene las url para las imagenes
 //            InputStream stream = requireActivity().getAssets().open("leagues.json"); // se agrega el archivo que contien las url
@@ -82,19 +74,13 @@ public class LeagueFragment extends Fragment {
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
-
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_league_list, container, false);
         if (view instanceof RecyclerView) {
-            obtenerDatosLigas(); // Trae los datos de la API
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            recyclerView.setAdapter(new MyLeagueRecyclerViewAdapter(getActivity(), leagueList, mListener)); // pasa los datos a la vista de ligas
+            obtenerDatosLigas(view); // Llama a la API para obtener los datos de la league
         }
         return view;
     }
@@ -121,7 +107,7 @@ public class LeagueFragment extends Fragment {
     // =============================================================================================
     // CONEXION A LA API
 
-    private void obtenerDatosLigas() {
+    private void obtenerDatosLigas(final View view) {
         // Se instancia la interfaz y se le aplica el objeto(retrofit) con la conexion para obtener los datos.
         LeagueRepositoryApi leagueRepositoryApi = retrofitLeague.create(LeagueRepositoryApi.class);
         // Se realiza la llamada al metodo para obtener los datos y se almacena la respuesta aqui.
@@ -136,17 +122,19 @@ public class LeagueFragment extends Fragment {
                 if (response.isSuccessful()) {
                     // Obtiene todos los datos de la BBDD por medio de la api y se almacena en el arrayList
                     leagueList = response.body();
-
-
+                    // Aqui se aplica a la vista los datos obtenidos de la API que estan almacenados en el ArrayList
+                    Context context = view.getContext();
+                    RecyclerView recyclerView = (RecyclerView) view;
+                    recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+                    recyclerView.setAdapter(new MyLeagueRecyclerViewAdapter(getActivity(), leagueList, mListener)); // Pasa los datos a la vista de leagues
                     // Muestra los datos que llegan en la consola
                     for (int i = 0; i < leagueList.size(); i++) {
                         Log.e(TAG, "Liga: " + leagueList.get(i).getName());
                     }
 
-
                 } else {
                     Toast toast = Toast.makeText(getContext(), "Error en la descarga.", Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.CENTER, 0, 1400);
+                    toast.setGravity(Gravity.CENTER, 0, 500);
                     toast.show();
                     Log.e(TAG, " ERROR AL CARGAR LEAGUES: onResponse" + response.errorBody());
                 }
@@ -156,13 +144,11 @@ public class LeagueFragment extends Fragment {
             @Override
             public void onFailure(Call<ArrayList<League>> call, Throwable t) {
                 Toast toast = Toast.makeText(getContext(), "Error en la conexion a la red.", Toast.LENGTH_LONG);
-                toast.setGravity(Gravity.CENTER, 0, 1400);
+                toast.setGravity(Gravity.CENTER, 0, 500);
                 toast.show();
                 Log.e(TAG, " => ERROR LISTA LEAGUES => onFailure: " + t.getMessage());
             }
         });
-
-
     }
 
 
