@@ -13,17 +13,13 @@ public class Enlace {
     private final String ROUTE = "/api/futchamp/";  // Ruta a la API.
     // Enlace de ubicacion de metodos CRUD de
     private final String LINK_JUGADOR = LOCALHOST + PORT + ROUTE + "jugador/";
-    private final String LINK_COORDINADOR = LOCALHOST + PORT + ROUTE + "coordinador/";
     private final String LINK_EQUIPO = LOCALHOST + PORT + ROUTE + "equipo/";
-    private final String LINK_JORNADA = LOCALHOST + PORT + ROUTE + "jornada/";
-    private final String LINK_LIGA = LOCALHOST + PORT + ROUTE + "liga/";
+    private final String LINK_LIGA = LOCALHOST + PORT + ROUTE + "league/";
     private final String LINK_PARTIDO = LOCALHOST + PORT + ROUTE + "partido/";
     // Claves para busqueda de link en el hashmap
     public final String JUGADOR = "jugador";
-    public final String COORDINADOR = "coordinador";
     public final String EQUIPO = "equipo";
-    public final String JORNADA = "jornada";
-    public final String LIGA = "liga";
+    public final String LIGA = "league";
     public final String PARTIDO = "partido";
 
     private HashMap<String, String> enlaceUrlApi; // Almacenara los enlaces o url para accedera a la api
@@ -33,10 +29,8 @@ public class Enlace {
         // Inicializa el hashMap para tener disponibli los enlaces
         enlaceUrlApi = new HashMap<>();
         enlaceUrlApi.put("jugador", LINK_JUGADOR);
-        enlaceUrlApi.put("coordinador", LINK_COORDINADOR);
         enlaceUrlApi.put("equipo", LINK_EQUIPO);
-        enlaceUrlApi.put("jornada", LINK_JORNADA);
-        enlaceUrlApi.put("liga", LINK_LIGA);
+        enlaceUrlApi.put("league", LINK_LIGA);
         enlaceUrlApi.put("partido", LINK_PARTIDO);
     }
 

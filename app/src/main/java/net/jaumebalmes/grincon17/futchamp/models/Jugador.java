@@ -1,10 +1,14 @@
 package net.jaumebalmes.grincon17.futchamp.models;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
 import java.time.LocalDate;
 
-abstract class Persona {
+public class Jugador implements Serializable {
 
     private Long id;
+    @SerializedName("name")
     private String nombre;
     private String apellidos;
     private String dni;
@@ -16,7 +20,7 @@ abstract class Persona {
     private String ocupacion; // campo para saber si es jugador o coordinador
 
     // Constructor
-    public Persona(String nombre, String apellidos, String dni, Character genero, LocalDate fNac, String email, String telefono, String imagen, String ocupacion) {
+    public Jugador(String nombre, String apellidos, String dni, Character genero, LocalDate fNac, String email, String telefono, String imagen, String ocupacion) {
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.dni = dni;

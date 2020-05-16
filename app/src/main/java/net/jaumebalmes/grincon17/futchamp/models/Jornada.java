@@ -4,20 +4,18 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class League implements Serializable {
+public class Jornada implements Serializable {
 
     @SerializedName("name")
     private String name;
 
-    @SerializedName("logo")
-    private String logo;
 
-    public League() {
+    public Jornada() {
     }
 
-    public League(String name, String logo) {
+    public Jornada(String name) {
         this.name = name;
-        this.logo = logo;
+
     }
 
     public String getName() {
@@ -28,11 +26,4 @@ public class League implements Serializable {
         this.name = name;
     }
 
-    public String getLogo() {
-        return logo;
-    }
-
-    public void setLogo(String logo) {
-        this.logo = logo;
-    }
 }

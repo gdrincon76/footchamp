@@ -13,13 +13,13 @@
 
     <fragment
         android:id="@+id/navigation_equipos"
-        android:name="net.jaumebalmes.grincon17.futchamp.fragments.EquiposFragment"
+        android:name="net.jaumebalmes.grincon17.futchamp.fragments.EquipoFragment"
         android:label="@string/title_equipos"
-        tools:layout="@layout/fragment_equipos" />
+        tools:layout="@layout/fragment_equipo" />
 
     <fragment
         android:id="@+id/navigation_jugadores"
-        android:name="net.jaumebalmes.grincon17.futchamp.fragments.JugadoresFragment"
+        android:name="net.jaumebalmes.grincon17.futchamp.fragments.JugadorFragment"
         android:label="@string/title_jugadores"
-        tools:layout="@layout/fragment_jugadores" />
+        tools:layout="@layout/fragment_jugador" />
 </navigation>
