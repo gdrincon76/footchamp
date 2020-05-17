@@ -43,8 +43,7 @@ public class LeagueFragment extends Fragment {
     private int mColumnCount = 2;
     private List<League> leagueList;
     private OnListLeagueInteractionListener mListener;
-
-    private Retrofit retrofitLeague;
+    private Call<ArrayList<League>> leagueAnswerCall;
 
     public LeagueFragment() {
     }
@@ -52,50 +51,22 @@ public class LeagueFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         Enlace enlace = new Enlace(); // para obtener los enlaces de conexion a la api
         Api api = new Api(); // para obtener la conexion a la API
-        retrofitLeague = api.getConexion(enlace.getLink(enlace.LIGA));
-
+        Retrofit retrofitLeague = api.getConexion(enlace.getLink(enlace.LIGA));
+        // Se instancia la interfaz y se le aplica el objeto(retrofit) con la conexion para obtener los datos.
+        LeagueRepositoryApi leagueRepositoryApi = retrofitLeague.create(LeagueRepositoryApi.class);
+        // Se realiza la llamada al metodo para obtener los datos y se almacena la respuesta aqui.
+        leagueAnswerCall = leagueRepositoryApi.obtenerListaLeagues();
         leagueList = new ArrayList<>();
-<<<<<<< HEAD
-        // TODO: esto hay que sustituirlo por retrofit
-        try {
-            InputStream stream = requireActivity().getAssets().open("leagues.json");
-            int size = stream.available();
-            byte[] buffer = new byte[size];
-            stream.read(buffer);
-            String json = new String(buffer);
-            leagueList = Arrays.asList(new Gson().fromJson(json, League[].class));
-            stream.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-=======
 
-
-        // Para usar con archivo JSON en aplicacion
-//        try {
-//            // Aqui se obtiene las url para las imagenes
-//            InputStream stream = requireActivity().getAssets().open("leagues.json"); // se agrega el archivo que contien las url
-//
-//            int size = stream.available();
-//            byte[] buffer = new byte[size];
-//            stream.read(buffer);
-//            String json = new String(buffer);
-//            leagueList = Arrays.asList(new Gson().fromJson(json, League[].class));
-//            stream.close();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
->>>>>>> toEstrada
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_league_list, container, false);
         if (view instanceof RecyclerView) {
-            obtenerDatosLigas(view); // Llama a la API para obtener los datos de la league
+            obtenerDatosLigas(view, leagueAnswerCall); // Llama a la API para obtener los datos de la league
         }
         return view;
     }
@@ -122,11 +93,7 @@ public class LeagueFragment extends Fragment {
     // =============================================================================================
     // CONEXION A LA API
 
-    private void obtenerDatosLigas(final View view) {
-        // Se instancia la interfaz y se le aplica el objeto(retrofit) con la conexion para obtener los datos.
-        LeagueRepositoryApi leagueRepositoryApi = retrofitLeague.create(LeagueRepositoryApi.class);
-        // Se realiza la llamada al metodo para obtener los datos y se almacena la respuesta aqui.
-        Call<ArrayList<League>> leagueAnswerCall = leagueRepositoryApi.obtenerListaLeagues();
+    private void obtenerDatosLigas(final View view, Call<ArrayList<League>> leagueAnswerCall) {
 
         // Aqui se realiza la solicitud al servidor de forma asincrónicamente y se obtiene 2 respuestas.
         leagueAnswerCall.enqueue(new Callback<ArrayList<League>>() {
@@ -165,6 +132,4 @@ public class LeagueFragment extends Fragment {
             }
         });
     }
-
-
 }
