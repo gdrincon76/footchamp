@@ -59,21 +59,6 @@ public class LeagueFragment extends Fragment {
 
         leagueList = new ArrayList<>(); // Para almacenar los datos de las leagues
 
-
-        // Para usar con archivo JSON en aplicacion
-//        try {
-//            // Aqui se obtiene las url para las imagenes
-//            InputStream stream = requireActivity().getAssets().open("leagues.json"); // se agrega el archivo que contien las url
-//
-//            int size = stream.available();
-//            byte[] buffer = new byte[size];
-//            stream.read(buffer);
-//            String json = new String(buffer);
-//            leagueList = Arrays.asList(new Gson().fromJson(json, League[].class));
-//            stream.close();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
     }
 
     @Override

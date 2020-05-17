@@ -15,8 +15,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.Gson;
-
 import net.jaumebalmes.grincon17.futchamp.R;
 import net.jaumebalmes.grincon17.futchamp.adapters.MyEquipoRecyclerViewAdapter;
 import net.jaumebalmes.grincon17.futchamp.conexion.Api;
@@ -25,9 +23,7 @@ import net.jaumebalmes.grincon17.futchamp.interfaces.OnListEquipoInteractionList
 import net.jaumebalmes.grincon17.futchamp.models.Equipo;
 import net.jaumebalmes.grincon17.futchamp.repositoryApi.EquipoRepository;
 
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
@@ -61,19 +57,6 @@ public class EquipoFragment extends Fragment {
         retrofitEquipo = api.getConexion(enlace.getLink(enlace.EQUIPO));
 
         equipoList = new ArrayList<>(); // Para almacenar los datos de los equipos
-
-//        // Para usar con archivo JSON en aplicacion
-//        try {
-//            InputStream stream = requireActivity().getAssets().open("equipos.json");
-//            int size = stream.available();
-//            byte[] buffer = new byte[size];
-//            stream.read(buffer);
-//            String json = new String(buffer);
-//            equipoList = Arrays.asList(new Gson().fromJson(json, Equipo[].class));
-//            stream.close();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,

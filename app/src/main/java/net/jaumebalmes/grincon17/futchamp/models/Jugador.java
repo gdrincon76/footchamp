@@ -1,35 +1,30 @@
 package net.jaumebalmes.grincon17.futchamp.models;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.io.Serializable;
-import java.time.LocalDate;
 
 public class Jugador implements Serializable {
 
     private Long id;
-    @SerializedName("name")
     private String nombre;
     private String apellidos;
     private String dni;
-    private Character genero; // Sexo del jugador 'M' o 'H'
-    private LocalDate fNac;  // Fecha de nacimiento
     private String email;
-    private String telefono;
     private String imagen; // url de ubicacion de la imagen
-    private String ocupacion; // campo para saber si es jugador o coordinador
+    private String posicion;
+    private String dorsal; // Numero de camiseta del jugador
+    private Equipo id_equipo;
 
     // Constructor
-    public Jugador(String nombre, String apellidos, String dni, Character genero, LocalDate fNac, String email, String telefono, String imagen, String ocupacion) {
+    public Jugador(Long id, String nombre, String apellidos, String dni, String email, String imagen, String posicion, String dorsal, Equipo id_equipo) {
+        this.id = id;
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.dni = dni;
-        this.genero = genero;
-        this.fNac = fNac;
         this.email = email;
-        this.telefono = telefono;
         this.imagen = imagen;
-        this.ocupacion = ocupacion;
+        this.posicion = posicion;
+        this.dorsal = dorsal;
+        this.id_equipo = id_equipo;
     }
 
     // Setter y Getter
@@ -65,36 +60,12 @@ public class Jugador implements Serializable {
         this.dni = dni;
     }
 
-    public Character getGenero() {
-        return genero;
-    }
-
-    public void setGenero(Character genero) {
-        this.genero = genero;
-    }
-
-    public LocalDate getfNac() {
-        return fNac;
-    }
-
-    public void setfNac(LocalDate fNac) {
-        this.fNac = fNac;
-    }
-
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
     }
 
     public String getImagen() {
@@ -105,11 +76,27 @@ public class Jugador implements Serializable {
         this.imagen = imagen;
     }
 
-    public String getOcupacion() {
-        return ocupacion;
+    public String getPosicion() {
+        return posicion;
     }
 
-    public void setOcupacion(String ocupacion) {
-        this.ocupacion = ocupacion;
+    public void setPosicion(String posicion) {
+        this.posicion = posicion;
+    }
+
+    public String getDorsal() {
+        return dorsal;
+    }
+
+    public void setDorsal(String dorsal) {
+        this.dorsal = dorsal;
+    }
+
+    public Equipo getId_equipo() {
+        return id_equipo;
+    }
+
+    public void setId_equipo(Equipo id_equipo) {
+        this.id_equipo = id_equipo;
     }
 }
