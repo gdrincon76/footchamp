@@ -2,9 +2,10 @@ package net.jaumebalmes.grincon17.futchamp.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Jugador {
+public class Jugador implements Serializable {
 
     private Long id;
     @SerializedName("name")

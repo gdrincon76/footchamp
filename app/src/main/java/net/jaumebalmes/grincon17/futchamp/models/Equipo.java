@@ -2,7 +2,9 @@ package net.jaumebalmes.grincon17.futchamp.models;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Equipo {
+import java.io.Serializable;
+
+public class Equipo implements Serializable {
 
     @SerializedName("name")
     private String name;

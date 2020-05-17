@@ -19,6 +19,7 @@ import androidx.fragment.app.DialogFragment;
 import net.jaumebalmes.grincon17.futchamp.R;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnLoginDialogListener;
 
+
 public class LoginDialogFragment extends DialogFragment {
     private OnLoginDialogListener mListener;
     private EditText userName;

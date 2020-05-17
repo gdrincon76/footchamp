@@ -10,8 +10,10 @@ import com.google.gson.Gson;
 import net.jaumebalmes.grincon17.futchamp.R;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnListLeagueInteractionListener;
 import net.jaumebalmes.grincon17.futchamp.models.League;
+
 /**
  * Esta activity carga las listas de ligas
+ *
  * @author guillermo
  */
 public class LeaguesActivity extends AppCompatActivity implements OnListLeagueInteractionListener {
@@ -23,9 +25,11 @@ public class LeaguesActivity extends AppCompatActivity implements OnListLeagueIn
         setContentView(R.layout.activity_leagues);
         // TODO -> Aquí se debería comprobar con Shared preference si hay un usuario autenticado.
     }
+
     /**
      * Este método es la implementación de la interfaz OnListJugadorInteractionListener
      * que abre la liga seleccionada de la lista
+     *
      * @param league la liga seleccionada
      */
     @Override

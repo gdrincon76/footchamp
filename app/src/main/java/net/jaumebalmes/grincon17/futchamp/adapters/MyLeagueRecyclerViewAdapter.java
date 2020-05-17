@@ -9,10 +9,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
 import net.jaumebalmes.grincon17.futchamp.R;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnListLeagueInteractionListener;
 import net.jaumebalmes.grincon17.futchamp.models.League;
+
 import java.util.List;
+
 
 /**
  * Adaptador para la vista de la lista de ligas
@@ -41,8 +45,15 @@ public class MyLeagueRecyclerViewAdapter extends RecyclerView.Adapter<MyLeagueRe
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mNameView.setText(holder.mItem.getName());
-        Glide.with(mContent).load(holder.mItem.getLogo()).into(holder.mLogoView); // Hay que pasarle el contexto
+        holder.mNameView.setText(holder.mItem.getName()); // Asigna el nombre de la liga
+
+        // Para obtener las imagenes por medio su url
+        Glide.with(mContent)
+                .load(holder.mItem.getLogo()) // Ruta de la imagen en la web
+                .error(R.mipmap.ic_launcher) //Muestra imagen por defecto si no carga la imagen de red
+                .centerCrop() // La imagen ocupara todo el espacion disponible
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(holder.mLogoView); // Hay que pasarle el contexto
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override

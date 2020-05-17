@@ -5,13 +5,16 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+
 import net.jaumebalmes.grincon17.futchamp.R;
 import net.jaumebalmes.grincon17.futchamp.fragments.LoginDialogFragment;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnListEquipoInteractionListener;
@@ -21,15 +24,18 @@ import net.jaumebalmes.grincon17.futchamp.interfaces.OnLoginDialogListener;
 import net.jaumebalmes.grincon17.futchamp.models.Equipo;
 import net.jaumebalmes.grincon17.futchamp.models.Jornada;
 import net.jaumebalmes.grincon17.futchamp.models.Jugador;
-import net.jaumebalmes.grincon17.futchamp.models.League;
+
+
 
 /**
  * Esta activity carga la vista principal que consiste en un menu inferior de navegación de tres pestañas
+ *
  * @author guillermo
  */
 public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDialogListener,
         OnListJornadaInteractionListener, OnListEquipoInteractionListener, OnListJugadorInteractionListener {
     LoginDialogFragment loginDialogFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
@@ -45,8 +51,10 @@ public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDi
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
     }
+
     /**
      * Este método crea el menú del toolbar
+     *
      * @param menu el menú del sistema
      * @return true para que muestre el menú
      */
@@ -58,8 +66,10 @@ public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDi
         inflater.inflate(R.menu.toolbar_login_menu, menu);
         return true;
     }
+
     /**
      * Este método sirve para elegir un elemento del menú
+     *
      * @param item los elementos del menú
      * @return el padre
      */
@@ -77,10 +87,12 @@ public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDi
                 return super.onOptionsItemSelected(item);
         }
     }
+
     /**
      * Es la implementación del click del login de la ventana flotante
+     *
      * @param userName el nombre de usuario introducido en el campo de TextEdit
-     * @param pwd la contraseña introducida en el campo de TextEdit
+     * @param pwd      la contraseña introducida en el campo de TextEdit
      */
     @Override
     public void onLoginClickListener(String userName, String pwd) {

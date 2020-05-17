@@ -2,7 +2,9 @@ package net.jaumebalmes.grincon17.futchamp.models;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Jornada {
+import java.io.Serializable;
+
+public class Jornada implements Serializable {
 
     @SerializedName("name")
     private String name;
