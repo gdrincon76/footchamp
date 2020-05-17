@@ -102,7 +102,9 @@ public class EquipoFragment extends Fragment {
             @Override
             public void onResponse(Call<ArrayList<Equipo>> call, Response<ArrayList<Equipo>> response) {
                 if (response.isSuccessful()) {
+
                     equipoList = response.body();
+
                     // Aqui se aplica a la vista los datos obtenidos de la API que estan almacenados en el ArrayList
                     Context context = view.getContext();
                     RecyclerView recyclerView = (RecyclerView) view;

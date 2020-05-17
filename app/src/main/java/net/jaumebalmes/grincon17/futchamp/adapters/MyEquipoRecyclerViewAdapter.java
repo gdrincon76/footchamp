@@ -4,9 +4,14 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
 import net.jaumebalmes.grincon17.futchamp.R;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnListEquipoInteractionListener;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnListJugadorInteractionListener;
@@ -41,6 +46,12 @@ public class MyEquipoRecyclerViewAdapter extends RecyclerView.Adapter<MyEquipoRe
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.mNameView.setText(holder.mItem.getName());
+        Glide.with(mContent)
+                .load(holder.mItem.getLogo()) // Ruta de la imagen en la web
+                .error(R.mipmap.ic_launcher) //Muestra imagen por defecto si no carga la imagen de red
+                .centerCrop() // La imagen ocupara todo el espacion disponible
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(holder.mImageView); // Hay que pasarle el contexto
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,12 +71,14 @@ public class MyEquipoRecyclerViewAdapter extends RecyclerView.Adapter<MyEquipoRe
     static class ViewHolder extends RecyclerView.ViewHolder {
         final View mView;
         final TextView mNameView;
+        final ImageView mImageView;
         Equipo mItem;
 
         ViewHolder(View view) {
             super(view);
             mView = view;
             mNameView = view.findViewById(R.id.text_equipo_name);
+            mImageView = view.findViewById(R.id.imageViewEquipoLogo);
         }
 
     }
