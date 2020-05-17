@@ -57,7 +57,7 @@ public class LeagueFragment extends Fragment {
         Api api = new Api(); // para obtener la conexion a la API
         retrofitLeague = api.getConexion(enlace.getLink(enlace.LIGA));
 
-        leagueList = new ArrayList<>();
+        leagueList = new ArrayList<>(); // Para almacenar los datos de las leagues
 
 
         // Para usar con archivo JSON en aplicacion
