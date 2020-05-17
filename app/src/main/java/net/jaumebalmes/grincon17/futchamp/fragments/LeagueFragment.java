@@ -53,12 +53,18 @@ public class LeagueFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Enlace enlace = new Enlace(); // para obtener los enlaces de conexion a la api
         Api api = new Api(); // para obtener la conexion a la API
+<<<<<<< HEAD
         Retrofit retrofitLeague = api.getConexion(enlace.getLink(enlace.LIGA));
         // Se instancia la interfaz y se le aplica el objeto(retrofit) con la conexion para obtener los datos.
         LeagueRepositoryApi leagueRepositoryApi = retrofitLeague.create(LeagueRepositoryApi.class);
         // Se realiza la llamada al metodo para obtener los datos y se almacena la respuesta aqui.
         leagueAnswerCall = leagueRepositoryApi.obtenerListaLeagues();
         leagueList = new ArrayList<>();
+=======
+        retrofitLeague = api.getConexion(enlace.getLink(enlace.LIGA));
+
+        leagueList = new ArrayList<>(); // Para almacenar los datos de las leagues
+>>>>>>> toEstrada
 
     }
 
