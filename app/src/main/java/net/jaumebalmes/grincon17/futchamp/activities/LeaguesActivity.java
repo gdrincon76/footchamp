@@ -1,8 +1,12 @@
 package net.jaumebalmes.grincon17.futchamp.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.google.gson.Gson;
@@ -24,7 +28,8 @@ public class LeaguesActivity extends AppCompatActivity implements OnListLeagueIn
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leagues);
         // TODO -> Aquí se debería comprobar con Shared preference si hay un usuario autenticado.
-    }
+     }
+
 
     /**
      * Este método es la implementación de la interfaz OnListJugadorInteractionListener

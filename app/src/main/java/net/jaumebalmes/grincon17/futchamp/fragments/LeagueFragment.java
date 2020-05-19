@@ -1,9 +1,13 @@
 package net.jaumebalmes.grincon17.futchamp.fragments;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -58,7 +62,6 @@ public class LeagueFragment extends Fragment {
         retrofitLeague = api.getConexion(enlace.getLink(enlace.LIGA));
 
         leagueList = new ArrayList<>(); // Para almacenar los datos de las leagues
-
     }
 
     @Override
@@ -128,7 +131,7 @@ public class LeagueFragment extends Fragment {
             // Aqui, se mostrara si la conexion a la API falla.
             @Override
             public void onFailure(Call<ArrayList<League>> call, Throwable t) {
-                Toast toast = Toast.makeText(getContext(), "Error en la conexion a la red.", Toast.LENGTH_LONG);
+                Toast toast = Toast.makeText(getContext(), "Error en la conexion a la red: " + t.getMessage(), Toast.LENGTH_LONG);
                 toast.setGravity(Gravity.CENTER, 0, 500);
                 toast.show();
                 Log.e(TAG, " => ERROR LISTA LEAGUES => onFailure: " + t.getMessage());
