@@ -28,7 +28,9 @@ public class JugadorDetailActivity extends AppCompatActivity implements OnLoginD
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_jugador_detail);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.title_jugadores);
         setSupportActionBar(toolbar);
+        
         ImageView jugadorImg = findViewById(R.id.imageViewJugadorImg);
         ImageView logoEquipo = findViewById(R.id.imageViewJugadorDetailEquipoLogo);
         TextView equipoNombre = findViewById(R.id.text_jugador_equipo_name);

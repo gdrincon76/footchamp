@@ -64,11 +64,6 @@ public class LeagueFragment extends Fragment {
         retrofitLeague = api.getConexion(enlace.getLink(enlace.LIGA));
 
         leagueList = new ArrayList<>(); // Para almacenar los datos de las leagues
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 448cbe48358e25519f7dbda383363005151cbecc
     }
 
     @Override
