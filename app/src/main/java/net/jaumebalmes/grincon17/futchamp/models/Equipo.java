@@ -6,22 +6,24 @@ import java.io.Serializable;
 
 public class Equipo implements Serializable {
 
-    @SerializedName("name")
+    private long id;
+
     private String name;
 
     private String logo; // url de la imagen de logo del equipo
 
-    private League id_league;
+    private League league;
 
 
     // Constructores
     public Equipo() {
     }
 
-    public Equipo(String name, String logo, League id_league) {
+    public Equipo(long id, String name, String logo, League league) {
+        this.id = id;
         this.name = name;
         this.logo = logo;
-        this.id_league = id_league;
+        this.league = league;
     }
 
     public Equipo(String name) {
@@ -44,11 +46,11 @@ public class Equipo implements Serializable {
         this.logo = logo;
     }
 
-    public League getId_league() {
-        return id_league;
+    public League getLeague() {
+        return league;
     }
 
-    public void setId_league(League id_league) {
-        this.id_league = id_league;
+    public void setLeague(League league) {
+        this.league = league;
     }
 }

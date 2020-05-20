@@ -12,10 +12,10 @@ public class Jugador implements Serializable {
     private String imagen; // url de ubicacion de la imagen
     private String posicion;
     private String dorsal; // Numero de camiseta del jugador
-    private Equipo id_equipo;
+    private Equipo equipo;
 
     // Constructor
-    public Jugador(Long id, String nombre, String apellidos, String dni, String email, String imagen, String posicion, String dorsal, Equipo id_equipo) {
+    public Jugador(Long id, String nombre, String apellidos, String dni, String email, String imagen, String posicion, String dorsal, Equipo equipo) {
         this.id = id;
         this.nombre = nombre;
         this.apellidos = apellidos;
@@ -24,7 +24,7 @@ public class Jugador implements Serializable {
         this.imagen = imagen;
         this.posicion = posicion;
         this.dorsal = dorsal;
-        this.id_equipo = id_equipo;
+        this.equipo = equipo;
     }
 
     // Setter y Getter
@@ -92,11 +92,23 @@ public class Jugador implements Serializable {
         this.dorsal = dorsal;
     }
 
-    public Equipo getId_equipo() {
-        return id_equipo;
+    public Equipo getEquipo() {
+        return equipo;
     }
 
-    public void setId_equipo(Equipo id_equipo) {
-        this.id_equipo = id_equipo;
+    public void setEquipo(Equipo equipo) {
+        this.equipo = equipo;
+    }
+
+    @Override
+    public String toString() {
+        return "Jugador{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", apellidos='" + apellidos + '\'' +
+                ", posicion='" + posicion + '\'' +
+                ", dorsal='" + dorsal + '\'' +
+                ", id_equipo=" + equipo +
+                '}';
     }
 }

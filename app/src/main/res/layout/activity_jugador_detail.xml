@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include android:id="@+id/toolbar" layout="@layout/toolbar"/>
+
+        <ImageView
+            android:id="@+id/imageViewJugadorImg"
+            android:layout_width="@dimen/detail_image_view_size_big"
+            android:layout_height="@dimen/detail_image_view_size_big"
+            android:layout_marginTop="64dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/ic_account_circle_white_24dp" />
+
+        <ImageView
+            android:id="@+id/imageViewJugadorDetailEquipoLogo"
+            android:layout_width="@dimen/detail_image_view_size_small"
+            android:layout_height="@dimen/detail_image_view_size_small"
+            android:layout_marginStart="@dimen/activity_card_margin"
+            android:layout_marginTop="@dimen/activity_card_margin"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageViewJugadorImg"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/fut_champ_logo_25" />
+
+        <TextView
+            android:id="@+id/text_jugador_equipo_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="20dp"
+            android:textAlignment="textStart"
+            android:textSize="@dimen/text_size_small"
+            app:layout_constraintStart_toEndOf="@id/imageViewJugadorDetailEquipoLogo"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewJugadorImg" />
+
+        <TextView
+            android:id="@+id/text_jugador_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/text_vertical_margin"
+            android:layout_marginStart="@dimen/activity_card_margin"
+            android:textAlignment="textStart"
+            android:textSize="@dimen/text_size_big"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewJugadorDetailEquipoLogo" />
+
+        <TextView
+            android:id="@+id/text_jugador_surname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/text_margin"
+            android:layout_marginTop="8dp"
+            android:textAlignment="textStart"
+            android:textSize="@dimen/text_size_big"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/text_jugador_name"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewJugadorDetailEquipoLogo" />
+
+        <TextView
+            android:id="@+id/text_jugador_dorsal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/activity_card_margin"
+            android:textAlignment="textStart"
+            android:textSize="@dimen/text_size_big"
+            app:layout_constraintBottom_toTopOf="@+id/text_jugador_posicion"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_jugador_name" />
+
+        <TextView
+            android:id="@+id/text_jugador_posicion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/activity_card_margin"
+            android:textAlignment="textStart"
+            android:textSize="@dimen/text_size_big"
+            app:layout_constraintBottom_toTopOf="@id/text_jugador_email"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_jugador_dorsal"
+            app:layout_constraintVertical_bias="0.359" />
+
+        <TextView
+            android:id="@+id/text_jugador_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/activity_card_margin"
+            android:textAlignment="textStart"
+            android:textSize="@dimen/text_size_big"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_jugador_posicion"
+            app:layout_constraintVertical_bias="0.359" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

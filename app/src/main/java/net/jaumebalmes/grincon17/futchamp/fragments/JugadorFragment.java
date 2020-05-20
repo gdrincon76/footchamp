@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -39,6 +40,7 @@ import retrofit2.Retrofit;
 public class JugadorFragment extends Fragment {
 
     private static final String TAG = "JUGADOR"; //  Para mostrar mensajes por consola
+    private static final int COLUMNS = 3;
 
     private List<Jugador> jugadorList;
     private OnListJugadorInteractionListener mListener;
@@ -96,13 +98,14 @@ public class JugadorFragment extends Fragment {
         jugadorAnswerCall.enqueue(new Callback<ArrayList<Jugador>>() {
             @Override
             public void onResponse(Call<ArrayList<Jugador>> call, Response<ArrayList<Jugador>> response) {
-                jugadorList = response.body();
 
                 if (response.isSuccessful()) {
                     // Aqui se aplica a la vista los datos obtenidos de la API que estan almacenados en el ArrayList
+                    jugadorList = response.body();
+                    Log.d("EQUIPO", String.valueOf(jugadorList.get(0)));
                     Context context = view.getContext();
                     RecyclerView recyclerView = (RecyclerView) view;
-                    recyclerView.setLayoutManager(new LinearLayoutManager(context));
+                    recyclerView.setLayoutManager(new GridLayoutManager(context, COLUMNS));
                     recyclerView.setAdapter(new MyJugadorRecyclerViewAdapter(getActivity(), jugadorList, mListener));
                     // Muestra los datos que llegan en la consola
                     for (int i = 0; i < jugadorList.size(); i++) {

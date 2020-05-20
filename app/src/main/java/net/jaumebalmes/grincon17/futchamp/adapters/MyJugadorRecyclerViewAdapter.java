@@ -4,10 +4,14 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import net.jaumebalmes.grincon17.futchamp.R;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnListJugadorInteractionListener;
@@ -42,7 +46,16 @@ public class MyJugadorRecyclerViewAdapter extends RecyclerView.Adapter<MyJugador
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
+        holder.mSurnameView.setText(holder.mItem.getApellidos());
         holder.mNameView.setText(holder.mItem.getNombre());
+        holder.mDorsalView.setText(holder.mItem.getDorsal());
+
+        Glide.with(mContent)
+                .load(holder.mItem.getImagen())
+                .error(R.mipmap.ic_launcher)
+                .centerCrop() //
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(holder.mJugadorImg);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,13 +74,20 @@ public class MyJugadorRecyclerViewAdapter extends RecyclerView.Adapter<MyJugador
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         final View mView;
+        final ImageView mJugadorImg;
         final TextView mNameView;
+        final TextView mSurnameView;
+        final TextView mDorsalView;
         Jugador mItem;
 
         ViewHolder(View view) {
             super(view);
             mView = view;
+            mJugadorImg = view.findViewById(R.id.imageViewJugadorImg);
             mNameView = view.findViewById(R.id.text_jugador_name);
+            mSurnameView = view.findViewById(R.id.text_jugador_surname);
+            mDorsalView = view.findViewById(R.id.text_jugador_dorsal);
+
         }
     }
 }

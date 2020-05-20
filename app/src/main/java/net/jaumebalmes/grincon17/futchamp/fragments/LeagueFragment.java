@@ -39,8 +39,8 @@ import retrofit2.Retrofit;
 public class LeagueFragment extends Fragment {
 
     private static final String TAG = "LEAGUE"; //  Para mostrar mensajes por consola
+    private static final int COLUMNS = 2;
 
-    private int mColumnCount = 2;
     private List<League> leagueList;
     private OnListLeagueInteractionListener mListener;
     private Call<ArrayList<League>> leagueAnswerCall;
@@ -53,18 +53,18 @@ public class LeagueFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Enlace enlace = new Enlace(); // para obtener los enlaces de conexion a la api
         Api api = new Api(); // para obtener la conexion a la API
-<<<<<<< HEAD
+
         Retrofit retrofitLeague = api.getConexion(enlace.getLink(enlace.LIGA));
         // Se instancia la interfaz y se le aplica el objeto(retrofit) con la conexion para obtener los datos.
         LeagueRepositoryApi leagueRepositoryApi = retrofitLeague.create(LeagueRepositoryApi.class);
         // Se realiza la llamada al metodo para obtener los datos y se almacena la respuesta aqui.
         leagueAnswerCall = leagueRepositoryApi.obtenerListaLeagues();
         leagueList = new ArrayList<>();
-=======
+
         retrofitLeague = api.getConexion(enlace.getLink(enlace.LIGA));
 
         leagueList = new ArrayList<>(); // Para almacenar los datos de las leagues
->>>>>>> toEstrada
+
 
     }
 
@@ -113,7 +113,7 @@ public class LeagueFragment extends Fragment {
                     // Aqui se aplica a la vista los datos obtenidos de la API que estan almacenados en el ArrayList
                     Context context = view.getContext();
                     RecyclerView recyclerView = (RecyclerView) view;
-                    recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+                    recyclerView.setLayoutManager(new GridLayoutManager(context, COLUMNS));
                     recyclerView.setAdapter(new MyLeagueRecyclerViewAdapter(getActivity(), leagueList, mListener)); // Pasa los datos a la vista de leagues
                     // Muestra los datos que llegan en la consola
                     for (int i = 0; i < leagueList.size(); i++) {
