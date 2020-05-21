@@ -15,4 +15,11 @@
     <string name="add_new_player">Añadir jugador</string>
     <string name="settings">Ajustes</string>
     <string name="league_json">LEAGUE_JSON</string>
+    <string name="jornada_json">JORNADA_JSON</string>
+    <string name="equipo_json">EQUIPO_JSON</string>
+    <string name="jugador_json">JUGADOR_JSON</string>
+    <string name="blank_space"> </string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

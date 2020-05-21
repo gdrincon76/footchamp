@@ -1,5 +1,6 @@
 package net.jaumebalmes.grincon17.futchamp.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -7,6 +8,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.Gson;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -108,11 +110,18 @@ public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDi
 
     @Override
     public void onEquipoClickListener(Equipo equipo) {
-
+        String json = new Gson().toJson(equipo);
+        Intent sendEquipo = new Intent(LeagueDetailActivity.this, EquipoDetailActivity.class);
+        sendEquipo.putExtra(getString(R.string.equipo_json), json);
+        startActivity(sendEquipo);
     }
 
     @Override
     public void onJugadorClickListener(Jugador jugador) {
+        String json = new Gson().toJson(jugador);
+        Intent sendJugador = new Intent(LeagueDetailActivity.this, JugadorDetailActivity.class);
+        sendJugador.putExtra(getString(R.string.jugador_json), json);
+        startActivity(sendJugador);
 
     }
 }

@@ -13,9 +13,11 @@
         android:supportsRtl="true"
         android:theme="@style/SplashTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".activities.JugadorDetailActivity"></activity>
+        <activity android:name=".activities.EquipoDetailActivity" />
         <activity
             android:name=".activities.LeagueDetailActivity"
-            android:label="@string/title_activity_league_detail"></activity>
+            android:label="@string/title_activity_league_detail" />
         <activity android:name=".activities.LeaguesActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -8,7 +8,7 @@ import java.util.HashMap;
  */
 
 public class Enlace {
-    private final String LOCALHOST = "http://192.168.1.23:";  // Direccion Ip del Pc(puede variar)
+    private final String LOCALHOST = "http://192.168.1.23:";  // Direccion Ip del Pc(puede variar segun el ordenador o servidor)
     private final String PORT = "8080";  // Puerto de conexion, depende de la configuracion del Pc
     private final String ROUTE = "/api/futchamp/";  // Ruta a la API.
     // Enlace de ubicacion de metodos CRUD de
