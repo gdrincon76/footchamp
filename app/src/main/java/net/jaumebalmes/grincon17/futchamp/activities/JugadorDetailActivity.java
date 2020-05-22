@@ -27,10 +27,12 @@ public class JugadorDetailActivity extends AppCompatActivity implements OnLoginD
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_jugador_detail);
+        Gson gson = new Gson();
+        Jugador jugador = gson.fromJson(getIntent().getStringExtra(getString(R.string.jugador_json)), Jugador.class);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.title_jugadores);
+        toolbar.setTitle(jugador.getNombre() + " " + jugador.getApellidos());
         setSupportActionBar(toolbar);
-        
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ImageView jugadorImg = findViewById(R.id.imageViewJugadorImg);
         ImageView logoEquipo = findViewById(R.id.imageViewJugadorDetailEquipoLogo);
         TextView equipoNombre = findViewById(R.id.text_jugador_equipo_name);
@@ -41,8 +43,7 @@ public class JugadorDetailActivity extends AppCompatActivity implements OnLoginD
         TextView jugadorEmail = findViewById(R.id.text_jugador_email);
 
 
-        Gson gson = new Gson();
-        Jugador jugador = gson.fromJson(getIntent().getStringExtra(getString(R.string.jugador_json)), Jugador.class);
+
         Equipo equipo = jugador.getEquipo();
         equipoNombre.setText(equipo.getName());
         loadImg(equipo.getLogo(), logoEquipo);
@@ -102,5 +103,11 @@ public class JugadorDetailActivity extends AppCompatActivity implements OnLoginD
     @Override
     public void onLoginClickListener(String userName, String pwd) {
 
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }
