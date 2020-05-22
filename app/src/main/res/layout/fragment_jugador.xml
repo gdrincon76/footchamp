@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="@dimen/activity_card_margin"
-    android:layout_marginVertical="@dimen/activity_vertical_margin"
+    android:layout_margin="@dimen/activity_card_margin"
+
     app:cardElevation="@dimen/activity_card_elevation">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,8 +15,8 @@
 
         <ImageView
             android:id="@+id/imageViewJugadorImg"
-            android:layout_width="@dimen/card_view_image_view_size"
-            android:layout_height="@dimen/card_view_image_view_size"
+            android:layout_width="@dimen/card_view_player_image_view_size"
+            android:layout_height="@dimen/card_view_player_image_view_size"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

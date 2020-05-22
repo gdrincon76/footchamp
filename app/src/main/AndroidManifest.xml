@@ -13,7 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/SplashTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.JugadorDetailActivity"></activity>
+        <activity android:name=".activities.JugadorDetailActivity">
+
+        </activity>
         <activity android:name=".activities.EquipoDetailActivity" />
         <activity
             android:name=".activities.LeagueDetailActivity"

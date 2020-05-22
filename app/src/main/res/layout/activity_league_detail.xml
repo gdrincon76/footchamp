@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include android:id="@+id/toolbar" layout="@layout/toolbar" />
+    <include android:id="@+id/toolbar_detail_view" layout="@layout/toolbar_detail_view"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"

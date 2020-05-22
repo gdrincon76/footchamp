@@ -5,18 +5,18 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
-
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-
 import net.jaumebalmes.grincon17.futchamp.R;
 import net.jaumebalmes.grincon17.futchamp.fragments.LoginDialogFragment;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnListEquipoInteractionListener;
@@ -26,7 +26,7 @@ import net.jaumebalmes.grincon17.futchamp.interfaces.OnLoginDialogListener;
 import net.jaumebalmes.grincon17.futchamp.models.Equipo;
 import net.jaumebalmes.grincon17.futchamp.models.Jornada;
 import net.jaumebalmes.grincon17.futchamp.models.Jugador;
-
+import net.jaumebalmes.grincon17.futchamp.models.League;
 
 
 /**
@@ -37,23 +37,50 @@ import net.jaumebalmes.grincon17.futchamp.models.Jugador;
 public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDialogListener,
         OnListJornadaInteractionListener, OnListEquipoInteractionListener, OnListJugadorInteractionListener {
     LoginDialogFragment loginDialogFragment;
-
+    Toolbar toolbar;
+    League league;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_league_detail);
+        Gson gson = new Gson();
+        league = gson.fromJson(getIntent().getStringExtra(getString(R.string.league_json)), League.class);
+        toolbarConf();
         BottomNavigationView navView = findViewById(R.id.nav_view);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_jornada, R.id.navigation_equipos, R.id.navigation_jugadores)
-                .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
     }
 
+    /**
+     * Configuración del toolbar
+     */
+    private void toolbarConf() {
+        toolbar = findViewById(R.id.toolbar_detail_view);
+        toolbar.setContentInsetStartWithNavigation(0);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        ImageView toolbarImg = findViewById(R.id.toolbar_image);
+        TextView toolbarTittle = findViewById(R.id.textViewTitle);
+        getResources().getDimension(R.dimen.toolbar_title_center);
+        toolbarTittle.setY(getResources().getDimension(R.dimen.toolbar_title_center));
+        toolbarTittle.setText(league.getName());
+        loadImg(league.getLogo(), toolbarImg);
+    }
+
+    /**
+     *
+     * @param url de la imagen
+     * @param imageView la vista para poner la imagen
+     */
+    private void loadImg(String url, ImageView imageView) {
+        Glide.with(getApplicationContext())
+                .load(url)
+                .error(R.mipmap.ic_launcher)
+                .centerInside()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(imageView);
+    }
     /**
      * Este método crea el menú del toolbar
      *
@@ -124,4 +151,5 @@ public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDi
         startActivity(sendJugador);
 
     }
+
 }
