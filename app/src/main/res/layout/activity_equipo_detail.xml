@@ -1,18 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginHorizontal="@dimen/activity_card_margin"
-    android:layout_marginTop="5dp"
-    android:layout_marginBottom="5dp"
+    android:layout_height="match_parent"
     app:cardElevation="@dimen/activity_card_elevation">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <include android:id="@+id/toolbar" layout="@layout/toolbar"/>
+
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="@dimen/activity_card_margin">
+        android:layout_marginTop="@dimen/activity_card_long_margin"
+        android:layout_marginStart="@dimen/activity_card_margin"
+        android:layout_marginEnd="@dimen/activity_card_margin"
+        android:layout_marginBottom="@dimen/activity_card_margin"
+
+        app:cardElevation="@dimen/activity_card_elevation"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
         <ImageView
             android:id="@+id/imageViewEquipoLogo"
@@ -39,6 +47,6 @@
             app:layout_constraintStart_toEndOf="@+id/imageViewEquipoLogo"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.111" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 
-</androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>
