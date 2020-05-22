@@ -1,23 +1,31 @@
 package net.jaumebalmes.grincon17.futchamp.models;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.io.Serializable;
 
 public class League implements Serializable {
 
-    @SerializedName("name")
+    private Long id;
+
     private String name;
 
-    @SerializedName("logo")
     private String logo;
 
+    // Constructores
     public League() {
     }
 
     public League(String name, String logo) {
         this.name = name;
         this.logo = logo;
+    }
+
+    // Setter y Getter
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
