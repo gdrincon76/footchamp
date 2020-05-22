@@ -2,7 +2,6 @@ package net.jaumebalmes.grincon17.futchamp.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -10,7 +9,6 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
@@ -20,33 +18,34 @@ import net.jaumebalmes.grincon17.futchamp.interfaces.OnLoginDialogListener;
 import net.jaumebalmes.grincon17.futchamp.models.Equipo;
 import net.jaumebalmes.grincon17.futchamp.models.Jugador;
 
+/**
+ * Esta activity muestra la vista del detalle de un jugador.
+ * @author guillermo
+ */
 public class JugadorDetailActivity extends AppCompatActivity implements OnLoginDialogListener {
     LoginDialogFragment loginDialogFragment;
+    Toolbar toolbar;
+    Jugador jugador;
+    Equipo equipo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_jugador_detail);
+
         Gson gson = new Gson();
-        Jugador jugador = gson.fromJson(getIntent().getStringExtra(getString(R.string.jugador_json)), Jugador.class);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle(jugador.getNombre() + " " + jugador.getApellidos());
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        jugador = gson.fromJson(getIntent().getStringExtra(getString(R.string.jugador_json)), Jugador.class);
+        equipo = jugador.getEquipo();
+        toolbarConf();
+
         ImageView jugadorImg = findViewById(R.id.imageViewJugadorImg);
-        ImageView logoEquipo = findViewById(R.id.imageViewJugadorDetailEquipoLogo);
-        TextView equipoNombre = findViewById(R.id.text_jugador_equipo_name);
         TextView jugadorName = findViewById(R.id.text_jugador_name);
         TextView jugadorSurName = findViewById(R.id.text_jugador_surname);
         TextView jugadorDorsal = findViewById(R.id.text_jugador_dorsal);
         TextView jugadorPosicion = findViewById(R.id.text_jugador_posicion);
         TextView jugadorEmail = findViewById(R.id.text_jugador_email);
 
-
-
-        Equipo equipo = jugador.getEquipo();
-        equipoNombre.setText(equipo.getName());
-        loadImg(equipo.getLogo(), logoEquipo);
         jugadorName.setText(jugador.getNombre());
         jugadorSurName.setText(jugador.getApellidos());
         jugadorDorsal.setText(jugador.getDorsal());
@@ -55,11 +54,33 @@ public class JugadorDetailActivity extends AppCompatActivity implements OnLoginD
         loadImg(jugador.getImagen(), jugadorImg);
     }
 
+    /**
+     * Configuración del toolbar
+     */
+    private void toolbarConf() {
+        toolbar = findViewById(R.id.toolbar_detail_view);
+        toolbar.setContentInsetStartWithNavigation(0);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ImageView toolbarImg = findViewById(R.id.toolbar_image);
+        TextView toolbarTittle = findViewById(R.id.textViewTitle);
+        TextView toolbarSubTitle = findViewById(R.id.textViewSubTitle);
+        toolbarTittle.setText(equipo.getName());
+        toolbarSubTitle.setText(equipo.getLeague().getName());
+        loadImg(equipo.getLogo(), toolbarImg);
+    }
+
+    /**
+     *
+     * @param url de la imagen
+     * @param imageView la vista para poner la imagen
+     */
     private void loadImg(String url, ImageView imageView) {
         Glide.with(getApplicationContext())
                 .load(url)
                 .error(R.mipmap.ic_launcher)
-                .centerCrop() //
+                .centerInside() //
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imageView);
     }

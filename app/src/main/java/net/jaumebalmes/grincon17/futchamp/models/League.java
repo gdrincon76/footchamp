@@ -6,10 +6,7 @@ import java.io.Serializable;
 
 public class League implements Serializable {
 
-    @SerializedName("name")
     private String name;
-
-    @SerializedName("logo")
     private String logo;
 
     public League() {

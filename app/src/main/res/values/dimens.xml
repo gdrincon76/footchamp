@@ -7,11 +7,16 @@
     <dimen name="activity_card_long_margin">65dp</dimen>
     <dimen name="activity_card_elevation">7dp</dimen>
     <dimen name="activity_card_margin">5dp</dimen>
-    <dimen name="card_view_image_view_size">45dp</dimen>
+    <dimen name="card_view_logo_view_size">60dp</dimen>
+    <dimen name="card_view_player_image_view_size">75dp</dimen>
     <dimen name="detail_image_view_size_small">30dp</dimen>
     <dimen name="detail_image_view_size_big">250dp</dimen>
+    <dimen name="card_view_detail_text_margin">32dp</dimen>
+    <dimen name="toolbar_text_top_margin">5dp</dimen>
+    <dimen name="toolbar_title_center">12dp</dimen>
     <dimen name="text_view_margin">32dp</dimen>
     <dimen name="text_size_small">14sp</dimen>
-    <dimen name="text_size_big">20sp</dimen>
+    <dimen name="text_size_medium">16sp</dimen>
+    <dimen name="text_size_big">18sp</dimen>
     <dimen name="text_vertical_margin">8dp</dimen>
 </resources>
