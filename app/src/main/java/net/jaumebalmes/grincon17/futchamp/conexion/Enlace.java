@@ -18,12 +18,14 @@ public class Enlace {
     private final String LINK_LIGA = LOCALHOST + PORT + ROUTE + "league/";
     private final String LINK_PARTIDO = LOCALHOST + PORT + ROUTE + "partido/";
     private final String LINK_COORDINADOR = LOCALHOST + PORT + ROUTE + "coordinador/";
+    private final String LINK_CALENDARIO = LOCALHOST + PORT + ROUTE + "calendario/";
     // Claves para busqueda de link en el hashmap
     public final String JUGADOR = "jugador";
     public final String EQUIPO = "equipo";
     public final String LIGA = "league";
     public final String PARTIDO = "partido";
     public final String COORDINADOR = "coordinador";
+    public final String CALENDARIO  = "calendario";
 
     private HashMap<String, String> enlaceUrlApi; // Almacenara los enlaces o url para accedera a la api
 
@@ -36,6 +38,7 @@ public class Enlace {
         enlaceUrlApi.put("league", LINK_LIGA);
         enlaceUrlApi.put("partido", LINK_PARTIDO);
         enlaceUrlApi.put("coordinador", LINK_COORDINADOR);
+        enlaceUrlApi.put("calendario", LINK_CALENDARIO);
     }
 
 
