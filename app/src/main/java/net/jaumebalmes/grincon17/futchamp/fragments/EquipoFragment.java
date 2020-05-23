@@ -55,7 +55,7 @@ public class EquipoFragment extends Fragment {
         Enlace enlace = new Enlace(); // para obtener los enlaces de conexion a la api
         Api api = new Api(); // para obtener la conexion a la API
         retrofitEquipo = api.getConexion(enlace.getLink(enlace.EQUIPO));
-
+        Log.d("ENLACE", enlace.getLink(enlace.EQUIPO));
         equipoList = new ArrayList<>(); // Para almacenar los datos de los equipos
     }
 
@@ -65,7 +65,6 @@ public class EquipoFragment extends Fragment {
         if (view instanceof RecyclerView) {
 
             obtenerDatosEquipos(view);
-
 
         }
         return view;
@@ -103,8 +102,12 @@ public class EquipoFragment extends Fragment {
             public void onResponse(Call<ArrayList<Equipo>> call, Response<ArrayList<Equipo>> response) {
                 if (response.isSuccessful()) {
 
-                    equipoList = response.body();
+                    ArrayList<Equipo> equiposFilteredByLeague = new ArrayList<>();
 
+                    equipoList = response.body();
+                    for(Equipo e : equipoList) {
+
+                    }
                     // Aqui se aplica a la vista los datos obtenidos de la API que estan almacenados en el ArrayList
                     Context context = view.getContext();
                     RecyclerView recyclerView = (RecyclerView) view;

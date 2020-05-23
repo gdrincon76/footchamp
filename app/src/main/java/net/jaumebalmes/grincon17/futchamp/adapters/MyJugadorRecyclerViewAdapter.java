@@ -50,12 +50,7 @@ public class MyJugadorRecyclerViewAdapter extends RecyclerView.Adapter<MyJugador
         holder.mNameView.setText(holder.mItem.getNombre());
         holder.mDorsalView.setText(holder.mItem.getDorsal());
 
-        Glide.with(mContent)
-                .load(holder.mItem.getImagen())
-                .error(R.mipmap.ic_launcher)
-                .centerCrop() //
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(holder.mJugadorImg);
+        loadImg(holder.mItem.getImagen(), holder.mJugadorImg);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,6 +60,20 @@ public class MyJugadorRecyclerViewAdapter extends RecyclerView.Adapter<MyJugador
                 }
             }
         });
+    }
+
+    /**
+     *
+     * @param url de la imagen
+     * @param imageView la vista para poner la imagen
+     */
+    private void loadImg(String url, ImageView imageView) {
+        Glide.with(mContent)
+                .load(url)
+                .error(R.mipmap.ic_launcher)
+                .centerInside() //
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(imageView);
     }
 
     @Override

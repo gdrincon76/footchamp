@@ -71,6 +71,7 @@ public class LeagueFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_league_list, container, false);
         if (view instanceof RecyclerView) {
             obtenerDatosLigas(view, leagueAnswerCall); // Llama a la API para obtener los datos de la league
+
         }
         return view;
     }

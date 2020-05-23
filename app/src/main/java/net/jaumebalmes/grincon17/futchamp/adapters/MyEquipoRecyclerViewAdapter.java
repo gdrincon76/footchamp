@@ -46,13 +46,7 @@ public class MyEquipoRecyclerViewAdapter extends RecyclerView.Adapter<MyEquipoRe
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.mNameView.setText(holder.mItem.getName());
-        Glide.with(mContent)
-                .load(holder.mItem.getLogo()) // Ruta de la imagen en la web
-                .error(R.mipmap.ic_launcher) //Muestra imagen por defecto si no carga la imagen de red
-                .centerCrop() // La imagen ocupara todo el espacion disponible
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(holder.mImageView); // Hay que pasarle el contexto
-
+        loadImg(holder.mItem.getLogo(), holder.mImageView);
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,6 +55,20 @@ public class MyEquipoRecyclerViewAdapter extends RecyclerView.Adapter<MyEquipoRe
                 }
             }
         });
+    }
+
+    /**
+     *
+     * @param url de la imagen
+     * @param imageView la vista para poner la imagen
+     */
+    private void loadImg(String url, ImageView imageView) {
+        Glide.with(mContent)
+                .load(url)
+                .error(R.mipmap.ic_launcher)
+                .centerInside() //
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(imageView);
     }
 
     @Override
