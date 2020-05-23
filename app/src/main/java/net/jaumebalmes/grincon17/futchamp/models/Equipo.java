@@ -5,13 +5,9 @@ import java.io.Serializable;
 public class Equipo implements Serializable {
 
     private Long id;
-
     private String name;
-
     private String logo; // url de la imagen de logo del equipo
-
     private League league;
-
 
     // Constructores
     public Equipo() {

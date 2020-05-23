@@ -21,7 +21,7 @@ import net.jaumebalmes.grincon17.futchamp.conexion.Api;
 import net.jaumebalmes.grincon17.futchamp.conexion.Enlace;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnListEquipoInteractionListener;
 import net.jaumebalmes.grincon17.futchamp.models.Equipo;
-import net.jaumebalmes.grincon17.futchamp.repositoryApi.EquipoRepository;
+import net.jaumebalmes.grincon17.futchamp.repositoryApi.EquipoRepositoryApi;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,10 +63,7 @@ public class EquipoFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_equipo_list, container, false);
         if (view instanceof RecyclerView) {
-
             obtenerDatosEquipos(view);
-
-
         }
         return view;
     }
@@ -94,8 +91,8 @@ public class EquipoFragment extends Fragment {
 
     private void obtenerDatosEquipos(final View view) {
 
-        EquipoRepository equipoRepository = retrofitEquipo.create(EquipoRepository.class);
-        Call<ArrayList<Equipo>> equipoAnswerCall = equipoRepository.obtenerListaequipos();
+        EquipoRepositoryApi equipoRepositoryApi = retrofitEquipo.create(EquipoRepositoryApi.class);
+        Call<ArrayList<Equipo>> equipoAnswerCall = equipoRepositoryApi.obtenerListaequipos();
 
         equipoAnswerCall.enqueue(new Callback<ArrayList<Equipo>>() {
             // Aqui nos indicara si se realiza una conexion, y esta puede tener 2 tipos de ella

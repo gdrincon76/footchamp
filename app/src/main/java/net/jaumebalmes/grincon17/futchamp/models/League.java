@@ -5,9 +5,7 @@ import java.io.Serializable;
 public class League implements Serializable {
 
     private Long id;
-
     private String name;
-
     private String logo;
 
     // Constructores

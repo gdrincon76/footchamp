@@ -5,9 +5,7 @@ import java.io.Serializable;
 public class Jornada implements Serializable {
 
     private Long id;
-
     private String name;
-
 
     // Contructor
     public Jornada() {
