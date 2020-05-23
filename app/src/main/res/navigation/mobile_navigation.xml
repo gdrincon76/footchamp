@@ -1,26 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_jornada">
+    tools:ignore="InvalidNavigation,UnusedNavigation">
 
     <fragment
-        android:id="@+id/navigation_jornada"
-        android:name="net.jaumebalmes.grincon17.futchamp.fragments.JornadaFragment"
-        android:label="@string/title_jornada"
-        tools:layout="@layout/fragment_jornada" />
+    android:id="@+id/navigation_jornada"
+    android:name="net.jaumebalmes.grincon17.futchamp.fragments.JornadaFragment"
+    android:label="@string/title_jornada"
+    tools:layout="@layout/fragment_jornada" />
 
     <fragment
         android:id="@+id/navigation_equipos"
         android:name="net.jaumebalmes.grincon17.futchamp.fragments.EquipoFragment"
         android:label="@string/title_equipos"
-        tools:layout="@layout/fragment_equipo" >
-    </fragment>
+        tools:layout="@layout/fragment_equipo" />
 
     <fragment
         android:id="@+id/navigation_jugadores"
         android:name="net.jaumebalmes.grincon17.futchamp.fragments.JugadorFragment"
         android:label="@string/title_jugadores"
         tools:layout="@layout/fragment_jugador" />
+
 </navigation>
