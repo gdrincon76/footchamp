@@ -15,7 +15,8 @@
         android:id="@+id/navigation_equipos"
         android:name="net.jaumebalmes.grincon17.futchamp.fragments.EquipoFragment"
         android:label="@string/title_equipos"
-        tools:layout="@layout/fragment_equipo" />
+        tools:layout="@layout/fragment_equipo" >
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_jugadores"

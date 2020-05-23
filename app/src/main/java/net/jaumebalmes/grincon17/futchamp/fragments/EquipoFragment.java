@@ -42,7 +42,7 @@ public class EquipoFragment extends Fragment {
 
     private List<Equipo> equipoList;
     private OnListEquipoInteractionListener mListener;
-
+    private String leagueName;
     private Retrofit retrofitEquipo;
 
     public EquipoFragment() {
@@ -51,11 +51,15 @@ public class EquipoFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(getArguments() != null) {
+            leagueName = getArguments().getString("LEAGUE");
+            Log.d("LEAGUE_NAME", leagueName);
+        }
 
         Enlace enlace = new Enlace(); // para obtener los enlaces de conexion a la api
         Api api = new Api(); // para obtener la conexion a la API
         retrofitEquipo = api.getConexion(enlace.getLink(enlace.EQUIPO));
-        Log.d("ENLACE", enlace.getLink(enlace.EQUIPO));
+        //Log.d("ENLACE", enlace.getLink(enlace.EQUIPO));
         equipoList = new ArrayList<>(); // Para almacenar los datos de los equipos
     }
 
@@ -64,10 +68,7 @@ public class EquipoFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_equipo_list, container, false);
         if (view instanceof RecyclerView) {
             obtenerDatosEquipos(view);
-<<<<<<< HEAD
 
-=======
->>>>>>> toEstrada
         }
         return view;
     }
@@ -96,20 +97,14 @@ public class EquipoFragment extends Fragment {
     private void obtenerDatosEquipos(final View view) {
 
         EquipoRepositoryApi equipoRepositoryApi = retrofitEquipo.create(EquipoRepositoryApi.class);
-        Call<ArrayList<Equipo>> equipoAnswerCall = equipoRepositoryApi.obtenerListaequipos();
+        Call<ArrayList<Equipo>> equipoAnswerCall = equipoRepositoryApi.obtenerListaEquiposPorLiga(leagueName);
 
         equipoAnswerCall.enqueue(new Callback<ArrayList<Equipo>>() {
             // Aqui nos indicara si se realiza una conexion, y esta puede tener 2 tipos de ella
             @Override
             public void onResponse(Call<ArrayList<Equipo>> call, Response<ArrayList<Equipo>> response) {
                 if (response.isSuccessful()) {
-
-                    ArrayList<Equipo> equiposFilteredByLeague = new ArrayList<>();
-
                     equipoList = response.body();
-                    for(Equipo e : equipoList) {
-
-                    }
                     // Aqui se aplica a la vista los datos obtenidos de la API que estan almacenados en el ArrayList
                     Context context = view.getContext();
                     RecyclerView recyclerView = (RecyclerView) view;
@@ -117,7 +112,7 @@ public class EquipoFragment extends Fragment {
                     recyclerView.setAdapter(new MyEquipoRecyclerViewAdapter(getActivity(), equipoList, mListener));
                     // Muestra los datos que llegan en la consola
                     for (int i = 0; i < equipoList.size(); i++) {
-                        Log.e(TAG, "Equipo: " + equipoList.get(i).getName());
+                        Log.d(TAG, "Equipo: " + equipoList.get(i).getName());
                     }
                 } else {
                     Toast toast = Toast.makeText(getContext(), "Error en la descarga.", Toast.LENGTH_LONG);

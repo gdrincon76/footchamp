@@ -86,7 +86,6 @@ public class JugadorFragment extends Fragment {
         mListener = null;
     }
 
-
     // =============================================================================================
     // =============================================================================================
     // CONEXION A LA API
@@ -130,6 +129,4 @@ public class JugadorFragment extends Fragment {
             }
         });
     }
-
-
 }

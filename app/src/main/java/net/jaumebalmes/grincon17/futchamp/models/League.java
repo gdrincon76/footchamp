@@ -4,11 +4,8 @@ import java.io.Serializable;
 
 public class League implements Serializable {
 
-<<<<<<< HEAD
+
     private long id;
-=======
-    private Long id;
->>>>>>> toEstrada
     private String name;
     private String logo;
 
@@ -22,22 +19,10 @@ public class League implements Serializable {
         this.logo = logo;
     }
 
-<<<<<<< HEAD
     public long getId() {
         return id;
     }
 
-=======
-    // Setter y Getter
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
->>>>>>> toEstrada
     public String getName() {
         return name;
     }
