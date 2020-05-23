@@ -7,6 +7,7 @@
     <dimen name="activity_card_long_margin">65dp</dimen>
     <dimen name="activity_card_elevation">7dp</dimen>
     <dimen name="activity_card_margin">5dp</dimen>
+    <dimen name="activity_card_margin_small">3dp</dimen>
     <dimen name="card_view_logo_view_size">60dp</dimen>
     <dimen name="card_view_player_image_view_size">75dp</dimen>
     <dimen name="detail_image_view_size_small">30dp</dimen>
