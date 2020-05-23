@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import retrofit2.Call;
 import retrofit2.http.GET;
 
-public interface EquipoRepository {
+public interface EquipoRepositoryApi {
 
     // Obtiene la lista de equipos de la BBDD por medio de la API
     @GET("mostrar")

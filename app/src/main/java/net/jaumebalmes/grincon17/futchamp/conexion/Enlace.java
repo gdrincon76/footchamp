@@ -8,7 +8,8 @@ import java.util.HashMap;
  */
 
 public class Enlace {
-    private final String LOCALHOST = "http://192.168.1.52:";  // Direccion Ip del Pc(puede variar segun el ordenador o servidor)
+    private final String LOCALHOST = "http://192.168.1.23:";  // Direccion Ip del Pc(puede variar segun el ordenador o servidor)
+//    private final String LOCALHOST = "http://ec2-3-91-54-159.compute-1.amazonaws.com:";  // Direccion Ip del servidor
     private final String PORT = "8080";  // Puerto de conexion, depende de la configuracion del Pc
     private final String ROUTE = "/api/futchamp/";  // Ruta a la API.
     // Enlace de ubicacion de metodos CRUD de
@@ -16,11 +17,15 @@ public class Enlace {
     private final String LINK_EQUIPO = LOCALHOST + PORT + ROUTE + "equipo/";
     private final String LINK_LIGA = LOCALHOST + PORT + ROUTE + "league/";
     private final String LINK_PARTIDO = LOCALHOST + PORT + ROUTE + "partido/";
+    private final String LINK_COORDINADOR = LOCALHOST + PORT + ROUTE + "coordinador/";
+    private final String LINK_CALENDARIO = LOCALHOST + PORT + ROUTE + "calendario/";
     // Claves para busqueda de link en el hashmap
     public final String JUGADOR = "jugador";
     public final String EQUIPO = "equipo";
     public final String LIGA = "league";
     public final String PARTIDO = "partido";
+    public final String COORDINADOR = "coordinador";
+    public final String CALENDARIO  = "calendario";
 
     private HashMap<String, String> enlaceUrlApi; // Almacenara los enlaces o url para accedera a la api
 
@@ -32,6 +37,8 @@ public class Enlace {
         enlaceUrlApi.put("equipo", LINK_EQUIPO);
         enlaceUrlApi.put("league", LINK_LIGA);
         enlaceUrlApi.put("partido", LINK_PARTIDO);
+        enlaceUrlApi.put("coordinador", LINK_COORDINADOR);
+        enlaceUrlApi.put("calendario", LINK_CALENDARIO);
     }
 
 

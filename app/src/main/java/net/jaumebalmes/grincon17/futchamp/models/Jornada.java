@@ -1,18 +1,17 @@
 package net.jaumebalmes.grincon17.futchamp.models;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.io.Serializable;
 
 public class Jornada implements Serializable {
 
-    @SerializedName("name")
+    private Long id;
     private String name;
 
-
+    // Contructor
     public Jornada() {
     }
 
+    //Setter y Getter
     public Jornada(String name) {
         this.name = name;
 

@@ -1,15 +1,18 @@
 package net.jaumebalmes.grincon17.futchamp.models;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.io.Serializable;
 
 public class League implements Serializable {
 
+<<<<<<< HEAD
     private long id;
+=======
+    private Long id;
+>>>>>>> toEstrada
     private String name;
     private String logo;
 
+    // Constructores
     public League() {
     }
 
@@ -19,10 +22,22 @@ public class League implements Serializable {
         this.logo = logo;
     }
 
+<<<<<<< HEAD
     public long getId() {
         return id;
     }
 
+=======
+    // Setter y Getter
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+>>>>>>> toEstrada
     public String getName() {
         return name;
     }

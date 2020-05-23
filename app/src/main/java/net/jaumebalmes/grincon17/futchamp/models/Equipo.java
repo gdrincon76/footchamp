@@ -1,29 +1,32 @@
 package net.jaumebalmes.grincon17.futchamp.models;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.io.Serializable;
 
 public class Equipo implements Serializable {
 
-    private long id;
-
+    private Long id;
     private String name;
-
     private String logo; // url de la imagen de logo del equipo
-
     private League league;
-
 
     // Constructores
     public Equipo() {
     }
 
-    public Equipo(long id, String name, String logo, League league) {
+    public Equipo(Long id, String name, String logo, League league) {
         this.id = id;
         this.name = name;
         this.logo = logo;
         this.league = league;
+    }
+
+    // Setter y Getter
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Equipo(String name) {

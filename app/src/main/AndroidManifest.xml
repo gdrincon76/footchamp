@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="net.jaumebalmes.grincon17.futchamp">
 
+    <!-- Permiso para poder usar el internet del movil -->
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
