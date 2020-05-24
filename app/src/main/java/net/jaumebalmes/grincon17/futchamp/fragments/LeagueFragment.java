@@ -47,7 +47,9 @@ public class LeagueFragment extends Fragment {
 
     private List<League> leagueList;
     private OnListLeagueInteractionListener mListener;
-    private Call<ArrayList<League>> leagueAnswerCall;
+//    private Call<ArrayList<League>> leagueAnswerCall;
+
+    private Retrofit retrofitLeague;
 
     public LeagueFragment() {
     }
@@ -55,17 +57,18 @@ public class LeagueFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         Enlace enlace = new Enlace(); // para obtener los enlaces de conexion a la api
         Api api = new Api(); // para obtener la conexion a la API
-
-        Retrofit retrofitLeague = api.getConexion(enlace.getLink(enlace.LIGA));
-        // Se instancia la interfaz y se le aplica el objeto(retrofit) con la conexion para obtener los datos.
-        LeagueRepositoryApi leagueRepositoryApi = retrofitLeague.create(LeagueRepositoryApi.class);
-        // Se realiza la llamada al metodo para obtener los datos y se almacena la respuesta aqui.
-        leagueAnswerCall = leagueRepositoryApi.obtenerListaLeagues();
-        leagueList = new ArrayList<>();
-
         retrofitLeague = api.getConexion(enlace.getLink(enlace.LIGA));
+
+//        Retrofit retrofitLeague = api.getConexion(enlace.getLink(enlace.LIGA));
+        // Se instancia la interfaz y se le aplica el objeto(retrofit) con la conexion para obtener los datos.
+//        LeagueRepositoryApi leagueRepositoryApi = retrofitLeague.create(LeagueRepositoryApi.class);
+        // Se realiza la llamada al metodo para obtener los datos y se almacena la respuesta aqui.
+//        leagueAnswerCall = leagueRepositoryApi.obtenerListaLeagues();
+//        leagueList = new ArrayList<>();
+//        retrofitLeague = api.getConexion(enlace.getLink(enlace.LIGA));
 
         leagueList = new ArrayList<>(); // Para almacenar los datos de las leagues
     }
@@ -74,7 +77,7 @@ public class LeagueFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_league_list, container, false);
         if (view instanceof RecyclerView) {
-            obtenerDatosLigas(view, leagueAnswerCall); // Llama a la API para obtener los datos de la league
+            obtenerDatosLigas(view); // Llama a la API para obtener los datos de la league
 
         }
         return view;
@@ -102,7 +105,10 @@ public class LeagueFragment extends Fragment {
     // =============================================================================================
     // CONEXION A LA API
 
-    private void obtenerDatosLigas(final View view, Call<ArrayList<League>> leagueAnswerCall) {
+//    private void obtenerDatosLigas(final View view, Call<ArrayList<League>> leagueAnswerCall) {
+    private void obtenerDatosLigas(final View view) {
+        LeagueRepositoryApi leagueRepositoryApi = retrofitLeague.create(LeagueRepositoryApi.class);
+        Call<ArrayList<League>> leagueAnswerCall = leagueRepositoryApi.obtenerListaLeagues();
 
         // Aqui se realiza la solicitud al servidor de forma asincrónicamente y se obtiene 2 respuestas.
         leagueAnswerCall.enqueue(new Callback<ArrayList<League>>() {
