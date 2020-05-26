@@ -19,4 +19,9 @@ public interface PartidosRepositoryApi {
     @GET("mostrar/visitantes/{nombreEquipoVisitante}")
     Call<ArrayList<Partido>> obtenerListaPartidosVisitantes(@Path("nombreEquipoVisitante") String nombreEquipoVisitante);
 
+    // Devuelve una lista de partidos por jornadas
+    @GET("mostrar/jornada/{jornada}")
+    Call<ArrayList<Partido>> obtenerListaPartidosJornada(@Path("jornada") int jornada);
+
+
 }
