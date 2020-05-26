@@ -78,7 +78,6 @@ public class EquipoDetailActivity extends AppCompatActivity implements OnLoginDi
         ImageView imageViewLogo = findViewById(R.id.imageViewEquipoLogo);
         loadImg(equipo.getLogo(), imageViewLogo);
         obtenerDatosJugadores();
-
     }
 
     /**
@@ -177,8 +176,6 @@ public class EquipoDetailActivity extends AppCompatActivity implements OnLoginDi
                 if (response.isSuccessful()) {
                     // Aqui se aplica a la vista los datos obtenidos de la API que estan almacenados en el ArrayList
                     jugadorList = response.body();
-
-                    Log.d("EQUIPO", String.valueOf(jugadorList.get(0)));
 
                     RecyclerView recyclerView = findViewById(R.id.recycler_jugadores_equipo);
                     recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), COLUMNS));
