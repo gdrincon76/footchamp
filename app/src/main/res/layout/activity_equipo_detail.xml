@@ -62,7 +62,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="32dp"
                         android:layout_marginTop="@dimen/activity_vertical_margin"
-                        android:text="@string/posicion"
+                        android:text="@string/posicion_abreviado"
                         android:textAlignment="center" />
 
                     <TextView
