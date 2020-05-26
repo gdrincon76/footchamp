@@ -17,6 +17,7 @@
     <dimen name="toolbar_title_center">12dp</dimen>
     <dimen name="text_view_margin">32dp</dimen>
     <dimen name="text_size_small">14sp</dimen>
+    <dimen name="text_size_extra_small">12sp</dimen>
     <dimen name="text_size_medium">16sp</dimen>
     <dimen name="text_size_big">18sp</dimen>
     <dimen name="text_vertical_margin">8dp</dimen>

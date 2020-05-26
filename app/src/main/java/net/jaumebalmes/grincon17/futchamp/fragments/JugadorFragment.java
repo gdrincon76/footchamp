@@ -44,7 +44,7 @@ public class JugadorFragment extends Fragment {
 
     private List<Jugador> jugadorList;
     private OnListJugadorInteractionListener mListener;
-
+    private String leagueName;
     private Retrofit retrofitJugador;
 
     public JugadorFragment() {
@@ -53,7 +53,10 @@ public class JugadorFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        if(getArguments() != null) {
+            leagueName = getArguments().getString("LEAGUE");
+            Log.d("LEAGUE_NAME", leagueName);
+        }
         Enlace enlace = new Enlace(); // para obtener los enlaces de conexion a la api
         Api api = new Api(); // para obtener la conexion a la API
         retrofitJugador = api.getConexion(enlace.getLink(enlace.JUGADOR));
@@ -101,11 +104,17 @@ public class JugadorFragment extends Fragment {
                 if (response.isSuccessful()) {
                     // Aqui se aplica a la vista los datos obtenidos de la API que estan almacenados en el ArrayList
                     jugadorList = response.body();
+                    List<Jugador> jugadorListLiga = new ArrayList<>();
+                    for (Jugador jugador : jugadorList) {
+                        if(jugador.getEquipo().getLeague().getName().equals(leagueName)) {
+                            jugadorListLiga.add(jugador);
+                        }
+                    }
                     Log.d("EQUIPO", String.valueOf(jugadorList.get(0)));
                     Context context = view.getContext();
                     RecyclerView recyclerView = (RecyclerView) view;
                     recyclerView.setLayoutManager(new GridLayoutManager(context, COLUMNS));
-                    recyclerView.setAdapter(new MyJugadorRecyclerViewAdapter(getActivity(), jugadorList, mListener));
+                    recyclerView.setAdapter(new MyJugadorRecyclerViewAdapter(getActivity(), jugadorListLiga, mListener));
                     // Muestra los datos que llegan en la consola
                     for (int i = 0; i < jugadorList.size(); i++) {
                         Log.e(TAG, "Liga: " + jugadorList.get(i).getNombre());

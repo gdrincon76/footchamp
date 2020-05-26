@@ -14,10 +14,10 @@ public interface JugadorRepositoryApi {
     @GET("mostrar")
     Call<ArrayList<Jugador>> obtenerListaJugadores();
 
-
     // Obtiene la lista de jugadores de un mismo equipo por medio del nombre de este
     @GET("mostrar/equipo/{nombreEquipo}")
     Call<ArrayList<Jugador>> obtenerListaJugadoresEquipo(@Path("nombreEquipo") String nombreEquipo);
+
 
 
 

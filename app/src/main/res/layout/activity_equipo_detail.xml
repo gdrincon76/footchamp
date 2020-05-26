@@ -1,59 +1,258 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:cardElevation="@dimen/activity_card_elevation">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <include
         android:id="@+id/toolbar_detail_view"
         layout="@layout/toolbar_detail_view" />
 
-    <androidx.cardview.widget.CardView
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="@dimen/activity_card_margin"
         android:layout_marginTop="@dimen/activity_card_long_margin"
-        android:layout_marginEnd="@dimen/activity_card_margin"
-        android:layout_marginBottom="@dimen/activity_card_margin"
-        app:cardElevation="@dimen/activity_card_elevation"
+        app:layout_anchor="@+id/nestedScrollView"
+        app:layout_anchorGravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_detail_view">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/imageViewEquipoLogo"
                 android:layout_width="@dimen/detail_image_view_size_big"
                 android:layout_height="@dimen/detail_image_view_size_big"
+                android:layout_gravity="center"
                 android:layout_marginTop="@dimen/activity_card_margin"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.011"
+                android:background="@drawable/image_view_border"
+                android:padding="@dimen/activity_card_margin"
                 app:srcCompat="@drawable/fut_champ_logo_25" />
 
             <TextView
-                android:id="@+id/text_equipo_name"
+                android:id="@+id/text_clasificacion_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/activity_card_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:text="@string/titulo_tabla"
                 android:textAlignment="textStart"
-                android:textSize="@dimen/text_size_small"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.027"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageViewEquipoLogo"
-                app:layout_constraintVertical_bias="0.202" />
+                android:textSize="@dimen/text_size_small" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/activity_card_margin">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/posicion"
+                        android:layout_width="35dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:text="@string/posicion"
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:id="@+id/puntos"
+                        android:layout_width="35dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/activity_card_margin"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:text="@string/puntos"
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:id="@+id/pj"
+                        android:layout_width="35dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/activity_card_margin"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:text="@string/partidos_jugados"
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:id="@+id/pg"
+                        android:layout_width="35dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/activity_card_margin"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:text="@string/partidos_ganados"
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:id="@+id/pe"
+                        android:layout_width="35dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/activity_card_margin"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:text="@string/partidos_empatados"
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:id="@+id/pp"
+                        android:layout_width="35dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/activity_card_margin"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:text="@string/partidos_perdidos"
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:id="@+id/gf"
+                        android:layout_width="35dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/activity_card_margin"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:text="@string/goles_favor"
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:id="@+id/gc"
+                        android:layout_width="35dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/activity_card_margin"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:text="@string/goles_contra"
+                        android:textAlignment="center" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:id="@+id/cantidad_posicion"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:text="@string/default_number"
+                        android:textAlignment="center"/>
+                    <TextView
+                        android:id="@+id/cantidad_puntos"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_marginStart="@dimen/activity_card_margin"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:text="@string/default_number"
+                        android:textAlignment="center"/>
+                    <TextView
+                        android:id="@+id/cantidad_jugados"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_marginStart="@dimen/activity_card_margin"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:text="@string/default_number"
+                        android:textAlignment="center"/>
+                    <TextView
+                        android:id="@+id/cantidad_ganados"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_marginStart="@dimen/activity_card_margin"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:text="@string/default_number"
+                        android:textAlignment="center"/>
+                    <TextView
+                        android:id="@+id/cantidad_empatados"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_marginStart="@dimen/activity_card_margin"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:text="@string/default_number"
+                        android:textAlignment="center"/>
+                    <TextView
+                        android:id="@+id/cantidad_perdidos"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_marginStart="@dimen/activity_card_margin"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:text="@string/default_number"
+                        android:textAlignment="center"/>
+                    <TextView
+                        android:id="@+id/cantidad_goles_favor"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_marginStart="@dimen/activity_card_margin"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:text="@string/default_number"
+                        android:textAlignment="center"/>
+                    <TextView
+                        android:id="@+id/cantidad_goles_contra"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_marginStart="@dimen/activity_card_margin"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:text="@string/default_number"
+                        android:textAlignment="center"/>
+                </TableRow>
+
+            </TableLayout>
+
+            <TextView
+                android:id="@+id/text_proximos_partidos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:text="@string/titulo_prox_partido"
+                android:textAlignment="textStart" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:orientation="horizontal" />
+
+            <TextView
+                android:id="@+id/text_partidos_jugados"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:text="@string/titulo_past_partido"
+                android:textAlignment="textStart" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:orientation="horizontal" />
+
+            <TextView
+                android:id="@+id/text_jugadores"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:text="@string/titulo_jugadores"
+                android:textAlignment="textStart" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_jugadores_equipo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:orientation="horizontal"
+                tools:cotext="activities.EquipoDetailActivity"
+                tools:listitem="@layout/fragment_jugador"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

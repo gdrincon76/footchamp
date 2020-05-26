@@ -18,7 +18,21 @@
     <string name="jornada_json">JORNADA_JSON</string>
     <string name="equipo_json">EQUIPO_JSON</string>
     <string name="jugador_json">JUGADOR_JSON</string>
-    <string name="blank_space"> </string>
+    <!-- TABLA CLASIFICACION-->
+    <string name="titulo_tabla">Tabla de clasificación</string>
+    <string name="default_number">0</string>
+    <string name="posicion">Pos</string>
+    <string name="puntos">Pts</string>
+    <string name="partidos_jugados">PJ</string>
+    <string name="partidos_ganados">PG</string>
+    <string name="partidos_empatados">PE</string>
+    <string name="partidos_perdidos">PP</string>
+    <string name="goles_favor">GF</string>
+    <string name="goles_contra">GC</string>
+    <!-- FIN TABLA -->
+    <string name="titulo_prox_partido">Próximos partidos</string>
+    <string name="titulo_past_partido">Próximos jugados</string>
+    <string name="titulo_jugadores">Jugadores</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
