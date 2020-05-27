@@ -47,4 +47,5 @@
     <string name="my_pwd">pwd</string>
     <string name="league_name">Nombre de la liga</string>
     <string name="add_league">Añadir</string>
+    <string name="login_failed">Usuario o contraseña incorrectos</string>
 </resources>

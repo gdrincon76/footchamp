@@ -167,7 +167,7 @@ public class LeaguesActivity extends AppCompatActivity implements OnListLeagueIn
                     Log.d(TAG, " RESPUESTA DE SEGURIDAD: " + response.body());
                     invalidateOptionsMenu();
                 } else {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Error en la descarga.", Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.login_failed), Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER, 0, 500);
                     toast.show();
                     Log.e(TAG, " NO TIENE AUTORIZACION: onResponse: " + response.errorBody());

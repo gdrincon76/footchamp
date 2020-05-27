@@ -169,11 +169,11 @@ public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDi
         if (preferences.contains(getString(R.string.my_username)) && preferences.contains(getString(R.string.my_username))) {
             menu.clear();
             inflater.inflate(R.menu.toolbar_coordinator_menu, menu);
-        }
-        if(longClick) {
-            menu.findItem(R.id.trash_icon).setVisible(true);
-        } else {
-            menu.findItem(R.id.trash_icon).setVisible(false);
+            if(longClick) {
+                menu.findItem(R.id.trash_icon).setVisible(true);
+            } else {
+                menu.findItem(R.id.trash_icon).setVisible(false);
+            }
         }
         return true;
     }
@@ -202,6 +202,7 @@ public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDi
                 preferences.edit().remove(getString(R.string.my_username)).apply();
                 preferences.edit().remove(getString(R.string.my_pwd)).apply();
                 invalidateOptionsMenu();
+                return true;
             case R.id.trash_icon:
                 longClick = false;
                 invalidateOptionsMenu();

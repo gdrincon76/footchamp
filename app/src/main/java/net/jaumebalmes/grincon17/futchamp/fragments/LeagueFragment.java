@@ -1,24 +1,17 @@
 package net.jaumebalmes.grincon17.futchamp.fragments;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import net.jaumebalmes.grincon17.futchamp.R;
 import net.jaumebalmes.grincon17.futchamp.adapters.MyLeagueRecyclerViewAdapter;
 import net.jaumebalmes.grincon17.futchamp.conexion.Api;
@@ -26,10 +19,8 @@ import net.jaumebalmes.grincon17.futchamp.conexion.Enlace;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnListLeagueInteractionListener;
 import net.jaumebalmes.grincon17.futchamp.models.League;
 import net.jaumebalmes.grincon17.futchamp.repositoryApi.LeagueRepositoryApi;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -44,10 +35,8 @@ public class LeagueFragment extends Fragment {
 
     private static final String TAG = "LEAGUE"; //  Para mostrar mensajes por consola
     private static final int COLUMNS = 2;
-
     private List<League> leagueList;
     private OnListLeagueInteractionListener mListener;
-
     private Retrofit retrofitLeague;
 
     public LeagueFragment() {
@@ -111,9 +100,9 @@ public class LeagueFragment extends Fragment {
                     // Obtiene todos los datos de la BBDD por medio de la api y se almacena en el arrayList
                     leagueList = response.body();
                     // Aqui se aplica a la vista los datos obtenidos de la API que estan almacenados en el ArrayList
-                    Context context = view.getContext();
+
                     RecyclerView recyclerView = (RecyclerView) view;
-                    recyclerView.setLayoutManager(new GridLayoutManager(context, COLUMNS));
+                    recyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), COLUMNS));
                     recyclerView.setAdapter(new MyLeagueRecyclerViewAdapter(getActivity(), leagueList, mListener)); // Pasa los datos a la vista de leagues
                     // Muestra los datos que llegan en la consola
                     for (int i = 0; i < leagueList.size(); i++) {
