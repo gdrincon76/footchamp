@@ -5,6 +5,11 @@
         android:icon="@drawable/ic_search_white_24dp"
         android:title="@string/search_icon"
         app:showAsAction="ifRoom"/>
+    <item android:id="@+id/trash_icon"
+        android:icon="@drawable/ic_delete_forever_white_24px"
+        android:title="@string/search_icon"
+        app:showAsAction="ifRoom"
+        android:visible="false"/>
     <item android:id="@+id/add_league"
         android:title="@string/add_new_league"
         app:showAsAction="never"/>
@@ -14,7 +19,7 @@
     <item android:id="@+id/add_player"
         android:title="@string/add_new_player"
         app:showAsAction="never"/>
-    <item android:id="@+id/settings"
-        android:title="@string/settings"
+    <item android:id="@+id/logout"
+        android:title="@string/logout"
         app:showAsAction="never"/>
 </menu>

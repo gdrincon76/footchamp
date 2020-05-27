@@ -51,10 +51,6 @@ public class LoginDialogFragment extends DialogFragment {
         userName = view.findViewById(R.id.textEditUser);
         pwd = view.findViewById(R.id.textEditPwd);
 
-        Enlace enlace = new Enlace(); // para obtener los enlaces de conexion a la api
-        Api api = new Api(); // para obtener la conexion a la API
-        retrofitCoordinador = api.getConexion(enlace.getLink(enlace.COORDINADOR));
-
         AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
         builder.setView(view);
         builder.setPositiveButton(R.string.login_txt, new DialogInterface.OnClickListener() {
@@ -64,10 +60,10 @@ public class LoginDialogFragment extends DialogFragment {
                 String pass = String.valueOf(pwd.getText());
 
                 if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(pass)) {
-                    // mListener.onLoginClickListener(name, pass); // Muestra mensaje
-
+                    // mListener.onLoginClickListener(name, pass); // Muestra mensaj
                     verificarAutorizacionUsuario(name, pass);   // Verifica la respuesta de seguridad
 
+                    mListener.onLoginClickListener(name, pass); // Muestra mensaje
                 } else {
                     Toast.makeText(getContext(), "Must not be empty " + name, Toast.LENGTH_SHORT).show();
                 }
@@ -90,6 +86,7 @@ public class LoginDialogFragment extends DialogFragment {
                     + " must implement NoticeDialogListener");
         }
     }
+
     // =============================================================================================
     // CONEXION A LA API
 
@@ -122,7 +119,5 @@ public class LoginDialogFragment extends DialogFragment {
             }
         });
     }
-
-
 
 }

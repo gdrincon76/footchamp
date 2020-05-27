@@ -60,6 +60,16 @@ public class MyJugadorRecyclerViewAdapter extends RecyclerView.Adapter<MyJugador
                 }
             }
         });
+
+        holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (null != mListener) {
+                    mListener.onJugadorLongClickListener(holder.mItem);
+                }
+                return true;
+            }
+        });
     }
 
     /**

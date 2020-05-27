@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/constrain"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include android:id="@+id/toolbar_detail_view" layout="@layout/toolbar_detail_view"/>
+    <include
+        android:id="@+id/toolbar_detail_view"
+        layout="@layout/toolbar_detail_view" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_view_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/activity_card_long_margin"
         android:layout_marginStart="@dimen/activity_card_margin"
+        android:layout_marginTop="@dimen/activity_card_long_margin"
         android:layout_marginEnd="@dimen/activity_card_margin"
         android:layout_marginBottom="@dimen/activity_card_margin"
         app:cardElevation="@dimen/activity_card_elevation"
@@ -23,83 +25,112 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/imageViewJugadorImg"
                 android:layout_width="@dimen/detail_image_view_size_big"
                 android:layout_height="@dimen/detail_image_view_size_big"
-                android:layout_marginTop="@dimen/activity_card_margin"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:background="@drawable/image_view_border"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"
                 app:srcCompat="@drawable/ic_account_circle_white_24dp" />
 
-
             <TextView
-                android:id="@+id/text_jugador_name"
+                android:id="@+id/text_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/card_view_detail_text_margin"
                 android:layout_marginStart="@dimen/card_view_detail_text_margin"
-                android:textAlignment="textStart"
-                android:textSize="@dimen/text_size_big"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageViewJugadorImg" />
-
-            <TextView
-                android:id="@+id/text_jugador_surname"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/card_view_detail_text_margin"
                 android:textAlignment="textStart"
-                android:layout_marginStart="3dp"
-                android:textSize="@dimen/text_size_big"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.035"
-                app:layout_constraintStart_toEndOf="@+id/text_jugador_name"
-                app:layout_constraintTop_toBottomOf="@+id/imageViewJugadorImg" />
+                android:text="@string/nombre"
+                android:textSize="@dimen/text_size_small" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/text_jugador_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/card_view_detail_text_margin"
+                    android:layout_marginTop="@dimen/activity_card_margin"
+                    android:textAlignment="textStart"
+                    android:textSize="@dimen/text_size_big" />
+
+                <TextView
+                    android:id="@+id/text_jugador_surname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginTop="@dimen/activity_card_margin"
+                    android:textAlignment="textStart"
+                    android:textSize="@dimen/text_size_big" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+            <TextView
+                android:id="@+id/text_dorsal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dorsal"
+                android:layout_marginStart="@dimen/card_view_detail_text_margin"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:textAlignment="textStart"
+                android:textSize="@dimen/text_size_small" />
 
             <TextView
                 android:id="@+id/text_jugador_dorsal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/card_view_detail_text_margin"
                 android:layout_marginStart="@dimen/card_view_detail_text_margin"
+                android:layout_marginTop="@dimen/activity_card_margin"
                 android:textAlignment="textStart"
-                android:textSize="@dimen/text_size_big"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_jugador_name" />
+                android:textSize="@dimen/text_size_big" />
+
+            <TextView
+                android:id="@+id/text_pos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/posicion"
+                android:layout_marginStart="@dimen/card_view_detail_text_margin"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:textAlignment="textStart"
+                android:textSize="@dimen/text_size_small" />
 
             <TextView
                 android:id="@+id/text_jugador_posicion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/card_view_detail_text_margin"
                 android:layout_marginStart="@dimen/card_view_detail_text_margin"
+                android:layout_marginTop="@dimen/activity_card_margin"
                 android:textAlignment="textStart"
-                android:textSize="@dimen/text_size_big"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_jugador_dorsal" />
+                android:textSize="@dimen/text_size_big" />
+
+            <TextView
+                android:id="@+id/text_contact"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/contacto"
+                android:layout_marginStart="@dimen/card_view_detail_text_margin"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:textAlignment="textStart"
+                android:textSize="@dimen/text_size_small" />
 
             <TextView
                 android:id="@+id/text_jugador_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/card_view_detail_text_margin"
                 android:layout_marginStart="@dimen/card_view_detail_text_margin"
+                android:layout_marginTop="@dimen/activity_card_margin"
                 android:textAlignment="textStart"
-                android:textSize="@dimen/text_size_big"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_jugador_posicion" />
+                android:textSize="@dimen/text_size_big" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
     </androidx.cardview.widget.CardView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
