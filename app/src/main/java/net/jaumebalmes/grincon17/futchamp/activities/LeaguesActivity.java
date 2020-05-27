@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -19,7 +20,9 @@ import com.google.gson.Gson;
 import net.jaumebalmes.grincon17.futchamp.R;
 import net.jaumebalmes.grincon17.futchamp.conexion.Api;
 import net.jaumebalmes.grincon17.futchamp.conexion.Enlace;
+import net.jaumebalmes.grincon17.futchamp.fragments.AddLeagueDialogFragment;
 import net.jaumebalmes.grincon17.futchamp.fragments.LoginDialogFragment;
+import net.jaumebalmes.grincon17.futchamp.interfaces.OnAddLeagueDialogListener;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnListLeagueInteractionListener;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnLoginDialogListener;
 import net.jaumebalmes.grincon17.futchamp.models.League;
@@ -35,7 +38,8 @@ import retrofit2.Retrofit;
  *
  * @author guillermo
  */
-public class LeaguesActivity extends AppCompatActivity implements OnListLeagueInteractionListener, OnLoginDialogListener {
+public class LeaguesActivity extends AppCompatActivity implements OnListLeagueInteractionListener, OnLoginDialogListener,
+        OnAddLeagueDialogListener {
     private static final String TAG = "LOGIN";
     private SharedPreferences preferences;
     private MenuInflater inflater;
@@ -102,6 +106,10 @@ public class LeaguesActivity extends AppCompatActivity implements OnListLeagueIn
                 LoginDialogFragment loginDialogFragment = new LoginDialogFragment();
                 loginDialogFragment.show(getSupportFragmentManager(), getString(R.string.login_txt));
                 return true;
+            case R.id.add_league:
+                AddLeagueDialogFragment addLeagueDialogFragment = new AddLeagueDialogFragment();
+                addLeagueDialogFragment.show(getSupportFragmentManager(), getString(R.string.add_new_league));
+                return true;
             case R.id.logout:
                 preferences.edit().remove(getString(R.string.my_username)).apply();
                 preferences.edit().remove(getString(R.string.my_pwd)).apply();
@@ -136,7 +144,6 @@ public class LeaguesActivity extends AppCompatActivity implements OnListLeagueIn
         sendLeague.putExtra(getString(R.string.league_json), json);
         startActivity(sendLeague);
     }
-
 
     private void requestLogin(final String user, final String pwd) {
 
@@ -175,5 +182,10 @@ public class LeaguesActivity extends AppCompatActivity implements OnListLeagueIn
                 Log.e(TAG, " => ERROR VERIFICAR LA CONEXION => onFailure: " + t.getMessage());
             }
         });
+    }
+
+    @Override
+    public void onAddLeagueClickListener(String name, Drawable drawable) {
+
     }
 }

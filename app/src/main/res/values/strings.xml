@@ -45,4 +45,6 @@
     <string name="my_pref">myPref</string>
     <string name="my_username">userName</string>
     <string name="my_pwd">pwd</string>
+    <string name="league_name">Nombre de la liga</string>
+    <string name="add_league">Añadir</string>
 </resources>

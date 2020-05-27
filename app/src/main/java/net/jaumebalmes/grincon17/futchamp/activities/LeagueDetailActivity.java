@@ -3,6 +3,7 @@ package net.jaumebalmes.grincon17.futchamp.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -25,10 +26,12 @@ import androidx.fragment.app.Fragment;
 import net.jaumebalmes.grincon17.futchamp.R;
 import net.jaumebalmes.grincon17.futchamp.conexion.Api;
 import net.jaumebalmes.grincon17.futchamp.conexion.Enlace;
+import net.jaumebalmes.grincon17.futchamp.fragments.AddLeagueDialogFragment;
 import net.jaumebalmes.grincon17.futchamp.fragments.EquipoFragment;
 import net.jaumebalmes.grincon17.futchamp.fragments.JornadaFragment;
 import net.jaumebalmes.grincon17.futchamp.fragments.JugadorFragment;
 import net.jaumebalmes.grincon17.futchamp.fragments.LoginDialogFragment;
+import net.jaumebalmes.grincon17.futchamp.interfaces.OnAddLeagueDialogListener;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnListEquipoInteractionListener;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnListJornadaInteractionListener;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnListJugadorInteractionListener;
@@ -51,7 +54,9 @@ import retrofit2.Retrofit;
  * @author guillermo
  */
 public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDialogListener,
-        OnListJornadaInteractionListener, OnListEquipoInteractionListener, OnListJugadorInteractionListener, BottomNavigationView.OnNavigationItemSelectedListener {
+        OnListJornadaInteractionListener, OnListEquipoInteractionListener, OnListJugadorInteractionListener,
+        BottomNavigationView.OnNavigationItemSelectedListener, OnAddLeagueDialogListener {
+
     private static final String TAG = "LOGIN";
     private SharedPreferences preferences;
     private MenuInflater inflater;
@@ -189,6 +194,10 @@ public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDi
                 LoginDialogFragment loginDialogFragment = new LoginDialogFragment();
                 loginDialogFragment.show(getSupportFragmentManager(), getString(R.string.login_txt));
                 return true;
+            case R.id.add_league:
+                AddLeagueDialogFragment addLeagueDialogFragment = new AddLeagueDialogFragment();
+                addLeagueDialogFragment.show(getSupportFragmentManager(), getString(R.string.add_new_league));
+                return true;
             case R.id.logout:
                 preferences.edit().remove(getString(R.string.my_username)).apply();
                 preferences.edit().remove(getString(R.string.my_pwd)).apply();
@@ -277,5 +286,10 @@ public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDi
                 Log.e(TAG, " => ERROR VERIFICAR LA CONEXION => onFailure: " + t.getMessage());
             }
         });
+    }
+
+    @Override
+    public void onAddLeagueClickListener(String name, Drawable drawable) {
+
     }
 }

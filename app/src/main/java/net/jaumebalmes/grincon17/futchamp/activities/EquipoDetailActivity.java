@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -24,7 +25,9 @@ import net.jaumebalmes.grincon17.futchamp.R;
 import net.jaumebalmes.grincon17.futchamp.adapters.MyJugadorRecyclerViewAdapter;
 import net.jaumebalmes.grincon17.futchamp.conexion.Api;
 import net.jaumebalmes.grincon17.futchamp.conexion.Enlace;
+import net.jaumebalmes.grincon17.futchamp.fragments.AddLeagueDialogFragment;
 import net.jaumebalmes.grincon17.futchamp.fragments.LoginDialogFragment;
+import net.jaumebalmes.grincon17.futchamp.interfaces.OnAddLeagueDialogListener;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnListJugadorInteractionListener;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnLoginDialogListener;
 import net.jaumebalmes.grincon17.futchamp.models.Equipo;
@@ -44,7 +47,7 @@ import retrofit2.Retrofit;
  * Esta activity muestra la vista del detalle de un equipo.
  * @author guillermo
  */
-public class EquipoDetailActivity extends AppCompatActivity implements OnLoginDialogListener {
+public class EquipoDetailActivity extends AppCompatActivity implements OnLoginDialogListener, OnAddLeagueDialogListener {
     private static final String TAG_JUGADOR = "JUGADOR"; //  Para mostrar mensajes por consola
     private static final int COLUMNS = 3;
     private static final String TAG_LOGIM = "LOGIN";
@@ -172,6 +175,10 @@ public class EquipoDetailActivity extends AppCompatActivity implements OnLoginDi
                 loginDialogFragment = new LoginDialogFragment();
                 loginDialogFragment.show(getSupportFragmentManager(), getString(R.string.login_txt));
                 return true;
+            case R.id.add_league:
+                AddLeagueDialogFragment addLeagueDialogFragment = new AddLeagueDialogFragment();
+                addLeagueDialogFragment.show(getSupportFragmentManager(), getString(R.string.add_new_league));
+                return true;
             case R.id.logout:
                 preferences.edit().remove(getString(R.string.my_username)).apply();
                 preferences.edit().remove(getString(R.string.my_pwd)).apply();
@@ -280,4 +287,8 @@ public class EquipoDetailActivity extends AppCompatActivity implements OnLoginDi
         });
     }
 
+    @Override
+    public void onAddLeagueClickListener(String name, Drawable drawable) {
+        
+    }
 }

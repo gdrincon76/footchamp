@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="net.jaumebalmes.grincon17.futchamp">
-
     <!-- Permiso para poder usar el internet del movil -->
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -13,9 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/SplashTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.JugadorDetailActivity">
-
-        </activity>
+        <activity android:name=".activities.AddJugadorActivity"></activity>
+        <activity android:name=".activities.AddEquipoActivity" />
+        <activity android:name=".activities.JugadorDetailActivity" />
         <activity android:name=".activities.EquipoDetailActivity" />
         <activity
             android:name=".activities.LeagueDetailActivity"
