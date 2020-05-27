@@ -8,10 +8,8 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -43,8 +41,6 @@ public class LoginDialogFragment extends DialogFragment {
     private EditText pwd;
 
     private Retrofit retrofitCoordinador;
-    private Boolean respuesta; // Para almacenar la respuesta de seguridad para el acceso de un coordinador
-
 
     @SuppressLint("InflateParams")
     @NonNull
@@ -70,7 +66,7 @@ public class LoginDialogFragment extends DialogFragment {
                 if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(pass)) {
                     // mListener.onLoginClickListener(name, pass); // Muestra mensaje
 
-                    verificarAutorizacionUsuario(name, pass); // Verifica la respuesta de seguridad
+                    verificarAutorizacionUsuario(name, pass);   // Verifica la respuesta de seguridad
 
                 } else {
                     Toast.makeText(getContext(), "Must not be empty " + name, Toast.LENGTH_SHORT).show();
@@ -104,13 +100,13 @@ public class LoginDialogFragment extends DialogFragment {
 
         verificandoRespuesta.enqueue(new Callback<Boolean>() {
             @Override
-            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+            public void onResponse(Call<Boolean> call, @NonNull Response<Boolean> response) {
                 if (response.isSuccessful()) {
+                    Boolean respuesta; // Para almacenar la respuesta de seguridad para el acceso de un coordinador
                     respuesta = response.body(); // Obtiene la respuesta para saber si el coordinador tiene acceso.
 
                     // Aqui se puede ver la respuesta y trabajar con ella
                     Log.e(TAG, " RESPUESTA DE SEGURIDAD: " + respuesta);
-
                 } else {
                     try { // Esta respuesta solo se muetra si el valor es false
                         Log.e(TAG, " NO TIENE AUTORIZACION: onResponse: " + response.errorBody().string());
@@ -126,5 +122,7 @@ public class LoginDialogFragment extends DialogFragment {
             }
         });
     }
+
+
 
 }

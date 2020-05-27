@@ -178,7 +178,7 @@ public class EquipoDetailActivity extends AppCompatActivity implements OnLoginDi
                     // Aqui se aplica a la vista los datos obtenidos de la API que estan almacenados en el ArrayList
                     jugadorList = response.body();
 
-                    Log.d("EQUIPO", String.valueOf(jugadorList.get(0)));
+//                    Log.d("EQUIPO", String.valueOf(jugadorList.get(0)));
 
                     RecyclerView recyclerView = findViewById(R.id.recycler_jugadores_equipo);
                     recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), COLUMNS));
