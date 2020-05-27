@@ -2,7 +2,12 @@ package net.jaumebalmes.grincon17.futchamp.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -13,20 +18,28 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
 import net.jaumebalmes.grincon17.futchamp.R;
+import net.jaumebalmes.grincon17.futchamp.conexion.Api;
+import net.jaumebalmes.grincon17.futchamp.conexion.Enlace;
 import net.jaumebalmes.grincon17.futchamp.fragments.LoginDialogFragment;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnLoginDialogListener;
 import net.jaumebalmes.grincon17.futchamp.models.Equipo;
 import net.jaumebalmes.grincon17.futchamp.models.Jugador;
+import net.jaumebalmes.grincon17.futchamp.repositoryApi.CoordinadorRepositoryApi;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * Esta activity muestra la vista del detalle de un jugador.
  * @author guillermo
  */
 public class JugadorDetailActivity extends AppCompatActivity implements OnLoginDialogListener {
-    LoginDialogFragment loginDialogFragment;
-    Toolbar toolbar;
-    Jugador jugador;
-    Equipo equipo;
+    private static final String TAG = "LOGIN";
+    private SharedPreferences preferences;
+    private MenuInflater inflater;
+    private Equipo equipo;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +48,7 @@ public class JugadorDetailActivity extends AppCompatActivity implements OnLoginD
         setContentView(R.layout.activity_jugador_detail);
 
         Gson gson = new Gson();
-        jugador = gson.fromJson(getIntent().getStringExtra(getString(R.string.jugador_json)), Jugador.class);
+        Jugador jugador = gson.fromJson(getIntent().getStringExtra(getString(R.string.jugador_json)), Jugador.class);
         equipo = jugador.getEquipo();
         toolbarConf();
 
@@ -54,11 +67,18 @@ public class JugadorDetailActivity extends AppCompatActivity implements OnLoginD
         loadImg(jugador.getImagen(), jugadorImg);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        preferences = getSharedPreferences(getString(R.string.my_pref), Context.MODE_PRIVATE);
+        invalidateOptionsMenu();
+    }
+
     /**
      * Configuración del toolbar
      */
     private void toolbarConf() {
-        toolbar = findViewById(R.id.toolbar_detail_view);
+        Toolbar toolbar = findViewById(R.id.toolbar_detail_view);
         toolbar.setContentInsetStartWithNavigation(0);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -93,10 +113,22 @@ public class JugadorDetailActivity extends AppCompatActivity implements OnLoginD
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // TODO: implementar una condición si el usuario es coordinador y está logueado usar su menú,
-        //  en caso contrario cargar el menú de login
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.toolbar_login_menu, menu);
+        inflater = getMenuInflater();
+        if (preferences.contains(getString(R.string.my_username)) && preferences.contains(getString(R.string.my_username))) {
+            inflater.inflate(R.menu.toolbar_coordinator_menu, menu);
+        } else {
+            inflater.inflate(R.menu.toolbar_login_menu, menu);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if (preferences.contains(getString(R.string.my_username)) && preferences.contains(getString(R.string.my_username))) {
+            menu.clear();
+            inflater.inflate(R.menu.toolbar_coordinator_menu, menu);
+
+        }
         return true;
     }
 
@@ -113,9 +145,13 @@ public class JugadorDetailActivity extends AppCompatActivity implements OnLoginD
                 Toast.makeText(this, "Search", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.account_login:
-                loginDialogFragment = new LoginDialogFragment();
+                LoginDialogFragment loginDialogFragment = new LoginDialogFragment();
                 loginDialogFragment.show(getSupportFragmentManager(), getString(R.string.login_txt));
                 return true;
+            case R.id.logout:
+                preferences.edit().remove(getString(R.string.my_username)).apply();
+                preferences.edit().remove(getString(R.string.my_pwd)).apply();
+                invalidateOptionsMenu();
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -123,12 +159,51 @@ public class JugadorDetailActivity extends AppCompatActivity implements OnLoginD
 
     @Override
     public void onLoginClickListener(String userName, String pwd) {
-
+        requestLogin(userName, pwd);
     }
 
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    private void requestLogin(final String user, final String pwd) {
+
+        Enlace enlace = new Enlace(); // para obtener los enlaces de conexion a la api
+        Api api = new Api(); // para obtener la conexion a la API
+        Retrofit retrofit = api.getConexion(enlace.getLink(enlace.COORDINADOR));
+        CoordinadorRepositoryApi coordinadorRepositoryApi = retrofit.create(CoordinadorRepositoryApi.class);
+        Call<Boolean> loginSuccess = coordinadorRepositoryApi.verificarAutorizacion(user, pwd);
+
+        // Aqui se realiza la solicitud al servidor de forma asincrónicamente y se obtiene 2 respuestas.
+        loginSuccess.enqueue(new Callback<Boolean>() {
+            @Override
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+
+                if (response.isSuccessful()) {
+                    // Aqui se aplica a la vista los datos obtenidos de la API que estan almacenados en el ArrayList
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString(getString(R.string.my_username), user);
+                    editor.putString(getString(R.string.my_pwd), pwd);
+                    editor.apply();
+                    Log.d(TAG, " RESPUESTA DE SEGURIDAD: " + response.body());
+                    invalidateOptionsMenu();
+                } else {
+                    Toast toast = Toast.makeText(getApplicationContext(), "Error en la descarga.", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER, 0, 500);
+                    toast.show();
+                    Log.e(TAG, " NO TIENE AUTORIZACION: onResponse: " + response.errorBody());
+                }
+            }
+            // Aqui, se mostrará si la conexión a la API falla.
+            @Override
+            public void onFailure(Call<Boolean> call, Throwable t) {
+                Toast toast = Toast.makeText(getApplicationContext(), "Error en la conexion a la red.", Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER, 0, 500);
+                toast.show();
+                Log.e(TAG, " => ERROR VERIFICAR LA CONEXION => onFailure: " + t.getMessage());
+            }
+        });
     }
 }

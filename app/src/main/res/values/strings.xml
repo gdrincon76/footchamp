@@ -13,7 +13,7 @@
     <string name="add_new_league">Añadir liga</string>
     <string name="add_new_team">Añadir equipo</string>
     <string name="add_new_player">Añadir jugador</string>
-    <string name="settings">Ajustes</string>
+    <string name="logout">Desconectar</string>
     <string name="league_json">LEAGUE_JSON</string>
     <string name="jornada_json">JORNADA_JSON</string>
     <string name="equipo_json">EQUIPO_JSON</string>
@@ -41,4 +41,8 @@
     <string name="posicion">Posición</string>
     <string name="contacto">Contacto</string>
     <string name="title_equipo">Equipo</string>
+    <!-- SHARED PREFERENCES -->
+    <string name="my_pref">myPref</string>
+    <string name="my_username">userName</string>
+    <string name="my_pwd">pwd</string>
 </resources>
