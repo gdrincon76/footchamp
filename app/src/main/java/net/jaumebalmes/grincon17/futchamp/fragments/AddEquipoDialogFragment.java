@@ -15,19 +15,24 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
+
 import net.jaumebalmes.grincon17.futchamp.R;
+import net.jaumebalmes.grincon17.futchamp.interfaces.OnAddEquipoDialogListener;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnAddLeagueDialogListener;
+
 import static android.app.Activity.RESULT_OK;
 
-public class AddLeagueDialogFragment extends DialogFragment {
+public class AddEquipoDialogFragment extends DialogFragment {
 
     private static final int GALLERY_CODE = 1;
-    private OnAddLeagueDialogListener mListener;
-    private ImageView leagueImg;
+    private OnAddEquipoDialogListener mListener;
+    private ImageView teamImg;
+    private EditText teamName;
     private EditText leagueName;
 
     @SuppressLint("InflateParams")
@@ -35,10 +40,11 @@ public class AddLeagueDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         LayoutInflater inflater = requireActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.fragment_add_league_dialog, null);
-        leagueImg = view.findViewById(R.id.imageViewNewLeague);
-        leagueName = view.findViewById(R.id.textEditLeagueName);
-        leagueImg.setOnClickListener(new View.OnClickListener() {
+        View view = inflater.inflate(R.layout.fragment_add_equipo_dialog, null);
+        teamImg = view.findViewById(R.id.imageViewNewTeam);
+        teamName = view.findViewById(R.id.textEditTeamName);
+        leagueName = view.findViewById(R.id.textEditTeamLeagueName);
+        teamImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openGallery();
@@ -49,11 +55,12 @@ public class AddLeagueDialogFragment extends DialogFragment {
         builder.setPositiveButton(R.string.add_league, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
 
-                String name = String.valueOf(leagueName.getText());
-                Drawable path = leagueImg.getDrawable();
+                String name = String.valueOf(teamName.getText());
+                String league = String.valueOf(leagueName.getText());
+                Drawable path = teamImg.getDrawable();
 
                 if (!TextUtils.isEmpty(name)) {
-                    mListener.onAddLeagueClickListener(name, path); // Muestra mensaje
+                    mListener.onAddEquipoClickListener(name, league); // Muestra mensaje
                 } else {
                     Toast.makeText(getContext(), "Must not be empty " + name, Toast.LENGTH_SHORT).show();
                 }
@@ -70,7 +77,7 @@ public class AddLeagueDialogFragment extends DialogFragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         try {
-            mListener = (OnAddLeagueDialogListener) context;
+            mListener = (OnAddEquipoDialogListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
                     + " must implement NoticeDialogListener");
@@ -88,8 +95,8 @@ public class AddLeagueDialogFragment extends DialogFragment {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK && data != null) {
             Uri selectedImage = data.getData();
-            leagueImg.setImageURI(selectedImage);
-            leagueImg.setTag(String.valueOf(selectedImage));
+            teamImg.setImageURI(selectedImage);
+            teamImg.setTag(String.valueOf(selectedImage));
         }
     }
 }

@@ -21,8 +21,10 @@ import com.google.gson.Gson;
 import net.jaumebalmes.grincon17.futchamp.R;
 import net.jaumebalmes.grincon17.futchamp.conexion.Api;
 import net.jaumebalmes.grincon17.futchamp.conexion.Enlace;
+import net.jaumebalmes.grincon17.futchamp.fragments.AddEquipoDialogFragment;
 import net.jaumebalmes.grincon17.futchamp.fragments.AddLeagueDialogFragment;
 import net.jaumebalmes.grincon17.futchamp.fragments.LoginDialogFragment;
+import net.jaumebalmes.grincon17.futchamp.interfaces.OnAddEquipoDialogListener;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnAddLeagueDialogListener;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnLoginDialogListener;
 import net.jaumebalmes.grincon17.futchamp.models.Equipo;
@@ -37,7 +39,8 @@ import retrofit2.Retrofit;
  * Esta activity muestra la vista del detalle de un jugador.
  * @author guillermo
  */
-public class JugadorDetailActivity extends AppCompatActivity implements OnLoginDialogListener, OnAddLeagueDialogListener {
+public class JugadorDetailActivity extends AppCompatActivity implements OnLoginDialogListener, OnAddLeagueDialogListener,
+        OnAddEquipoDialogListener {
     private static final String TAG = "LOGIN";
     private SharedPreferences preferences;
     private MenuInflater inflater;
@@ -125,16 +128,6 @@ public class JugadorDetailActivity extends AppCompatActivity implements OnLoginD
         return true;
     }
 
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        if (preferences.contains(getString(R.string.my_username)) && preferences.contains(getString(R.string.my_username))) {
-            menu.clear();
-            inflater.inflate(R.menu.toolbar_coordinator_menu, menu);
-
-        }
-        return true;
-    }
-
     /**
      * Este método sirve para elegir un elemento del menú
      *
@@ -155,6 +148,14 @@ public class JugadorDetailActivity extends AppCompatActivity implements OnLoginD
                 AddLeagueDialogFragment addLeagueDialogFragment = new AddLeagueDialogFragment();
                 addLeagueDialogFragment.show(getSupportFragmentManager(), getString(R.string.add_new_league));
                 return true;
+            case R.id.add_team:
+                AddEquipoDialogFragment addEquipoDialogFragment = new AddEquipoDialogFragment();
+                addEquipoDialogFragment.show(getSupportFragmentManager(), getString(R.string.add_new_team));
+                return true;
+
+            case R.id.add_player:
+
+                return true;
             case R.id.logout:
                 preferences.edit().remove(getString(R.string.my_username)).apply();
                 preferences.edit().remove(getString(R.string.my_pwd)).apply();
@@ -167,6 +168,16 @@ public class JugadorDetailActivity extends AppCompatActivity implements OnLoginD
     @Override
     public void onLoginClickListener(String userName, String pwd) {
         requestLogin(userName, pwd);
+    }
+
+    @Override
+    public void onAddLeagueClickListener(String name, Drawable drawable) {
+
+    }
+
+    @Override
+    public void onAddEquipoClickListener(String name, String leagueName) {
+
     }
 
     @Override
@@ -206,16 +217,11 @@ public class JugadorDetailActivity extends AppCompatActivity implements OnLoginD
             // Aqui, se mostrará si la conexión a la API falla.
             @Override
             public void onFailure(Call<Boolean> call, Throwable t) {
-                Toast toast = Toast.makeText(getApplicationContext(), "Error en la conexion a la red.", Toast.LENGTH_LONG);
+                Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.login_failed), Toast.LENGTH_LONG);
                 toast.setGravity(Gravity.CENTER, 0, 500);
                 toast.show();
                 Log.e(TAG, " => ERROR VERIFICAR LA CONEXION => onFailure: " + t.getMessage());
             }
         });
-    }
-
-    @Override
-    public void onAddLeagueClickListener(String name, Drawable drawable) {
-
     }
 }

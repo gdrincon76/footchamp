@@ -48,4 +48,7 @@
     <string name="league_name">Nombre de la liga</string>
     <string name="add_league">Añadir</string>
     <string name="login_failed">Usuario o contraseña incorrectos</string>
+    <string name="trash_icon">Eliminar</string>
+    <string name="edit_icon">Editar</string>
+    <string name="team_name">Nombre del equipo</string>
 </resources>

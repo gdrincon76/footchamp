@@ -57,6 +57,17 @@ public class MyLeagueRecyclerViewAdapter extends RecyclerView.Adapter<MyLeagueRe
                 }
             }
         });
+
+        holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (null != mListener) {
+                    mListener.onLeagueLongClickListener(holder.mItem);
+                   // holder.mCheckedItem.setVisibility(View.VISIBLE);
+                }
+                return true;
+            }
+        });
     }
     /**
      *
@@ -81,6 +92,7 @@ public class MyLeagueRecyclerViewAdapter extends RecyclerView.Adapter<MyLeagueRe
         final View mView;
         final TextView mNameView;
         final ImageView mLogoView;
+        final ImageView mCheckedItem;
         League mItem;
 
         ViewHolder(View view) {
@@ -88,6 +100,7 @@ public class MyLeagueRecyclerViewAdapter extends RecyclerView.Adapter<MyLeagueRe
             mView = view;
             mNameView = view.findViewById(R.id.textViewLeagueName);
             mLogoView = view.findViewById(R.id.imageViewLogo);
+            mCheckedItem = view.findViewById(R.id.imageViewChecked);
         }
 
     }

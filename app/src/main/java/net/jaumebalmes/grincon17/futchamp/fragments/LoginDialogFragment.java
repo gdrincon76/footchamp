@@ -32,10 +32,8 @@ public class LoginDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_login_dialog, null);
-
         userName = view.findViewById(R.id.textEditUser);
         pwd = view.findViewById(R.id.textEditPwd);
-
         AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
         builder.setView(view);
         builder.setPositiveButton(R.string.login_txt, new DialogInterface.OnClickListener() {

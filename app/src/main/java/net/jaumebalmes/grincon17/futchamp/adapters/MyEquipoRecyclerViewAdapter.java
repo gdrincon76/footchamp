@@ -55,6 +55,16 @@ public class MyEquipoRecyclerViewAdapter extends RecyclerView.Adapter<MyEquipoRe
                 }
             }
         });
+
+        holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (null != mListener) {
+                    mListener.onEquipoLongClickListener(holder.mItem);
+                }
+                return true;
+            }
+        });
     }
 
     /**

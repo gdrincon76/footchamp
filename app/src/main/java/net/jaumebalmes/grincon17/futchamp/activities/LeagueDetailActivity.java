@@ -26,11 +26,13 @@ import androidx.fragment.app.Fragment;
 import net.jaumebalmes.grincon17.futchamp.R;
 import net.jaumebalmes.grincon17.futchamp.conexion.Api;
 import net.jaumebalmes.grincon17.futchamp.conexion.Enlace;
+import net.jaumebalmes.grincon17.futchamp.fragments.AddEquipoDialogFragment;
 import net.jaumebalmes.grincon17.futchamp.fragments.AddLeagueDialogFragment;
 import net.jaumebalmes.grincon17.futchamp.fragments.EquipoFragment;
 import net.jaumebalmes.grincon17.futchamp.fragments.JornadaFragment;
 import net.jaumebalmes.grincon17.futchamp.fragments.JugadorFragment;
 import net.jaumebalmes.grincon17.futchamp.fragments.LoginDialogFragment;
+import net.jaumebalmes.grincon17.futchamp.interfaces.OnAddEquipoDialogListener;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnAddLeagueDialogListener;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnListEquipoInteractionListener;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnListJornadaInteractionListener;
@@ -55,11 +57,10 @@ import retrofit2.Retrofit;
  */
 public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDialogListener,
         OnListJornadaInteractionListener, OnListEquipoInteractionListener, OnListJugadorInteractionListener,
-        BottomNavigationView.OnNavigationItemSelectedListener, OnAddLeagueDialogListener {
+        BottomNavigationView.OnNavigationItemSelectedListener, OnAddLeagueDialogListener, OnAddEquipoDialogListener {
 
     private static final String TAG = "LOGIN";
     private SharedPreferences preferences;
-    private MenuInflater inflater;
     private League league;
     private Bundle bundle;
     private boolean longClick;
@@ -148,32 +149,35 @@ public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDi
     }
 
     /**
-     * Este método crea el menú del toolbar
-     *
-     * @param menu el menú del sistema
-     * @return true para que muestre el menú
+     * Crea y sobreescribe el menú del toolbar.
+     * @param menu a usar
+     * @return true
      */
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        inflater = getMenuInflater();
-        if (preferences.contains(getString(R.string.my_username)) && preferences.contains(getString(R.string.my_username))) {
-            inflater.inflate(R.menu.toolbar_coordinator_menu, menu);
-        } else {
-            inflater.inflate(R.menu.toolbar_login_menu, menu);
-        }
-        return true;
-    }
-
-    @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
         if (preferences.contains(getString(R.string.my_username)) && preferences.contains(getString(R.string.my_username))) {
             menu.clear();
             inflater.inflate(R.menu.toolbar_coordinator_menu, menu);
             if(longClick) {
+                menu.findItem(R.id.search_icon).setVisible(false);
                 menu.findItem(R.id.trash_icon).setVisible(true);
+                menu.findItem(R.id.edit_icon).setVisible(true);
+                menu.findItem(R.id.add_league).setVisible(false);
+                menu.findItem(R.id.add_team).setVisible(false);
+                menu.findItem(R.id.add_player).setVisible(false);
+                menu.findItem(R.id.logout).setVisible(false);
             } else {
+                menu.findItem(R.id.search_icon).setVisible(true);
                 menu.findItem(R.id.trash_icon).setVisible(false);
+                menu.findItem(R.id.edit_icon).setVisible(false);
+                menu.findItem(R.id.add_league).setVisible(true);
+                menu.findItem(R.id.add_team).setVisible(true);
+                menu.findItem(R.id.add_player).setVisible(true);
+                menu.findItem(R.id.logout).setVisible(true);
             }
+        } else {
+            inflater.inflate(R.menu.toolbar_login_menu, menu);
         }
         return true;
     }
@@ -190,6 +194,16 @@ public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDi
             case R.id.search_icon:
                 Toast.makeText(this, "Search", Toast.LENGTH_SHORT).show();
                 return true;
+            case R.id.trash_icon:
+                // TODO: implementar borrar
+                longClick = false;
+                invalidateOptionsMenu();
+                return true;
+            case R.id.edit_icon:
+                // TODO: implementar editar
+                longClick = false;
+                invalidateOptionsMenu();
+                return true;
             case R.id.account_login:
                 LoginDialogFragment loginDialogFragment = new LoginDialogFragment();
                 loginDialogFragment.show(getSupportFragmentManager(), getString(R.string.login_txt));
@@ -198,14 +212,19 @@ public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDi
                 AddLeagueDialogFragment addLeagueDialogFragment = new AddLeagueDialogFragment();
                 addLeagueDialogFragment.show(getSupportFragmentManager(), getString(R.string.add_new_league));
                 return true;
+            case R.id.add_team:
+                AddEquipoDialogFragment addEquipoDialogFragment = new AddEquipoDialogFragment();
+                addEquipoDialogFragment.show(getSupportFragmentManager(), getString(R.string.add_new_team));
+                return true;
+
+            case R.id.add_player:
+
+                return true;
             case R.id.logout:
                 preferences.edit().remove(getString(R.string.my_username)).apply();
                 preferences.edit().remove(getString(R.string.my_pwd)).apply();
                 invalidateOptionsMenu();
                 return true;
-            case R.id.trash_icon:
-                longClick = false;
-                invalidateOptionsMenu();
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -236,6 +255,12 @@ public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDi
     }
 
     @Override
+    public void onEquipoLongClickListener(Equipo equipo) {
+        longClick = !longClick;
+        invalidateOptionsMenu();
+    }
+
+    @Override
     public void onJugadorClickListener(Jugador jugador) {
         String json = new Gson().toJson(jugador);
         Intent sendJugador = new Intent(LeagueDetailActivity.this, JugadorDetailActivity.class);
@@ -246,8 +271,18 @@ public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDi
 
     @Override
     public void onJugadorLongClickListener(Jugador jugador) {
-        longClick = true;
+        longClick = !longClick;
         invalidateOptionsMenu();
+    }
+
+    @Override
+    public void onAddLeagueClickListener(String name, Drawable drawable) {
+
+    }
+
+    @Override
+    public void onAddEquipoClickListener(String name, String leagueName) {
+
     }
 
     private void requestLogin(final String user, final String pwd) {
@@ -272,7 +307,7 @@ public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDi
                     Log.d(TAG, " RESPUESTA DE SEGURIDAD: " + response.body());
                     invalidateOptionsMenu();
                 } else {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Error en la descarga.", Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.login_failed), Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER, 0, 500);
                     toast.show();
                     Log.e(TAG, " NO TIENE AUTORIZACION: onResponse: " + response.errorBody());
@@ -287,10 +322,5 @@ public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDi
                 Log.e(TAG, " => ERROR VERIFICAR LA CONEXION => onFailure: " + t.getMessage());
             }
         });
-    }
-
-    @Override
-    public void onAddLeagueClickListener(String name, Drawable drawable) {
-
     }
 }

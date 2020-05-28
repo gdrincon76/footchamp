@@ -42,7 +42,7 @@ public class LeaguesActivity extends AppCompatActivity implements OnListLeagueIn
         OnAddLeagueDialogListener {
     private static final String TAG = "LOGIN";
     private SharedPreferences preferences;
-    private MenuInflater inflater;
+    boolean longClick;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +51,6 @@ public class LeaguesActivity extends AppCompatActivity implements OnListLeagueIn
         setContentView(R.layout.activity_leagues);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        // TODO -> Aquí se debería comprobar con Shared preference si hay un usuario autenticado.
      }
 
     @Override
@@ -63,29 +61,33 @@ public class LeaguesActivity extends AppCompatActivity implements OnListLeagueIn
     }
 
     /**
-     * Este método crea el menú del toolbar
-     *
-     * @param menu el menú del sistema
-     * @return true para que muestre el menú
+     * Este método crea y sobreescribe el menú
+     * @param menu a modificar
+     * @return true
      */
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // TODO: implementar una condición si el usuario es coordinador y está logueado usar su menú,
-        //  en caso contrario cargar el menú de login
-        inflater = getMenuInflater();
-        if (preferences.contains(getString(R.string.my_username)) && preferences.contains(getString(R.string.my_username))) {
-            inflater.inflate(R.menu.toolbar_coordinator_menu, menu);
-        } else {
-            inflater.inflate(R.menu.toolbar_login_menu, menu);
-        }
-        return true;
-    }
-
-    @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
         if (preferences.contains(getString(R.string.my_username)) && preferences.contains(getString(R.string.my_username))) {
             menu.clear();
             inflater.inflate(R.menu.toolbar_coordinator_menu, menu);
+            menu.removeItem(R.id.add_team);
+            menu.removeItem(R.id.add_player);
+            if(longClick) {
+                menu.findItem(R.id.search_icon).setVisible(false);
+                menu.findItem(R.id.trash_icon).setVisible(true);
+                menu.findItem(R.id.edit_icon).setVisible(true);
+                menu.findItem(R.id.add_league).setVisible(false);
+                menu.findItem(R.id.logout).setVisible(false);
+            } else {
+                menu.findItem(R.id.search_icon).setVisible(true);
+                menu.findItem(R.id.trash_icon).setVisible(false);
+                menu.findItem(R.id.edit_icon).setVisible(false);
+                menu.findItem(R.id.add_league).setVisible(true);
+                menu.findItem(R.id.logout).setVisible(true);
+            }
+        } else {
+            inflater.inflate(R.menu.toolbar_login_menu, menu);
         }
         return true;
     }
@@ -102,6 +104,16 @@ public class LeaguesActivity extends AppCompatActivity implements OnListLeagueIn
             case R.id.search_icon:
                 Toast.makeText(this, "Search", Toast.LENGTH_SHORT).show();
                 return true;
+            case R.id.trash_icon:
+                longClick = false;
+                // TODO: implementar borrar
+                invalidateOptionsMenu();
+                return true;
+            case R.id.edit_icon:
+                longClick = false;
+                // TODO: implementar editar
+                invalidateOptionsMenu();
+                return true;
             case R.id.account_login:
                 LoginDialogFragment loginDialogFragment = new LoginDialogFragment();
                 loginDialogFragment.show(getSupportFragmentManager(), getString(R.string.login_txt));
@@ -114,6 +126,7 @@ public class LeaguesActivity extends AppCompatActivity implements OnListLeagueIn
                 preferences.edit().remove(getString(R.string.my_username)).apply();
                 preferences.edit().remove(getString(R.string.my_pwd)).apply();
                 invalidateOptionsMenu();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -145,6 +158,22 @@ public class LeaguesActivity extends AppCompatActivity implements OnListLeagueIn
         startActivity(sendLeague);
     }
 
+    @Override
+    public void onLeagueLongClickListener(League league) {
+        longClick = !longClick;
+        invalidateOptionsMenu();
+    }
+
+    @Override
+    public void onAddLeagueClickListener(String name, Drawable drawable) {
+
+    }
+
+    /**
+     * llamada a la API
+     * @param user nombre de usuario
+     * @param pwd contraseña
+     */
     private void requestLogin(final String user, final String pwd) {
 
         Enlace enlace = new Enlace(); // para obtener los enlaces de conexion a la api
@@ -182,10 +211,5 @@ public class LeaguesActivity extends AppCompatActivity implements OnListLeagueIn
                 Log.e(TAG, " => ERROR VERIFICAR LA CONEXION => onFailure: " + t.getMessage());
             }
         });
-    }
-
-    @Override
-    public void onAddLeagueClickListener(String name, Drawable drawable) {
-
     }
 }

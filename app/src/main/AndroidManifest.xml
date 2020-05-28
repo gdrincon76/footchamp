@@ -13,7 +13,6 @@
         android:theme="@style/SplashTheme"
         android:usesCleartextTraffic="true">
         <activity android:name=".activities.AddJugadorActivity"></activity>
-        <activity android:name=".activities.AddEquipoActivity" />
         <activity android:name=".activities.JugadorDetailActivity" />
         <activity android:name=".activities.EquipoDetailActivity" />
         <activity
