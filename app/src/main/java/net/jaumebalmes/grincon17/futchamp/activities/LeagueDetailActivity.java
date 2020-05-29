@@ -3,7 +3,7 @@ package net.jaumebalmes.grincon17.futchamp.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -15,7 +15,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
 
 import androidx.annotation.NonNull;
@@ -26,11 +35,13 @@ import androidx.fragment.app.Fragment;
 import net.jaumebalmes.grincon17.futchamp.R;
 import net.jaumebalmes.grincon17.futchamp.conexion.Api;
 import net.jaumebalmes.grincon17.futchamp.conexion.Enlace;
+import net.jaumebalmes.grincon17.futchamp.conexion.Firebase;
 import net.jaumebalmes.grincon17.futchamp.fragments.AddEquipoDialogFragment;
 import net.jaumebalmes.grincon17.futchamp.fragments.AddLeagueDialogFragment;
 import net.jaumebalmes.grincon17.futchamp.fragments.EquipoFragment;
 import net.jaumebalmes.grincon17.futchamp.fragments.JornadaFragment;
 import net.jaumebalmes.grincon17.futchamp.fragments.JugadorFragment;
+import net.jaumebalmes.grincon17.futchamp.fragments.LeagueFragment;
 import net.jaumebalmes.grincon17.futchamp.fragments.LoginDialogFragment;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnAddEquipoDialogListener;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnAddLeagueDialogListener;
@@ -43,6 +54,9 @@ import net.jaumebalmes.grincon17.futchamp.models.Jornada;
 import net.jaumebalmes.grincon17.futchamp.models.Jugador;
 import net.jaumebalmes.grincon17.futchamp.models.League;
 import net.jaumebalmes.grincon17.futchamp.repositoryApi.CoordinadorRepositoryApi;
+import net.jaumebalmes.grincon17.futchamp.repositoryApi.LeagueRepositoryApi;
+
+import java.util.UUID;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -64,12 +78,19 @@ public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDi
     private League league;
     private Bundle bundle;
     private boolean longClick;
+    private Enlace enlace;
+    private Api api;
+    private Retrofit retrofit;
+    LeagueRepositoryApi leagueRepositoryApi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_league_detail);
+        new Firebase().authFirebaseUser();
+        enlace = new Enlace(); // para obtener los enlaces de conexion a la api
+        api = new Api(); // para obtener la conexion a la API
         Gson gson = new Gson();
         league = gson.fromJson(getIntent().getStringExtra(getString(R.string.league_json)), League.class);
         bundle = new Bundle();
@@ -218,7 +239,7 @@ public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDi
                 return true;
 
             case R.id.add_player:
-
+                startActivity(new Intent(this, AddJugadorActivity.class));
                 return true;
             case R.id.logout:
                 preferences.edit().remove(getString(R.string.my_username)).apply();
@@ -276,8 +297,9 @@ public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDi
     }
 
     @Override
-    public void onAddLeagueClickListener(String name, Drawable drawable) {
-
+    public void onAddLeagueClickListener(String name, Uri uri) {
+        Log.d("NAME: ", name + " URI: " + uri);
+        postLeague(name, uri);
     }
 
     @Override
@@ -285,11 +307,61 @@ public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDi
 
     }
 
-    private void requestLogin(final String user, final String pwd) {
+    // =============================================================================================
+    // =============================================================================================
+    // LLamadas a la API
+    private void postLeague(final String leagueName, Uri filePath) {
+        if (filePath != null) {
+            retrofit = api.getConexion(enlace.getLink(enlace.LIGA));
+            leagueRepositoryApi = retrofit.create(LeagueRepositoryApi.class);
 
-        Enlace enlace = new Enlace(); // para obtener los enlaces de conexion a la api
-        Api api = new Api(); // para obtener la conexion a la API
-        Retrofit retrofit = api.getConexion(enlace.getLink(enlace.COORDINADOR));
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+
+            final StorageReference reference = storage.getReference().child("images/" + UUID.randomUUID().toString());
+            reference.putFile(filePath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Log.i("STATE", "carga OK");
+                    taskSnapshot.getStorage().getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Uri> task) {
+                            String url = task.getResult().toString();
+                            Log.i("RESULT", url);
+                            League league = new League();
+                            league.setName(leagueName);
+                            league.setLogo(url);
+
+                            Call<League> addNewLeague = leagueRepositoryApi.postLeague(league);
+                            addNewLeague.enqueue(new Callback<League>() {
+                                @Override
+                                public void onResponse(Call<League> call, Response<League> response) {
+                                    if(response.isSuccessful()) {
+                                        Log.i("LEAGUE", " RESPUESTA: " + response.body());
+                                        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLeagueList, new LeagueFragment()).commit();
+                                    } else {
+                                        Log.e("LEAGUE", "ERROR: " + response.errorBody());
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<League> call, Throwable t) {
+                                    Log.e("LEAGUE", " => ERROR  => onFailure: " + t.getMessage());
+                                }
+                            });
+                        }
+                    });
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.i("STATE", "Fallo: " + e.getMessage());
+                }
+            });
+        }
+    }
+
+    private void requestLogin(final String user, final String pwd) {
+        retrofit = api.getConexion(enlace.getLink(enlace.COORDINADOR));
         CoordinadorRepositoryApi coordinadorRepositoryApi = retrofit.create(CoordinadorRepositoryApi.class);
         Call<Boolean> loginSuccess = coordinadorRepositoryApi.verificarAutorizacion(user, pwd);
 

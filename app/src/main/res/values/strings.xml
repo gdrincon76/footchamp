@@ -51,4 +51,8 @@
     <string name="trash_icon">Eliminar</string>
     <string name="edit_icon">Editar</string>
     <string name="team_name">Nombre del equipo</string>
+    <string name="add_name_liga">Añade un nombre a la liga</string>
+    <string name="add_name_equipo">Añade un nombre a la liga</string>
+    <string name="add_name_jugador">Añade un nombre a la liga</string>
+    <string name="add_img">Añade una imagen</string>
 </resources>

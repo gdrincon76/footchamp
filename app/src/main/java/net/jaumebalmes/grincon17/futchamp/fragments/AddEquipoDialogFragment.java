@@ -32,8 +32,10 @@ public class AddEquipoDialogFragment extends DialogFragment {
     private static final int GALLERY_CODE = 1;
     private OnAddEquipoDialogListener mListener;
     private ImageView teamImg;
+    private ImageView teamAddImg;
     private EditText teamName;
     private EditText leagueName;
+    private Uri filePath;
 
     @SuppressLint("InflateParams")
     @NonNull
@@ -57,12 +59,18 @@ public class AddEquipoDialogFragment extends DialogFragment {
 
                 String name = String.valueOf(teamName.getText());
                 String league = String.valueOf(leagueName.getText());
-                Drawable path = teamImg.getDrawable();
 
-                if (!TextUtils.isEmpty(name)) {
+                if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(league) && filePath != null) {
                     mListener.onAddEquipoClickListener(name, league); // Muestra mensaje
-                } else {
-                    Toast.makeText(getContext(), "Must not be empty " + name, Toast.LENGTH_SHORT).show();
+                }
+                if (filePath == null){
+                    Toast.makeText(getContext(), getString(R.string.add_img) + name, Toast.LENGTH_SHORT).show();
+                }
+                if (TextUtils.isEmpty(name)) {
+                    Toast.makeText(getContext(), getString(R.string.add_name_equipo) + name, Toast.LENGTH_SHORT).show();
+                }
+                if (TextUtils.isEmpty(league)) {
+                    Toast.makeText(getContext(), getString(R.string.add_name_liga) + name, Toast.LENGTH_SHORT).show();
                 }
             }
         }).setNegativeButton(R.string.cancel_txt, new DialogInterface.OnClickListener() {
@@ -94,9 +102,9 @@ public class AddEquipoDialogFragment extends DialogFragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK && data != null) {
-            Uri selectedImage = data.getData();
-            teamImg.setImageURI(selectedImage);
-            teamImg.setTag(String.valueOf(selectedImage));
+            filePath = data.getData();
+            teamImg.setImageURI(filePath);
+            teamImg.setTag(String.valueOf(filePath));
         }
     }
 }

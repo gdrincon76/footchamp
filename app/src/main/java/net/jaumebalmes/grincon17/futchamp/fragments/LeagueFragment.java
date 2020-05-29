@@ -45,11 +45,9 @@ public class LeagueFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         Enlace enlace = new Enlace(); // para obtener los enlaces de conexion a la api
         Api api = new Api(); // para obtener la conexion a la API
         retrofitLeague = api.getConexion(enlace.getLink(enlace.LIGA));
-
         leagueList = new ArrayList<>(); // Para almacenar los datos de las leagues
     }
 
@@ -58,7 +56,6 @@ public class LeagueFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_league_list, container, false);
         if (view instanceof RecyclerView) {
             obtenerDatosLigas(view); // Llama a la API para obtener los datos de la league
-
         }
         return view;
     }

@@ -26,6 +26,7 @@ android {
 // Estas son variables para aplicar las versiones de cada repositorio agregado
 def Retrofit = '2.6.0'
 def RetrofitJson = '2.6.0'
+apply plugin: 'com.google.gms.google-services'
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -47,6 +48,9 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment:2.2.2'
     implementation 'androidx.navigation:navigation-ui:2.2.2'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    implementation 'com.google.firebase:firebase-storage:19.1.1'
+    implementation 'com.google.firebase:firebase-auth:19.3.1'
+    
 //    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 
     // Libreria de repositorio para poder usar Retrofit

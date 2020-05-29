@@ -6,4 +6,40 @@
     android:layout_height="match_parent"
     tools:context=".activities.AddJugadorActivity">
 
+    <include android:id="@+id/toolbar" layout="@layout/toolbar"/>
+
+    <ImageView
+        android:id="@+id/imageViewAddPlayer"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:background="@drawable/image_view_border"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:srcCompat="@drawable/ic_person_purple_24px" />
+
+    <EditText
+        android:id="@+id/editTextAddPlayerName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_card_margin"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewAddPlayer" />
+
+    <EditText
+        android:id="@+id/editTextAddPlayerSurname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_card_margin"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/editTextAddPlayerName"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewAddPlayer" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

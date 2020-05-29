@@ -1,8 +1,8 @@
 package net.jaumebalmes.grincon17.futchamp.interfaces;
 
-import android.graphics.drawable.Drawable;
+import android.net.Uri;
 
 public interface OnAddLeagueDialogListener {
 
-    void onAddLeagueClickListener(String name, Drawable drawable);
+    void onAddLeagueClickListener(String name, Uri uri);
 }

@@ -8,8 +8,8 @@
 
     <include android:id="@+id/toolbar" layout="@layout/toolbar"/>
 
-    <fragment
-        android:id="@+id/fragment"
+    <FrameLayout
+        android:id="@+id/fragmentLeagueList"
         android:name="net.jaumebalmes.grincon17.futchamp.fragments.LeagueFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

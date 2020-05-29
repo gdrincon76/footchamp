@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1094872441556",
+    "firebase_url": "https://futchamp-ec913.firebaseio.com",
+    "project_id": "futchamp-ec913",
+    "storage_bucket": "futchamp-ec913.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1094872441556:android:67bc23cbade46f8415d141",
+        "android_client_info": {
+          "package_name": "net.jaumebalmes.grincon17.futchamp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1094872441556-vbtgnm6ekhdt8fe3mit60oc4mmvddit9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjrF9D6O2KG-9EuV5snrXers3lSsRifzY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1094872441556-vbtgnm6ekhdt8fe3mit60oc4mmvddit9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
