@@ -16,6 +16,9 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -95,19 +98,41 @@ public class AddJugadorActivity extends AppCompatActivity {
             }
         });
         // TODO: falta crear un botón en la toolbar para subir el jugador
-        if(!TextUtils.isEmpty(nombre.getText()) && !TextUtils.isEmpty(apellido.getText()) && !TextUtils.isEmpty(dorsal.getText()) &&
-            !TextUtils.isEmpty(posicion.getText()) && !TextUtils.isEmpty(email.getText()) && TextUtils.isEmpty(dni.getText()) &&
-            !TextUtils.isEmpty(equipoNombre.getText()) && filePath != null) {
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.toolbar_add_player, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        String name = String.valueOf(nombre.getText());
+        String surname = String.valueOf(nombre.getText());
+        String num = String.valueOf(nombre.getText());
+        String pos = String.valueOf(nombre.getText());
+        String mail = String.valueOf(nombre.getText());
+        String id = String.valueOf(nombre.getText());
+        String team = String.valueOf(equipoNombre.getText());
+        if(!TextUtils.isEmpty(name) && !TextUtils.isEmpty(surname) && !TextUtils.isEmpty(num) &&
+                !TextUtils.isEmpty(pos) && !TextUtils.isEmpty(mail) && !TextUtils.isEmpty(id) &&
+                !TextUtils.isEmpty(team) && filePath != null) {
             jugador.setNombre(String.valueOf(nombre.getText()));
             jugador.setApellidos(String.valueOf(apellido.getText()));
             jugador.setPosicion(String.valueOf(posicion.getText()));
             jugador.setDorsal(String.valueOf(dorsal.getText()));
             jugador.setDni(String.valueOf(dni.getText()));
             jugador.setEmail(String.valueOf(email.getText()));
+            Log.i("CAMPOS", String.valueOf(jugador));
             obtenerEquipo(String.valueOf(equipoNombre.getText()));
         } else {
-
+            Log.i("CAMPOS", jugador + " " + filePath);
+            Toast.makeText(this, getString(R.string.add_new_playe_empty_field_msg), Toast.LENGTH_SHORT).show();
         }
+        return super.onOptionsItemSelected(item);
     }
 
     private void chooseCameraOrGallery() {

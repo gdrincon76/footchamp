@@ -58,6 +58,7 @@
     <string name="add_calendar">Añadir calendario</string>
     <string name="surname">Apellido</string>
     <string name="new_player">Nuevo jugador</string>
+    <string name="add_new_playe_empty_field_msg">Rellena todos los campos</string>
     <string name="dni">DNI</string>
     <string name="mail">E-mail</string>
     <!-- Escoger cámara o archivo -->
