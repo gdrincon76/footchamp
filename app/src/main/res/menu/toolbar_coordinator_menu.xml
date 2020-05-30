@@ -24,6 +24,9 @@
     <item android:id="@+id/add_player"
         android:title="@string/add_new_player"
         app:showAsAction="never"/>
+    <item android:id="@+id/add_calendar"
+        android:title="@string/add_calendar"
+        app:showAsAction="never"/>
     <item android:id="@+id/logout"
         android:title="@string/logout"
         app:showAsAction="never"/>

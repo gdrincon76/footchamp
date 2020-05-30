@@ -1,16 +1,19 @@
 package net.jaumebalmes.grincon17.futchamp.activities;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -23,8 +26,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -35,7 +36,6 @@ import net.jaumebalmes.grincon17.futchamp.conexion.Api;
 import net.jaumebalmes.grincon17.futchamp.conexion.Enlace;
 import net.jaumebalmes.grincon17.futchamp.conexion.Firebase;
 import net.jaumebalmes.grincon17.futchamp.fragments.AddLeagueDialogFragment;
-import net.jaumebalmes.grincon17.futchamp.fragments.JornadaFragment;
 import net.jaumebalmes.grincon17.futchamp.fragments.LeagueFragment;
 import net.jaumebalmes.grincon17.futchamp.fragments.LoginDialogFragment;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnAddLeagueDialogListener;
@@ -60,6 +60,7 @@ import retrofit2.Retrofit;
 public class LeaguesActivity extends AppCompatActivity implements OnListLeagueInteractionListener, OnLoginDialogListener,
         OnAddLeagueDialogListener {
     private static final String TAG = "LOGIN";
+    private static final int PERMISSION_REQUEST_CODE = 200;
     private SharedPreferences preferences;
     private boolean longClick;
     private Enlace enlace;
@@ -84,6 +85,12 @@ public class LeaguesActivity extends AppCompatActivity implements OnListLeagueIn
     @Override
     protected void onResume() {
         super.onResume();
+        if (!cameraPermissionGranted()) {
+            requestPermission();
+        }
+        if(!storagePermissionGranted()) {
+            requestPermission();
+        }
         preferences = getSharedPreferences(getString(R.string.my_pref), Context.MODE_PRIVATE);
         invalidateOptionsMenu();
     }
@@ -101,6 +108,7 @@ public class LeaguesActivity extends AppCompatActivity implements OnListLeagueIn
             inflater.inflate(R.menu.toolbar_coordinator_menu, menu);
             menu.removeItem(R.id.add_team);
             menu.removeItem(R.id.add_player);
+            menu.removeItem(R.id.add_calendar);
             if(longClick) {
                 menu.findItem(R.id.search_icon).setVisible(false);
                 menu.findItem(R.id.trash_icon).setVisible(true);
@@ -184,6 +192,9 @@ public class LeaguesActivity extends AppCompatActivity implements OnListLeagueIn
         String json = new Gson().toJson(league);
         Intent sendLeague = new Intent(LeaguesActivity.this, LeagueDetailActivity.class);
         sendLeague.putExtra(getString(R.string.league_json), json);
+        if(longClick) {
+            longClick = false;
+        }
         startActivity(sendLeague);
     }
 
@@ -197,6 +208,49 @@ public class LeaguesActivity extends AppCompatActivity implements OnListLeagueIn
     public void onAddLeagueClickListener(String name, Uri uri) {
         Log.d("NAME: ", name + " URI: " + uri);
         postLeague(name, uri);
+    }
+
+    private Boolean cameraPermissionGranted() {
+        return ContextCompat.checkSelfPermission(
+                this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private Boolean storagePermissionGranted() {
+        return ContextCompat.checkSelfPermission(
+                this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(
+                this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                PERMISSION_REQUEST_CODE);
+    }
+
+    private void showMessagePermission(String message, DialogInterface.OnClickListener okListener) {
+        new AlertDialog.Builder(this)
+                .setMessage(message)
+                .setPositiveButton(getString(R.string.ok), okListener)
+                .setNegativeButton(getString(R.string.cancel), null)
+                .create()
+                .show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (grantResults.length > 0 && requestCode == PERMISSION_REQUEST_CODE) {
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(this, getString(R.string.permission_granted), Toast.LENGTH_SHORT).show();
+            }  else if (grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, getString(R.string.permission_granted), Toast.LENGTH_SHORT).show();
+            } else {
+                showMessagePermission(getString(R.string.need_permission), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        requestPermission();
+                    }
+                });
+            }
+        }
     }
 
     // =============================================================================================

@@ -14,6 +14,9 @@ public class Jugador implements Serializable {
     private String dorsal; // Numero de camiseta del jugador
     private Equipo equipo;
 
+    public Jugador() {
+    }
+
     // Constructor
     public Jugador(Long id, String nombre, String apellidos, String dni, String email, String imagen, String posicion, String dorsal, Equipo equipo) {
         this.id = id;

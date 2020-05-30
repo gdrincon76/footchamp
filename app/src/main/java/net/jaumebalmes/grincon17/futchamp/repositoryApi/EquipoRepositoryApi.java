@@ -17,4 +17,7 @@ public interface EquipoRepositoryApi {
 
     @GET("mostrar/leagues/{nombreLiga}")
     Call<ArrayList<Equipo>> obtenerListaEquiposPorLiga(@Path("nombreLiga") String nombreLiga);
+
+    @GET("mostrar/nombre/{nombreEquipo}")
+    Call<Equipo> obtenerEquipoPorNombre(@Path("nombreEquipo") String nombreEquipo);
 }

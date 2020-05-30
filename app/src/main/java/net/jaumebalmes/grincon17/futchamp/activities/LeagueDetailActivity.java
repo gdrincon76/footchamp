@@ -187,6 +187,7 @@ public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDi
                 menu.findItem(R.id.add_league).setVisible(false);
                 menu.findItem(R.id.add_team).setVisible(false);
                 menu.findItem(R.id.add_player).setVisible(false);
+                menu.findItem(R.id.add_calendar).setVisible(false);
                 menu.findItem(R.id.logout).setVisible(false);
             } else {
                 menu.findItem(R.id.search_icon).setVisible(true);
@@ -195,6 +196,7 @@ public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDi
                 menu.findItem(R.id.add_league).setVisible(true);
                 menu.findItem(R.id.add_team).setVisible(true);
                 menu.findItem(R.id.add_player).setVisible(true);
+                menu.findItem(R.id.add_calendar).setVisible(true);
                 menu.findItem(R.id.logout).setVisible(true);
             }
         } else {
@@ -241,6 +243,9 @@ public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDi
             case R.id.add_player:
                 startActivity(new Intent(this, AddJugadorActivity.class));
                 return true;
+            case R.id.add_calendar:
+
+                return true;
             case R.id.logout:
                 preferences.edit().remove(getString(R.string.my_username)).apply();
                 preferences.edit().remove(getString(R.string.my_pwd)).apply();
@@ -272,6 +277,9 @@ public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDi
         String json = new Gson().toJson(equipo);
         Intent sendEquipo = new Intent(LeagueDetailActivity.this, EquipoDetailActivity.class);
         sendEquipo.putExtra(getString(R.string.equipo_json), json);
+        if(longClick) {
+            longClick = false;
+        }
         startActivity(sendEquipo);
     }
 
@@ -286,8 +294,10 @@ public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDi
         String json = new Gson().toJson(jugador);
         Intent sendJugador = new Intent(LeagueDetailActivity.this, JugadorDetailActivity.class);
         sendJugador.putExtra(getString(R.string.jugador_json), json);
+        if(longClick) {
+            longClick = false;
+        }
         startActivity(sendJugador);
-
     }
 
     @Override

@@ -55,15 +55,13 @@ import retrofit2.Retrofit;
  * Esta activity muestra la vista del detalle de un jugador.
  * @author guillermo
  */
-public class JugadorDetailActivity extends AppCompatActivity implements OnLoginDialogListener, OnAddLeagueDialogListener,
-        OnAddEquipoDialogListener {
+public class JugadorDetailActivity extends AppCompatActivity implements OnLoginDialogListener {
+
     private static final String TAG = "LOGIN";
     private SharedPreferences preferences;
-    private MenuInflater inflater;
     private Equipo equipo;
     private Enlace enlace;
     private Api api;
-    private Retrofit retrofit;
     private LeagueRepositoryApi leagueRepositoryApi;
 
 
@@ -141,11 +139,19 @@ public class JugadorDetailActivity extends AppCompatActivity implements OnLoginD
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        inflater = getMenuInflater();
+        MenuInflater inflater = getMenuInflater();
         if (preferences.contains(getString(R.string.my_username)) && preferences.contains(getString(R.string.my_username))) {
             inflater.inflate(R.menu.toolbar_coordinator_menu, menu);
+            menu.removeItem(R.id.search_icon);
+            menu.findItem(R.id.trash_icon).setVisible(true);
+            menu.findItem(R.id.edit_icon).setVisible(true);
+            menu.removeItem(R.id.add_league);
+            menu.removeItem(R.id.add_team);
+            menu.removeItem(R.id.add_player);
+            menu.removeItem(R.id.add_calendar);
         } else {
             inflater.inflate(R.menu.toolbar_login_menu, menu);
+            menu.removeItem(R.id.search_icon);
         }
         return true;
     }
@@ -159,24 +165,17 @@ public class JugadorDetailActivity extends AppCompatActivity implements OnLoginD
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.search_icon:
-                Toast.makeText(this, "Search", Toast.LENGTH_SHORT).show();
-                return true;
             case R.id.account_login:
                 LoginDialogFragment loginDialogFragment = new LoginDialogFragment();
                 loginDialogFragment.show(getSupportFragmentManager(), getString(R.string.login_txt));
                 return true;
-            case R.id.add_league:
-                AddLeagueDialogFragment addLeagueDialogFragment = new AddLeagueDialogFragment();
-                addLeagueDialogFragment.show(getSupportFragmentManager(), getString(R.string.add_new_league));
-                return true;
-            case R.id.add_team:
-                AddEquipoDialogFragment addEquipoDialogFragment = new AddEquipoDialogFragment();
-                addEquipoDialogFragment.show(getSupportFragmentManager(), getString(R.string.add_new_team));
-                return true;
+            case R.id.trash_icon:
+                // TODO: implementar borrar
 
-            case R.id.add_player:
-                startActivity(new Intent(this, AddJugadorActivity.class));
+                return true;
+            case R.id.edit_icon:
+                // TODO: implementar editar
+
                 return true;
             case R.id.logout:
                 preferences.edit().remove(getString(R.string.my_username)).apply();
@@ -193,79 +192,16 @@ public class JugadorDetailActivity extends AppCompatActivity implements OnLoginD
     }
 
     @Override
-    public void onAddLeagueClickListener(String name, Uri uri) {
-        Log.d("NAME: ", name + " URI: " + uri);
-        postLeague(name, uri);
-    }
-
-    @Override
-    public void onAddEquipoClickListener(String name, String leagueName) {
-
-    }
-
-    @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
-    }
-
-    // =============================================================================================
-    // =============================================================================================
-    // LLamadas a la API
-    private void postLeague(final String leagueName, Uri filePath) {
-        if (filePath != null) {
-            retrofit = api.getConexion(enlace.getLink(enlace.LIGA));
-            leagueRepositoryApi = retrofit.create(LeagueRepositoryApi.class);
-
-            FirebaseStorage storage = FirebaseStorage.getInstance();
-            final StorageReference reference = storage.getReference().child("images/" + UUID.randomUUID().toString());
-            reference.putFile(filePath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Log.i("STATE", "carga OK");
-                    taskSnapshot.getStorage().getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Uri> task) {
-                            String url = task.getResult().toString();
-                            Log.i("RESULT", url);
-                            League league = new League();
-                            league.setName(leagueName);
-                            league.setLogo(url);
-
-                            Call<League> addNewLeague = leagueRepositoryApi.postLeague(league);
-                            addNewLeague.enqueue(new Callback<League>() {
-                                @Override
-                                public void onResponse(Call<League> call, Response<League> response) {
-                                    if(response.isSuccessful()) {
-                                        Log.i("LEAGUE", " RESPUESTA: " + response.body());
-                                        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLeagueList, new LeagueFragment()).commit();
-                                    } else {
-                                        Log.e("LEAGUE", "ERROR: " + response.errorBody());
-                                    }
-                                }
-
-                                @Override
-                                public void onFailure(Call<League> call, Throwable t) {
-                                    Log.e("LEAGUE", " => ERROR  => onFailure: " + t.getMessage());
-                                }
-                            });
-                        }
-                    });
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.i("STATE", "Fallo: " + e.getMessage());
-                }
-            });
-        }
     }
 
     private void requestLogin(final String user, final String pwd) {
 
         enlace = new Enlace(); // para obtener los enlaces de conexion a la api
         api = new Api(); // para obtener la conexion a la API
-        retrofit = api.getConexion(enlace.getLink(enlace.COORDINADOR));
+        Retrofit retrofit = api.getConexion(enlace.getLink(enlace.COORDINADOR));
         CoordinadorRepositoryApi coordinadorRepositoryApi = retrofit.create(CoordinadorRepositoryApi.class);
         Call<Boolean> loginSuccess = coordinadorRepositoryApi.verificarAutorizacion(user, pwd);
 

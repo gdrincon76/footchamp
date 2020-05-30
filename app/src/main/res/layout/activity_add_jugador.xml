@@ -13,33 +13,178 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:background="@drawable/image_view_border"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="@dimen/card_view_player_image_view_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:srcCompat="@drawable/ic_person_purple_24px" />
 
-    <EditText
-        android:id="@+id/editTextAddPlayerName"
-        android:layout_width="wrap_content"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout2"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_card_margin"
-        android:ems="10"
-        android:inputType="textPersonName"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:hint="@string/nombre"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewAddPlayer" />
+        app:layout_constraintTop_toBottomOf="@+id/imageViewAddPlayer">
 
-    <EditText
-        android:id="@+id/editTextAddPlayerSurname"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textEditPlayerName"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/colorAccent"
+            android:ems="10"
+            android:inputType="text"
+            android:paddingStart="5dp"
+            android:paddingTop="2dp"
+            tools:layout_editor_absoluteX="176dp"
+            tools:layout_editor_absoluteY="172dp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout4"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:hint="@string/surname"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textInputLayout2"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewAddPlayer">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textEditPlayerSurname"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/colorAccent"
+            android:ems="10"
+            android:inputType="text"
+            android:paddingStart="5dp"
+            android:paddingTop="2dp"
+            tools:layout_editor_absoluteX="176dp"
+            tools:layout_editor_absoluteY="172dp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout3"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:hint="@string/posicion"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout2">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textEditPosicion"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/colorAccent"
+            android:ems="10"
+            android:inputType="text"
+            android:paddingStart="5dp"
+            android:paddingTop="2dp"
+            tools:layout_editor_absoluteX="176dp"
+            tools:layout_editor_absoluteY="172dp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout5"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:hint="@string/dorsal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textInputLayout3"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout4">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textEditDorsal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/colorAccent"
+            android:ems="10"
+            android:inputType="text"
+            android:paddingStart="5dp"
+            android:paddingTop="2dp"
+            tools:layout_editor_absoluteX="176dp"
+            tools:layout_editor_absoluteY="172dp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout6"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:hint="@string/mail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout3">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textEditMail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/colorAccent"
+            android:ems="10"
+            android:inputType="text"
+            android:paddingStart="5dp"
+            android:paddingTop="2dp"
+            tools:layout_editor_absoluteX="176dp"
+            tools:layout_editor_absoluteY="172dp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout7"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:hint="@string/dni"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textInputLayout6"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout5">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textEditDni"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/colorAccent"
+            android:ems="10"
+            android:inputType="text"
+            android:paddingStart="5dp"
+            android:paddingTop="2dp"
+            tools:layout_editor_absoluteX="176dp"
+            tools:layout_editor_absoluteY="172dp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_card_margin"
-        android:ems="10"
-        android:inputType="textPersonName"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:hint="@string/team_name"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/editTextAddPlayerName"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewAddPlayer" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout6">
 
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textEditPlayerTeamName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorAccent"
+            android:ems="10"
+            android:inputType="text"
+            android:paddingStart="5dp"
+            android:paddingTop="2dp"
+            tools:layout_editor_absoluteX="176dp"
+            tools:layout_editor_absoluteY="172dp" />
+    </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

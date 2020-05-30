@@ -157,20 +157,20 @@ public class EquipoDetailActivity extends AppCompatActivity implements OnLoginDi
         if (preferences.contains(getString(R.string.my_username)) && preferences.contains(getString(R.string.my_username))) {
             menu.clear();
             inflater.inflate(R.menu.toolbar_coordinator_menu, menu);
+            menu.removeItem(R.id.add_calendar);
+            menu.removeItem(R.id.add_league);
+            menu.removeItem(R.id.add_team);
             if(longClick) {
                 menu.findItem(R.id.search_icon).setVisible(false);
                 menu.findItem(R.id.trash_icon).setVisible(true);
                 menu.findItem(R.id.edit_icon).setVisible(true);
-                menu.findItem(R.id.add_league).setVisible(false);
-                menu.findItem(R.id.add_team).setVisible(false);
+
                 menu.findItem(R.id.add_player).setVisible(false);
                 menu.findItem(R.id.logout).setVisible(false);
             } else {
                 menu.findItem(R.id.search_icon).setVisible(true);
                 menu.findItem(R.id.trash_icon).setVisible(false);
                 menu.findItem(R.id.edit_icon).setVisible(false);
-                menu.findItem(R.id.add_league).setVisible(true);
-                menu.findItem(R.id.add_team).setVisible(true);
                 menu.findItem(R.id.add_player).setVisible(true);
                 menu.findItem(R.id.logout).setVisible(true);
             }
