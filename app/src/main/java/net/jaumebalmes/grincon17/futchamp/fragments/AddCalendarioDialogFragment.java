@@ -7,21 +7,23 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import net.jaumebalmes.grincon17.futchamp.R;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnAddCalendarioDialogListener;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -56,13 +58,16 @@ public class AddCalendarioDialogFragment extends DialogFragment  {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
         builder.setView(view);
         builder.setPositiveButton(R.string.add_league, new DialogInterface.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             public void onClick(DialogInterface dialog, int id) {
                 String selectedDate = String.valueOf(date.getText());
                 String selectedHour = String.valueOf(hour.getText());
 
-                if (!TextUtils.isEmpty(selectedDate) && !TextUtils.isEmpty(selectedHour)) {
+                Log.i("==> FECHA ==>", selectedDate);
+                Log.i("==> HORA ==>", selectedHour);
 
-                    mListener.onAddCalendarioClickListener(dateSelected, timeSelected);
+                if (!TextUtils.isEmpty(selectedDate) && !TextUtils.isEmpty(selectedHour)) {
+                    mListener.onAddCalendarioClickListener(selectedDate, selectedHour);
                 }
 
 

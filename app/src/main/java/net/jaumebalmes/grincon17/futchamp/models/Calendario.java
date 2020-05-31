@@ -1,22 +1,19 @@
 package net.jaumebalmes.grincon17.futchamp.models;
 
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.LocalTime;
 
 public class Calendario implements Serializable {
 
     private Long id;
     private String league;  // Nombre de la league que generara los partidos
-    private LocalDate fecha; // Fecha de inicio de esta league y del primer partido
-    private LocalTime hora; // Hora de inicio del primer partido generado en este calendario.
-
+    private String fecha; // Fecha de inicio de esta league y del primer partido
+    private String hora; // Hora de inicio del primer partido generado en este calendario.
 
     //Constructores
     public Calendario() {
     }
 
-    public Calendario(Long id, String league, LocalDate fecha, LocalTime hora) {
+    public Calendario(Long id, String league, String fecha, String hora) {
         this.id = id;
         this.league = league;
         this.fecha = fecha;
@@ -40,19 +37,19 @@ public class Calendario implements Serializable {
         this.league = league;
     }
 
-    public LocalDate getFecha() {
+    public String getFecha() {
         return fecha;
     }
 
-    public void setFecha(LocalDate fecha) {
+    public void setFecha(String fecha) {
         this.fecha = fecha;
     }
 
-    public LocalTime getHora() {
+    public String getHora() {
         return hora;
     }
 
-    public void setHora(LocalTime hora) {
+    public void setHora(String hora) {
         this.hora = hora;
     }
 

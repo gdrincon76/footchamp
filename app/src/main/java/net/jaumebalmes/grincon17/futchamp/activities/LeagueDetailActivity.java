@@ -7,25 +7,15 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
 
 import androidx.annotation.NonNull;
@@ -36,19 +26,14 @@ import androidx.fragment.app.Fragment;
 
 import net.jaumebalmes.grincon17.futchamp.R;
 import net.jaumebalmes.grincon17.futchamp.conexion.Api;
-import net.jaumebalmes.grincon17.futchamp.conexion.Enlace;
-import net.jaumebalmes.grincon17.futchamp.conexion.Firebase;
 import net.jaumebalmes.grincon17.futchamp.fragments.AddCalendarioDialogFragment;
 import net.jaumebalmes.grincon17.futchamp.fragments.AddEquipoDialogFragment;
-import net.jaumebalmes.grincon17.futchamp.fragments.AddLeagueDialogFragment;
 import net.jaumebalmes.grincon17.futchamp.fragments.EquipoFragment;
 import net.jaumebalmes.grincon17.futchamp.fragments.JornadaFragment;
 import net.jaumebalmes.grincon17.futchamp.fragments.JugadorFragment;
-import net.jaumebalmes.grincon17.futchamp.fragments.LeagueFragment;
 import net.jaumebalmes.grincon17.futchamp.fragments.LoginDialogFragment;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnAddCalendarioDialogListener;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnAddEquipoDialogListener;
-import net.jaumebalmes.grincon17.futchamp.interfaces.OnAddLeagueDialogListener;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnListEquipoInteractionListener;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnListJornadaInteractionListener;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnListJugadorInteractionListener;
@@ -58,20 +43,6 @@ import net.jaumebalmes.grincon17.futchamp.models.Equipo;
 import net.jaumebalmes.grincon17.futchamp.models.Jornada;
 import net.jaumebalmes.grincon17.futchamp.models.Jugador;
 import net.jaumebalmes.grincon17.futchamp.models.League;
-import net.jaumebalmes.grincon17.futchamp.repositoryApi.CoordinadorRepositoryApi;
-import net.jaumebalmes.grincon17.futchamp.repositoryApi.LeagueRepositoryApi;
-
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.util.Date;
-import java.util.UUID;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-
 
 /**
  * Esta activity carga la vista principal que consiste en un menu inferior de navegación de tres pestañas
@@ -311,15 +282,22 @@ public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDi
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
-    public void onAddCalendarioClickListener(Date date, Date hour) {
-        LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        LocalTime localTime = date.toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
+    public void onAddCalendarioClickListener(String date, String hour) {
+        String parte[] = date.split("/"); // Se separa la fecha para poder darle formato
+        int numeroDia = Integer.parseInt(parte[0]);
+        int numeroMes = Integer.parseInt(parte[1]);
+        // Se aplica formato con ceros
+        String dia = String.format("%02d", numeroDia);
+        String mes = String.format("%02d", numeroMes);
+        String anyo = parte[2];
+        String  fecha = anyo + "-" + mes + "-" + dia; // se Concatena con nuevo formato
+
         Calendario calendario = new Calendario();
         calendario.setLeague(league.getName());
-        calendario.setFecha(localDate);
-        calendario.setHora(localTime);
-        Log.i("DATE", localDate + " " + localTime);
+        calendario.setFecha(fecha);
+        calendario.setHora(hour);
+
         api.postCalendar(calendario, getApplicationContext());
-        Log.i("DATE", calendario.toString());
+        Log.i("OBJETO CALENDARIO: ", calendario.toString());
     }
 }

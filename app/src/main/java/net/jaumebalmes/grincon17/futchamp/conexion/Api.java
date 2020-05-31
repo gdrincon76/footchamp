@@ -67,6 +67,7 @@ public class Api {
     private LeagueRepositoryApi leagueRepositoryApi;
     private EquipoRepositoryApi equipoRepositoryApi;
     private List<Jugador> jugadorList;
+
     // Builder
     public Api() {
     }
