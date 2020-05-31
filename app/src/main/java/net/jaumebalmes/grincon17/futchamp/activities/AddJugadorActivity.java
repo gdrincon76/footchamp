@@ -66,10 +66,8 @@ public class AddJugadorActivity extends AppCompatActivity {
     private EditText equipoNombre;
     private String imageFilePath;
     private Jugador jugador;
-    Enlace enlace;
-    Api api;
-    Retrofit retrofit;
-    Equipo equipo;
+    private Api api;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
@@ -78,7 +76,7 @@ public class AddJugadorActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.new_player);
         setSupportActionBar(toolbar);
-        enlace = new Enlace();
+
         api = new Api();
 
         jugador = new Jugador();
@@ -127,7 +125,7 @@ public class AddJugadorActivity extends AppCompatActivity {
             jugador.setDni(String.valueOf(dni.getText()));
             jugador.setEmail(String.valueOf(email.getText()));
             Log.i("CAMPOS", String.valueOf(jugador));
-            obtenerEquipo(String.valueOf(equipoNombre.getText()));
+            api.postJugador(String.valueOf(equipoNombre.getText()), filePath, jugador, getApplicationContext());
         } else {
             Log.i("CAMPOS", jugador + " " + filePath);
             Toast.makeText(this, getString(R.string.add_new_playe_empty_field_msg), Toast.LENGTH_SHORT).show();
@@ -135,6 +133,9 @@ public class AddJugadorActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Escoge entre tomar foto o acceder a las imágenes.
+     */
     private void chooseCameraOrGallery() {
         final String[] chooseDialogItems = getResources().getStringArray(R.array.chooseImageDialog);
         AlertDialog.Builder builder = new AlertDialog.Builder(AddJugadorActivity.this);
@@ -153,6 +154,12 @@ public class AddJugadorActivity extends AppCompatActivity {
         });
         builder.show();
     }
+
+    /**
+     * Crea una imagen con la foto tomada
+     * @return
+     * @throws IOException
+     */
     private File createImageFile() throws IOException {
         String timeStamp =
                 new SimpleDateFormat("yyyyMMdd_HHmmss",
@@ -170,6 +177,9 @@ public class AddJugadorActivity extends AppCompatActivity {
         return image;
     }
 
+    /**
+     * Accede a la cámara para tomar una foto.
+     */
     private void openCamera() {
         Intent pictureIntent = new Intent(
                 MediaStore.ACTION_IMAGE_CAPTURE);
@@ -192,6 +202,9 @@ public class AddJugadorActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Accede al almacenamiento del dispositivo para escoger una imagen
+     */
     private void openGallery() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
@@ -217,89 +230,4 @@ public class AddJugadorActivity extends AppCompatActivity {
             }
         }
     }
-
-    /**
-     * Llamada a la Api para añadir una liga
-     *
-     */
-    private void postJugador(final Jugador jugador) {
-        if (filePath != null) {
-
-            retrofit = api.getConexion(enlace.getLink(enlace.JUGADOR));
-            final JugadorRepositoryApi JugadorRepositoryApi = retrofit.create(JugadorRepositoryApi.class);
-
-            FirebaseStorage storage = FirebaseStorage.getInstance();
-            final StorageReference reference = storage.getReference().child("images/" + UUID.randomUUID().toString());
-            reference.putFile(filePath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Log.i("STATE", "carga OK");
-                    taskSnapshot.getStorage().getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Uri> task) {
-                            String url = task.getResult().toString();
-                            Log.i("RESULT", url);
-                            jugador.setImagen(url);
-                            Call<Jugador> addNewJugador = JugadorRepositoryApi.postJugador(jugador);
-                            addNewJugador.enqueue(new Callback<Jugador>() {
-                                @Override
-                                public void onResponse(Call<Jugador> call, Response<Jugador> response) {
-                                    if(response.isSuccessful()) {
-                                        Log.i("JUGADOR", " RESPUESTA: " + response.body());
-                                        Toast.makeText(AddJugadorActivity.this, "Jugador añadido", Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        Log.e("JUGADOR", "ERROR: " + response.errorBody());
-                                    }
-                                }
-
-                                @Override
-                                public void onFailure(Call<Jugador> call, Throwable t) {
-                                    Log.e("JUGADOR", " => ERROR  => onFailure: " + t.getMessage());
-                                }
-                            });
-                        }
-                    });
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.i("STATE", "Fallo: " + e.getMessage());
-                }
-            });
-        }
-    }
-
-
-    private void obtenerEquipo(String nombreEquipo) {
-        retrofit = api.getConexion(enlace.getLink(enlace.EQUIPO));
-        EquipoRepositoryApi equipoRepositoryApi = retrofit.create(EquipoRepositoryApi.class);
-        Call<Equipo> equipoAnswerCall = equipoRepositoryApi.obtenerEquipoPorNombre(nombreEquipo);
-
-        equipoAnswerCall.enqueue(new Callback<Equipo>() {
-            // Aqui nos indicara si se realiza una conexion, y esta puede tener 2 tipos de ella
-            @Override
-            public void onResponse(Call<Equipo> call, Response<Equipo> response) {
-                if (response.isSuccessful()) {
-                    equipo = response.body();
-                    jugador.setEquipo(equipo);
-                    postJugador(jugador);
-                } else {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Error en la descarga.", Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.CENTER, 0, 500);
-                    toast.show();
-                    Log.e("TAG", " ERROR AL CARGAR EQUIPOS: onResponse" + response.errorBody());
-                }
-            }
-
-            // Aqui, se mostrara si la conexion a la API falla.
-            @Override
-            public void onFailure(Call<Equipo> call, Throwable t) {
-                Toast toast = Toast.makeText(getApplicationContext(), "Error en la conexion a la red.", Toast.LENGTH_LONG);
-                toast.setGravity(Gravity.CENTER, 0, 500);
-                toast.show();
-                Log.e("TAG", " => ERROR LISTA EQUIPOS => onFailure: " + t.getMessage());
-            }
-        });
-    }
-
 }

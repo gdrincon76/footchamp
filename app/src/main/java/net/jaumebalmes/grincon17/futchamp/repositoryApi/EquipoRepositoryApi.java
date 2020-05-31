@@ -6,7 +6,9 @@ import net.jaumebalmes.grincon17.futchamp.models.Jugador;
 import java.util.ArrayList;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface EquipoRepositoryApi {
@@ -20,4 +22,8 @@ public interface EquipoRepositoryApi {
 
     @GET("mostrar/nombre/{nombreEquipo}")
     Call<Equipo> obtenerEquipoPorNombre(@Path("nombreEquipo") String nombreEquipo);
+
+    @POST("agregar")
+    Call<Equipo> postEquipo(@Body Equipo equipo);
+
 }

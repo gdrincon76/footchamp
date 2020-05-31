@@ -32,7 +32,6 @@ public class AddEquipoDialogFragment extends DialogFragment {
     private static final int GALLERY_CODE = 1;
     private OnAddEquipoDialogListener mListener;
     private ImageView teamImg;
-    private ImageView teamAddImg;
     private EditText teamName;
     private EditText leagueName;
     private Uri filePath;
@@ -45,7 +44,6 @@ public class AddEquipoDialogFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.fragment_add_equipo_dialog, null);
         teamImg = view.findViewById(R.id.imageViewNewTeam);
         teamName = view.findViewById(R.id.textEditTeamName);
-        leagueName = view.findViewById(R.id.textEditTeamLeagueName);
         teamImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,10 +56,10 @@ public class AddEquipoDialogFragment extends DialogFragment {
             public void onClick(DialogInterface dialog, int id) {
 
                 String name = String.valueOf(teamName.getText());
-                String league = String.valueOf(leagueName.getText());
 
-                if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(league) && filePath != null) {
-                    mListener.onAddEquipoClickListener(name, league); // Muestra mensaje
+                if (!TextUtils.isEmpty(name) && filePath != null) {
+
+                    mListener.onAddEquipoClickListener(name, filePath);
                 }
                 if (filePath == null){
                     Toast.makeText(getContext(), getString(R.string.add_img) + name, Toast.LENGTH_SHORT).show();
@@ -69,9 +67,7 @@ public class AddEquipoDialogFragment extends DialogFragment {
                 if (TextUtils.isEmpty(name)) {
                     Toast.makeText(getContext(), getString(R.string.add_name_equipo) + name, Toast.LENGTH_SHORT).show();
                 }
-                if (TextUtils.isEmpty(league)) {
-                    Toast.makeText(getContext(), getString(R.string.add_name_liga) + name, Toast.LENGTH_SHORT).show();
-                }
+
             }
         }).setNegativeButton(R.string.cancel_txt, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {

@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -21,7 +20,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -30,7 +28,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
-
 import net.jaumebalmes.grincon17.futchamp.R;
 import net.jaumebalmes.grincon17.futchamp.conexion.Api;
 import net.jaumebalmes.grincon17.futchamp.conexion.Enlace;
@@ -44,9 +41,7 @@ import net.jaumebalmes.grincon17.futchamp.interfaces.OnLoginDialogListener;
 import net.jaumebalmes.grincon17.futchamp.models.League;
 import net.jaumebalmes.grincon17.futchamp.repositoryApi.CoordinadorRepositoryApi;
 import net.jaumebalmes.grincon17.futchamp.repositoryApi.LeagueRepositoryApi;
-
 import java.util.UUID;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -59,14 +54,10 @@ import retrofit2.Retrofit;
  */
 public class LeaguesActivity extends AppCompatActivity implements OnListLeagueInteractionListener, OnLoginDialogListener,
         OnAddLeagueDialogListener {
-    private static final String TAG = "LOGIN";
     private static final int PERMISSION_REQUEST_CODE = 200;
     private SharedPreferences preferences;
     private boolean longClick;
-    private Enlace enlace;
     private Api api;
-    private Retrofit retrofit;
-    private LeagueRepositoryApi leagueRepositoryApi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,10 +67,8 @@ public class LeaguesActivity extends AppCompatActivity implements OnListLeagueIn
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         new Firebase().authFirebaseUser();
-        enlace = new Enlace(); // para obtener los enlaces de conexion a la api
         api = new Api(); // para obtener la conexion a la API
         getSupportFragmentManager().beginTransaction().add(R.id.fragmentLeagueList, new LeagueFragment()).commit();
-
      }
 
     @Override
@@ -138,7 +127,7 @@ public class LeaguesActivity extends AppCompatActivity implements OnListLeagueIn
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.search_icon:
-                Toast.makeText(this, "Search", Toast.LENGTH_SHORT).show();
+
                 return true;
             case R.id.trash_icon:
                 longClick = false;
@@ -148,7 +137,7 @@ public class LeaguesActivity extends AppCompatActivity implements OnListLeagueIn
             case R.id.edit_icon:
                 longClick = false;
                 // TODO: implementar editar
-// Reload current fragment
+
 
                 invalidateOptionsMenu();
                 return true;
@@ -178,7 +167,7 @@ public class LeaguesActivity extends AppCompatActivity implements OnListLeagueIn
      */
     @Override
     public void onLoginClickListener(String userName, String pwd) {
-        requestLogin(userName,pwd);
+        api.requestLogin(userName,pwd, getApplicationContext(), this, preferences);
     }
 
     /**
@@ -198,27 +187,48 @@ public class LeaguesActivity extends AppCompatActivity implements OnListLeagueIn
         startActivity(sendLeague);
     }
 
+    /**
+     * Implementación de click largo para selección de liga
+     * @param league la liga seleccionada
+     */
     @Override
     public void onLeagueLongClickListener(League league) {
         longClick = !longClick;
         invalidateOptionsMenu();
     }
 
+    /**
+     * Añade una liga nueva
+     * @param name nombre liga
+     * @param uri imagen liga
+     */
     @Override
     public void onAddLeagueClickListener(String name, Uri uri) {
         Log.d("NAME: ", name + " URI: " + uri);
-        postLeague(name, uri);
+        api.postLeague(name, uri, getApplicationContext(), this, getSupportFragmentManager());
     }
 
+    /**
+     * permiso concedido para acceder a la cámara
+     * @return true
+     */
     private Boolean cameraPermissionGranted() {
         return ContextCompat.checkSelfPermission(
                 this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
     }
 
+    /**
+     * permiso concedido para acceder al almacenamiento
+     * @return true
+     */
     private Boolean storagePermissionGranted() {
         return ContextCompat.checkSelfPermission(
                 this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
     }
+
+    /**
+     * Array de los permisos a pedir
+     */
 
     private void requestPermission() {
         ActivityCompat.requestPermissions(
@@ -226,6 +236,11 @@ public class LeaguesActivity extends AppCompatActivity implements OnListLeagueIn
                 PERMISSION_REQUEST_CODE);
     }
 
+    /**
+     * Mensaje que informa que la app necesita permiso en caso de que el ususario lo deniegue
+     * @param message a mostrar
+     * @param okListener el Dialog listener
+     */
     private void showMessagePermission(String message, DialogInterface.OnClickListener okListener) {
         new AlertDialog.Builder(this)
                 .setMessage(message)
@@ -233,8 +248,15 @@ public class LeaguesActivity extends AppCompatActivity implements OnListLeagueIn
                 .setNegativeButton(getString(R.string.cancel), null)
                 .create()
                 .show();
+
     }
 
+    /**
+     * Maneja el resultado de los permisos
+     * @param requestCode el código de petición
+     * @param permissions los permisos pedidos
+     * @param grantResults los resultados con los permisos concedidos
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (grantResults.length > 0 && requestCode == PERMISSION_REQUEST_CODE) {
@@ -251,104 +273,5 @@ public class LeaguesActivity extends AppCompatActivity implements OnListLeagueIn
                 });
             }
         }
-    }
-
-    // =============================================================================================
-    // =============================================================================================
-    // Llamadas a la API
-
-    /**
-     * Llamada a la Api para añadir una liga
-     * @param leagueName nombre de la liga
-     * @param filePath la ruta de la imagen
-     */
-    private void postLeague(final String leagueName, Uri filePath) {
-        if (filePath != null) {
-            retrofit = api.getConexion(enlace.getLink(enlace.LIGA));
-            leagueRepositoryApi = retrofit.create(LeagueRepositoryApi.class);
-
-            FirebaseStorage storage = FirebaseStorage.getInstance();
-            final StorageReference reference = storage.getReference().child("images/" + UUID.randomUUID().toString());
-            reference.putFile(filePath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Log.i("STATE", "carga OK");
-                    taskSnapshot.getStorage().getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Uri> task) {
-                            String url = task.getResult().toString();
-                            Log.i("RESULT", url);
-                            League league = new League();
-                            league.setName(leagueName);
-                            league.setLogo(url);
-
-                            Call<League> addNewLeague = leagueRepositoryApi.postLeague(league);
-                            addNewLeague.enqueue(new Callback<League>() {
-                                @Override
-                                public void onResponse(Call<League> call, Response<League> response) {
-                                    if(response.isSuccessful()) {
-                                        Log.i("LEAGUE", " RESPUESTA: " + response.body());
-                                        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLeagueList, new LeagueFragment()).commit();
-                                    } else {
-                                        Log.e("LEAGUE", "ERROR: " + response.errorBody());
-                                    }
-                                }
-
-                                @Override
-                                public void onFailure(Call<League> call, Throwable t) {
-                                    Log.e("LEAGUE", " => ERROR  => onFailure: " + t.getMessage());
-                                }
-                            });
-                        }
-                    });
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.i("STATE", "Fallo: " + e.getMessage());
-                }
-            });
-        }
-    }
-
-    /**
-     * llamada a la API para hacer login
-     * @param user nombre de usuario
-     * @param pwd contraseña
-     */
-    private void requestLogin(final String user, final String pwd) {
-        retrofit = api.getConexion(enlace.getLink(enlace.COORDINADOR));
-        CoordinadorRepositoryApi coordinadorRepositoryApi = retrofit.create(CoordinadorRepositoryApi.class);
-        Call<Boolean> loginSuccess = coordinadorRepositoryApi.verificarAutorizacion(user, pwd);
-
-        // Aqui se realiza la solicitud al servidor de forma asincrónicamente y se obtiene 2 respuestas.
-        loginSuccess.enqueue(new Callback<Boolean>() {
-            @Override
-            public void onResponse(@NonNull Call<Boolean> call, @NonNull Response<Boolean> response) {
-
-                if (response.isSuccessful()) {
-                    // Aqui se aplica a la vista los datos obtenidos de la API que estan almacenados en el ArrayList
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putString(getString(R.string.my_username), user);
-                    editor.putString(getString(R.string.my_pwd), pwd);
-                    editor.apply();
-                    Log.d(TAG, " RESPUESTA DE SEGURIDAD: " + response.body());
-                    invalidateOptionsMenu();
-                } else {
-                    Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.login_failed), Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.CENTER, 0, 500);
-                    toast.show();
-                    Log.e(TAG, " NO TIENE AUTORIZACION: onResponse: " + response.errorBody());
-                }
-            }
-            // Aqui, se mostrara si la conexion a la API falla.
-            @Override
-            public void onFailure(Call<Boolean> call, Throwable t) {
-                Toast toast = Toast.makeText(getApplicationContext(), "Error en la conexion a la red.", Toast.LENGTH_LONG);
-                toast.setGravity(Gravity.CENTER, 0, 500);
-                toast.show();
-                Log.e(TAG, " => ERROR VERIFICAR LA CONEXION => onFailure: " + t.getMessage());
-            }
-        });
     }
 }

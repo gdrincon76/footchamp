@@ -12,7 +12,7 @@
         android:id="@+id/imageViewAddPlayer"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:background="@drawable/image_view_border"
+        android:background="@drawable/image_view_border_accent"
         android:layout_marginTop="@dimen/card_view_player_image_view_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"

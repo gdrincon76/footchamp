@@ -57,12 +57,10 @@ import retrofit2.Retrofit;
  */
 public class JugadorDetailActivity extends AppCompatActivity implements OnLoginDialogListener {
 
-    private static final String TAG = "LOGIN";
     private SharedPreferences preferences;
     private Equipo equipo;
-    private Enlace enlace;
     private Api api;
-    private LeagueRepositoryApi leagueRepositoryApi;
+
 
 
     @Override
@@ -71,7 +69,6 @@ public class JugadorDetailActivity extends AppCompatActivity implements OnLoginD
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_jugador_detail);
         new Firebase().authFirebaseUser();
-        enlace = new Enlace(); // para obtener los enlaces de conexion a la api
         api = new Api(); // para obtener la conexion a la API
         Gson gson = new Gson();
         Jugador jugador = gson.fromJson(getIntent().getStringExtra(getString(R.string.jugador_json)), Jugador.class);
@@ -145,6 +142,7 @@ public class JugadorDetailActivity extends AppCompatActivity implements OnLoginD
             menu.removeItem(R.id.search_icon);
             menu.findItem(R.id.trash_icon).setVisible(true);
             menu.findItem(R.id.edit_icon).setVisible(true);
+            menu.removeItem(R.id.logout);
             menu.removeItem(R.id.add_league);
             menu.removeItem(R.id.add_team);
             menu.removeItem(R.id.add_player);
@@ -188,51 +186,12 @@ public class JugadorDetailActivity extends AppCompatActivity implements OnLoginD
 
     @Override
     public void onLoginClickListener(String userName, String pwd) {
-        requestLogin(userName, pwd);
+        api.requestLogin(userName, pwd, getApplicationContext(), this, preferences);
     }
 
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
-    }
-
-    private void requestLogin(final String user, final String pwd) {
-
-        enlace = new Enlace(); // para obtener los enlaces de conexion a la api
-        api = new Api(); // para obtener la conexion a la API
-        Retrofit retrofit = api.getConexion(enlace.getLink(enlace.COORDINADOR));
-        CoordinadorRepositoryApi coordinadorRepositoryApi = retrofit.create(CoordinadorRepositoryApi.class);
-        Call<Boolean> loginSuccess = coordinadorRepositoryApi.verificarAutorizacion(user, pwd);
-
-        // Aqui se realiza la solicitud al servidor de forma asincrónicamente y se obtiene 2 respuestas.
-        loginSuccess.enqueue(new Callback<Boolean>() {
-            @Override
-            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-
-                if (response.isSuccessful()) {
-                    // Aqui se aplica a la vista los datos obtenidos de la API que estan almacenados en el ArrayList
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putString(getString(R.string.my_username), user);
-                    editor.putString(getString(R.string.my_pwd), pwd);
-                    editor.apply();
-                    Log.d(TAG, " RESPUESTA DE SEGURIDAD: " + response.body());
-                    invalidateOptionsMenu();
-                } else {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Error en la descarga.", Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.CENTER, 0, 500);
-                    toast.show();
-                    Log.e(TAG, " NO TIENE AUTORIZACION: onResponse: " + response.errorBody());
-                }
-            }
-            // Aqui, se mostrará si la conexión a la API falla.
-            @Override
-            public void onFailure(Call<Boolean> call, Throwable t) {
-                Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.login_failed), Toast.LENGTH_LONG);
-                toast.setGravity(Gravity.CENTER, 0, 500);
-                toast.show();
-                Log.e(TAG, " => ERROR VERIFICAR LA CONEXION => onFailure: " + t.getMessage());
-            }
-        });
     }
 }

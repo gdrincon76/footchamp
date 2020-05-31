@@ -62,23 +62,13 @@ import retrofit2.Retrofit;
  * Esta activity muestra la vista del detalle de un equipo.
  * @author guillermo
  */
-public class EquipoDetailActivity extends AppCompatActivity implements OnLoginDialogListener, OnAddLeagueDialogListener,
-        OnAddEquipoDialogListener {
-    private static final String TAG_JUGADOR = "JUGADOR"; //  Para mostrar mensajes por consola
-    private static final int COLUMNS = 3;
-    private static final String TAG_LOGIM = "LOGIN";
+public class EquipoDetailActivity extends AppCompatActivity implements OnLoginDialogListener, OnAddLeagueDialogListener {
+
     private SharedPreferences preferences;
-    private MenuInflater inflater;
-    private LoginDialogFragment loginDialogFragment;
     private Equipo equipo;
-    private String nombreEquipo;
-    private OnListJugadorInteractionListener mListener;
-    private List<Jugador> jugadorList;
     private boolean longClick;
-    private Enlace enlace;
     private Api api;
-    private Retrofit retrofit;
-    private LeagueRepositoryApi leagueRepositoryApi;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,13 +76,12 @@ public class EquipoDetailActivity extends AppCompatActivity implements OnLoginDi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_equipo_detail);
         new Firebase().authFirebaseUser();
-        enlace = new Enlace(); // para obtener los enlaces de conexion a la api
         api = new Api(); // para obtener la conexion a la API
         Gson gson = new Gson();
         equipo = gson.fromJson(getIntent().getStringExtra(getString(R.string.equipo_json)), Equipo.class);
-        nombreEquipo = equipo.getName();
+        String nombreEquipo = equipo.getName();
         toolbarConf();
-        mListener = new OnListJugadorInteractionListener() {
+        OnListJugadorInteractionListener mListener = new OnListJugadorInteractionListener() {
             @Override
             public void onJugadorClickListener(Jugador jugador) {
                 String json = new Gson().toJson(jugador);
@@ -110,7 +99,7 @@ public class EquipoDetailActivity extends AppCompatActivity implements OnLoginDi
 
         ImageView imageViewLogo = findViewById(R.id.imageViewEquipoLogo);
         loadImg(equipo.getLogo(), imageViewLogo);
-        obtenerDatosJugadores();
+        api.obtenerDatosJugadoresPorEquipo(nombreEquipo, getApplicationContext(), this, mListener);
     }
 
     @Override
@@ -138,8 +127,7 @@ public class EquipoDetailActivity extends AppCompatActivity implements OnLoginDi
     }
 
     /**
-     *
-     * @param url de la imagen
+     * @param url       de la imagen
      * @param imageView la vista para poner la imagen
      */
     private void loadImg(String url, ImageView imageView) {
@@ -153,14 +141,14 @@ public class EquipoDetailActivity extends AppCompatActivity implements OnLoginDi
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        inflater = getMenuInflater();
+        MenuInflater inflater = getMenuInflater();
         if (preferences.contains(getString(R.string.my_username)) && preferences.contains(getString(R.string.my_username))) {
             menu.clear();
             inflater.inflate(R.menu.toolbar_coordinator_menu, menu);
             menu.removeItem(R.id.add_calendar);
             menu.removeItem(R.id.add_league);
             menu.removeItem(R.id.add_team);
-            if(longClick) {
+            if (longClick) {
                 menu.findItem(R.id.search_icon).setVisible(false);
                 menu.findItem(R.id.trash_icon).setVisible(true);
                 menu.findItem(R.id.edit_icon).setVisible(true);
@@ -174,7 +162,7 @@ public class EquipoDetailActivity extends AppCompatActivity implements OnLoginDi
                 menu.findItem(R.id.add_player).setVisible(true);
                 menu.findItem(R.id.logout).setVisible(true);
             }
-        }else {
+        } else {
             inflater.inflate(R.menu.toolbar_login_menu, menu);
         }
         return true;
@@ -203,7 +191,7 @@ public class EquipoDetailActivity extends AppCompatActivity implements OnLoginDi
                 invalidateOptionsMenu();
                 return true;
             case R.id.account_login:
-                loginDialogFragment = new LoginDialogFragment();
+                LoginDialogFragment loginDialogFragment = new LoginDialogFragment();
                 loginDialogFragment.show(getSupportFragmentManager(), getString(R.string.login_txt));
                 return true;
             case R.id.add_league:
@@ -230,17 +218,12 @@ public class EquipoDetailActivity extends AppCompatActivity implements OnLoginDi
 
     @Override
     public void onAddLeagueClickListener(String name, Uri uri) {
-        postLeague(name, uri);
+        api.postLeague(name, uri, getApplicationContext(), this, getSupportFragmentManager());
     }
 
     @Override
     public void onLoginClickListener(String userName, String pwd) {
-        requestLogin(userName, pwd);
-    }
-
-    @Override
-    public void onAddEquipoClickListener(String name, String leagueName) {
-
+        api.requestLogin(userName, pwd, getApplicationContext(), this, preferences);
     }
 
     @Override
@@ -249,142 +232,4 @@ public class EquipoDetailActivity extends AppCompatActivity implements OnLoginDi
         return true;
     }
 
-    // =============================================================================================
-    // =============================================================================================
-    // CONEXION A LA API
-    private void obtenerDatosJugadores() {
-        enlace = new Enlace(); // para obtener los enlaces de conexion a la api
-        api = new Api(); // para obtener la conexion a la API
-        retrofit = api.getConexion(enlace.getLink(enlace.JUGADOR));
-        JugadorRepositoryApi jugadorRepositoryApi = retrofit.create(JugadorRepositoryApi.class);
-        Call<ArrayList<Jugador>> jugadorAnswerCall = jugadorRepositoryApi.obtenerListaJugadoresEquipo(nombreEquipo);
-        jugadorList = new ArrayList<>();
-        // Aqui se realiza la solicitud al servidor de forma asincrónicamente y se obtiene 2 respuestas.
-        jugadorAnswerCall.enqueue(new Callback<ArrayList<Jugador>>() {
-            @Override
-            public void onResponse(Call<ArrayList<Jugador>> call, Response<ArrayList<Jugador>> response) {
-
-                if (response.isSuccessful()) {
-                    // Aqui se aplica a la vista los datos obtenidos de la API que estan almacenados en el ArrayList
-                    jugadorList = response.body();
-
-                    RecyclerView recyclerView = findViewById(R.id.recycler_jugadores_equipo);
-                    recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), COLUMNS));
-                    recyclerView.setAdapter(new MyJugadorRecyclerViewAdapter(getApplicationContext(), jugadorList, mListener));
-                    // Muestra los datos que llegan en la consola
-                    for (int i = 0; i < jugadorList.size(); i++) {
-                        Log.e(TAG_JUGADOR, "Liga: " + jugadorList.get(i).getNombre());
-                    }
-
-                } else {
-                    Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.login_failed), Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.CENTER, 0, 500);
-                    toast.show();
-                    Log.e(TAG_JUGADOR, " ERROR AL CARGAR JUGADORES: onResponse" + response.errorBody());
-                }
-            }
-
-            // Aqui, se mostrara si la conexion a la API falla.
-            @Override
-            public void onFailure(Call<ArrayList<Jugador>> call, Throwable t) {
-                Toast toast = Toast.makeText(getApplicationContext(), "Error en la conexion a la red.", Toast.LENGTH_LONG);
-                toast.setGravity(Gravity.CENTER, 0, 500);
-                toast.show();
-                Log.e(TAG_JUGADOR, " => ERROR LISTA JUGADORES => onFailure: " + t.getMessage());
-            }
-        });
-    }
-
-    /**
-     * Llamada a la Api para añadir una liga
-     * @param leagueName nombre de la liga
-     * @param filePath la ruta de la imagen
-     */
-    private void postLeague(final String leagueName, Uri filePath) {
-        if (filePath != null) {
-            retrofit = api.getConexion(enlace.getLink(enlace.LIGA));
-            leagueRepositoryApi = retrofit.create(LeagueRepositoryApi.class);
-
-            FirebaseStorage storage = FirebaseStorage.getInstance();
-            final StorageReference reference = storage.getReference().child("images/" + UUID.randomUUID().toString());
-            reference.putFile(filePath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Log.i("STATE", "carga OK");
-                    taskSnapshot.getStorage().getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Uri> task) {
-                            String url = task.getResult().toString();
-                            Log.i("RESULT", url);
-                            League league = new League();
-                            league.setName(leagueName);
-                            league.setLogo(url);
-
-                            Call<League> addNewLeague = leagueRepositoryApi.postLeague(league);
-                            addNewLeague.enqueue(new Callback<League>() {
-                                @Override
-                                public void onResponse(Call<League> call, Response<League> response) {
-                                    if(response.isSuccessful()) {
-                                        Log.i("LEAGUE", " RESPUESTA: " + response.body());
-                                        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLeagueList, new LeagueFragment()).commit();
-                                    } else {
-                                        Log.e("LEAGUE", "ERROR: " + response.errorBody());
-                                    }
-                                }
-
-                                @Override
-                                public void onFailure(Call<League> call, Throwable t) {
-                                    Log.e("LEAGUE", " => ERROR  => onFailure: " + t.getMessage());
-                                }
-                            });
-                        }
-                    });
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.i("STATE", "Fallo: " + e.getMessage());
-                }
-            });
-        }
-    }
-
-    private void requestLogin(final String user, final String pwd) {
-
-        enlace = new Enlace(); // para obtener los enlaces de conexion a la api
-        api = new Api(); // para obtener la conexion a la API
-        retrofit = api.getConexion(enlace.getLink(enlace.COORDINADOR));
-        CoordinadorRepositoryApi coordinadorRepositoryApi = retrofit.create(CoordinadorRepositoryApi.class);
-        Call<Boolean> loginSuccess = coordinadorRepositoryApi.verificarAutorizacion(user, pwd);
-
-        // Aqui se realiza la solicitud al servidor de forma asincrónicamente y se obtiene 2 respuestas.
-        loginSuccess.enqueue(new Callback<Boolean>() {
-            @Override
-            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-
-                if (response.isSuccessful()) {
-                    // Aqui se aplica a la vista los datos obtenidos de la API que estan almacenados en el ArrayList
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putString(getString(R.string.my_username), user);
-                    editor.putString(getString(R.string.my_pwd), pwd);
-                    editor.apply();
-                    Log.d(TAG_LOGIM, " RESPUESTA DE SEGURIDAD: " + response.body());
-                    invalidateOptionsMenu();
-                } else {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Error en la descarga.", Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.CENTER, 0, 500);
-                    toast.show();
-                    Log.e(TAG_LOGIM, " NO TIENE AUTORIZACION: onResponse: " + response.errorBody());
-                }
-            }
-            // Aqui, se mostrará si la conexión a la API falla.
-            @Override
-            public void onFailure(Call<Boolean> call, Throwable t) {
-                Toast toast = Toast.makeText(getApplicationContext(), "Error en la conexion a la red.", Toast.LENGTH_LONG);
-                toast.setGravity(Gravity.CENTER, 0, 500);
-                toast.show();
-                Log.e(TAG_LOGIM, " => ERROR VERIFICAR LA CONEXION => onFailure: " + t.getMessage());
-            }
-        });
-    }
 }

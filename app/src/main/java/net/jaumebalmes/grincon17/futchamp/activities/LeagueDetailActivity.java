@@ -36,6 +36,7 @@ import net.jaumebalmes.grincon17.futchamp.R;
 import net.jaumebalmes.grincon17.futchamp.conexion.Api;
 import net.jaumebalmes.grincon17.futchamp.conexion.Enlace;
 import net.jaumebalmes.grincon17.futchamp.conexion.Firebase;
+import net.jaumebalmes.grincon17.futchamp.fragments.AddCalendarioDialogFragment;
 import net.jaumebalmes.grincon17.futchamp.fragments.AddEquipoDialogFragment;
 import net.jaumebalmes.grincon17.futchamp.fragments.AddLeagueDialogFragment;
 import net.jaumebalmes.grincon17.futchamp.fragments.EquipoFragment;
@@ -43,6 +44,7 @@ import net.jaumebalmes.grincon17.futchamp.fragments.JornadaFragment;
 import net.jaumebalmes.grincon17.futchamp.fragments.JugadorFragment;
 import net.jaumebalmes.grincon17.futchamp.fragments.LeagueFragment;
 import net.jaumebalmes.grincon17.futchamp.fragments.LoginDialogFragment;
+import net.jaumebalmes.grincon17.futchamp.interfaces.OnAddCalendarioDialogListener;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnAddEquipoDialogListener;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnAddLeagueDialogListener;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnListEquipoInteractionListener;
@@ -71,25 +73,19 @@ import retrofit2.Retrofit;
  */
 public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDialogListener,
         OnListJornadaInteractionListener, OnListEquipoInteractionListener, OnListJugadorInteractionListener,
-        BottomNavigationView.OnNavigationItemSelectedListener, OnAddLeagueDialogListener, OnAddEquipoDialogListener {
+        BottomNavigationView.OnNavigationItemSelectedListener,  OnAddEquipoDialogListener, OnAddCalendarioDialogListener {
 
-    private static final String TAG = "LOGIN";
     private SharedPreferences preferences;
     private League league;
     private Bundle bundle;
     private boolean longClick;
-    private Enlace enlace;
     private Api api;
-    private Retrofit retrofit;
-    LeagueRepositoryApi leagueRepositoryApi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_league_detail);
-        new Firebase().authFirebaseUser();
-        enlace = new Enlace(); // para obtener los enlaces de conexion a la api
         api = new Api(); // para obtener la conexion a la API
         Gson gson = new Gson();
         league = gson.fromJson(getIntent().getStringExtra(getString(R.string.league_json)), League.class);
@@ -180,11 +176,11 @@ public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDi
         if (preferences.contains(getString(R.string.my_username)) && preferences.contains(getString(R.string.my_username))) {
             menu.clear();
             inflater.inflate(R.menu.toolbar_coordinator_menu, menu);
+            menu.removeItem(R.id.add_league);
             if(longClick) {
                 menu.findItem(R.id.search_icon).setVisible(false);
                 menu.findItem(R.id.trash_icon).setVisible(true);
                 menu.findItem(R.id.edit_icon).setVisible(true);
-                menu.findItem(R.id.add_league).setVisible(false);
                 menu.findItem(R.id.add_team).setVisible(false);
                 menu.findItem(R.id.add_player).setVisible(false);
                 menu.findItem(R.id.add_calendar).setVisible(false);
@@ -193,7 +189,6 @@ public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDi
                 menu.findItem(R.id.search_icon).setVisible(true);
                 menu.findItem(R.id.trash_icon).setVisible(false);
                 menu.findItem(R.id.edit_icon).setVisible(false);
-                menu.findItem(R.id.add_league).setVisible(true);
                 menu.findItem(R.id.add_team).setVisible(true);
                 menu.findItem(R.id.add_player).setVisible(true);
                 menu.findItem(R.id.add_calendar).setVisible(true);
@@ -215,7 +210,7 @@ public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDi
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.search_icon:
-                Toast.makeText(this, "Search", Toast.LENGTH_SHORT).show();
+
                 return true;
             case R.id.trash_icon:
                 // TODO: implementar borrar
@@ -231,20 +226,16 @@ public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDi
                 LoginDialogFragment loginDialogFragment = new LoginDialogFragment();
                 loginDialogFragment.show(getSupportFragmentManager(), getString(R.string.login_txt));
                 return true;
-            case R.id.add_league:
-                AddLeagueDialogFragment addLeagueDialogFragment = new AddLeagueDialogFragment();
-                addLeagueDialogFragment.show(getSupportFragmentManager(), getString(R.string.add_new_league));
-                return true;
             case R.id.add_team:
                 AddEquipoDialogFragment addEquipoDialogFragment = new AddEquipoDialogFragment();
                 addEquipoDialogFragment.show(getSupportFragmentManager(), getString(R.string.add_new_team));
                 return true;
-
             case R.id.add_player:
                 startActivity(new Intent(this, AddJugadorActivity.class));
                 return true;
             case R.id.add_calendar:
-
+                AddCalendarioDialogFragment addCalendarioDialogFragment = new AddCalendarioDialogFragment();
+                addCalendarioDialogFragment.show(getSupportFragmentManager(), getString(R.string.add_calendar));
                 return true;
             case R.id.logout:
                 preferences.edit().remove(getString(R.string.my_username)).apply();
@@ -264,7 +255,7 @@ public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDi
      */
     @Override
     public void onLoginClickListener(String userName, String pwd) {
-        requestLogin(userName, pwd);
+        api.requestLogin(userName, pwd, getApplicationContext(), this, preferences);
     }
 
     @Override
@@ -307,102 +298,12 @@ public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDi
     }
 
     @Override
-    public void onAddLeagueClickListener(String name, Uri uri) {
-        Log.d("NAME: ", name + " URI: " + uri);
-        postLeague(name, uri);
+    public void onAddEquipoClickListener(String name, Uri filePath) {
+        api.postEquipo(name, league, filePath, getApplicationContext(), this);
     }
 
     @Override
-    public void onAddEquipoClickListener(String name, String leagueName) {
-
-    }
-
-    // =============================================================================================
-    // =============================================================================================
-    // LLamadas a la API
-    private void postLeague(final String leagueName, Uri filePath) {
-        if (filePath != null) {
-            retrofit = api.getConexion(enlace.getLink(enlace.LIGA));
-            leagueRepositoryApi = retrofit.create(LeagueRepositoryApi.class);
-
-            FirebaseStorage storage = FirebaseStorage.getInstance();
-
-            final StorageReference reference = storage.getReference().child("images/" + UUID.randomUUID().toString());
-            reference.putFile(filePath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Log.i("STATE", "carga OK");
-                    taskSnapshot.getStorage().getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Uri> task) {
-                            String url = task.getResult().toString();
-                            Log.i("RESULT", url);
-                            League league = new League();
-                            league.setName(leagueName);
-                            league.setLogo(url);
-
-                            Call<League> addNewLeague = leagueRepositoryApi.postLeague(league);
-                            addNewLeague.enqueue(new Callback<League>() {
-                                @Override
-                                public void onResponse(Call<League> call, Response<League> response) {
-                                    if(response.isSuccessful()) {
-                                        Log.i("LEAGUE", " RESPUESTA: " + response.body());
-                                        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLeagueList, new LeagueFragment()).commit();
-                                    } else {
-                                        Log.e("LEAGUE", "ERROR: " + response.errorBody());
-                                    }
-                                }
-
-                                @Override
-                                public void onFailure(Call<League> call, Throwable t) {
-                                    Log.e("LEAGUE", " => ERROR  => onFailure: " + t.getMessage());
-                                }
-                            });
-                        }
-                    });
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.i("STATE", "Fallo: " + e.getMessage());
-                }
-            });
-        }
-    }
-
-    private void requestLogin(final String user, final String pwd) {
-        retrofit = api.getConexion(enlace.getLink(enlace.COORDINADOR));
-        CoordinadorRepositoryApi coordinadorRepositoryApi = retrofit.create(CoordinadorRepositoryApi.class);
-        Call<Boolean> loginSuccess = coordinadorRepositoryApi.verificarAutorizacion(user, pwd);
-
-        // Aqui se realiza la solicitud al servidor de forma asincrónicamente y se obtiene 2 respuestas.
-        loginSuccess.enqueue(new Callback<Boolean>() {
-            @Override
-            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-
-                if (response.isSuccessful()) {
-                    // Aqui se aplica a la vista los datos obtenidos de la API que estan almacenados en el ArrayList
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putString(getString(R.string.my_username), user);
-                    editor.putString(getString(R.string.my_pwd), pwd);
-                    editor.apply();
-                    Log.d(TAG, " RESPUESTA DE SEGURIDAD: " + response.body());
-                    invalidateOptionsMenu();
-                } else {
-                    Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.login_failed), Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.CENTER, 0, 500);
-                    toast.show();
-                    Log.e(TAG, " NO TIENE AUTORIZACION: onResponse: " + response.errorBody());
-                }
-            }
-            // Aqui, se mostrara si la conexion a la API falla.
-            @Override
-            public void onFailure(Call<Boolean> call, Throwable t) {
-                Toast toast = Toast.makeText(getApplicationContext(), "Error en la conexion a la red.", Toast.LENGTH_LONG);
-                toast.setGravity(Gravity.CENTER, 0, 500);
-                toast.show();
-                Log.e(TAG, " => ERROR VERIFICAR LA CONEXION => onFailure: " + t.getMessage());
-            }
-        });
+    public void onAddCalendarioClickListener(String date, String hour) {
+        Toast.makeText(this, date + " " + hour, Toast.LENGTH_SHORT).show();
     }
 }

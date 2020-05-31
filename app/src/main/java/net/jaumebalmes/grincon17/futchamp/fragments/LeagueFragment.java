@@ -32,30 +32,23 @@ import retrofit2.Retrofit;
  * @author guillermo
  */
 public class LeagueFragment extends Fragment {
-
-    private static final String TAG = "LEAGUE"; //  Para mostrar mensajes por consola
-    private static final int COLUMNS = 2;
-    private List<League> leagueList;
-    private OnListLeagueInteractionListener mListener;
-    private Retrofit retrofitLeague;
-
+    OnListLeagueInteractionListener mListener;
+    private Api api;
     public LeagueFragment() {
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Enlace enlace = new Enlace(); // para obtener los enlaces de conexion a la api
-        Api api = new Api(); // para obtener la conexion a la API
-        retrofitLeague = api.getConexion(enlace.getLink(enlace.LIGA));
-        leagueList = new ArrayList<>(); // Para almacenar los datos de las leagues
+        api = new Api(); // para obtener la conexion a la API
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_league_list, container, false);
         if (view instanceof RecyclerView) {
-            obtenerDatosLigas(view); // Llama a la API para obtener los datos de la league
+            api.obtenerDatosLigas(view, getActivity(), mListener); // Llama a la API para obtener los datos de la league
         }
         return view;
     }
@@ -75,54 +68,6 @@ public class LeagueFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-
-    // =============================================================================================
-    // =============================================================================================
-    // CONEXION A LA API
-
-    //    private void obtenerDatosLigas(final View view, Call<ArrayList<League>> leagueAnswerCall) {
-    private void obtenerDatosLigas(final View view) {
-        LeagueRepositoryApi leagueRepositoryApi = retrofitLeague.create(LeagueRepositoryApi.class);
-        Call<ArrayList<League>> leagueAnswerCall = leagueRepositoryApi.obtenerListaLeagues();
-
-        // Aqui se realiza la solicitud al servidor de forma asincrónicamente y se obtiene 2 respuestas.
-        leagueAnswerCall.enqueue(new Callback<ArrayList<League>>() {
-            // Aqui nos indicara si se realiza una conexion, y esta puede tener 2 tipos de ella
-            @Override
-            public void onResponse(Call<ArrayList<League>> call, Response<ArrayList<League>> response) {
-                // Si la conexion es exitosa esta mostrara la informacion obtenida de la base de datos
-                if (response.isSuccessful()) {
-                    // Obtiene todos los datos de la BBDD por medio de la api y se almacena en el arrayList
-                    leagueList = response.body();
-                    // Aqui se aplica a la vista los datos obtenidos de la API que estan almacenados en el ArrayList
-
-                    RecyclerView recyclerView = (RecyclerView) view;
-                    recyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), COLUMNS));
-                    recyclerView.setAdapter(new MyLeagueRecyclerViewAdapter(getActivity(), leagueList, mListener)); // Pasa los datos a la vista de leagues
-                    // Muestra los datos que llegan en la consola
-                    for (int i = 0; i < leagueList.size(); i++) {
-                        Log.e(TAG, "Liga: " + leagueList.get(i).getName());
-                    }
-
-                } else {
-                    Toast toast = Toast.makeText(getContext(), "Error en la descarga.", Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.CENTER, 0, 500);
-                    toast.show();
-                    Log.e(TAG, " ERROR AL CARGAR LEAGUES: onResponse" + response.errorBody());
-                }
-            }
-
-            // Aqui, se mostrara si la conexion a la API falla.
-            @Override
-            public void onFailure(Call<ArrayList<League>> call, Throwable t) {
-                Toast toast = Toast.makeText(getContext(), "Error en la conexion a la red: " + t.getMessage(), Toast.LENGTH_LONG);
-                toast.setGravity(Gravity.CENTER, 0, 500);
-                toast.show();
-                Log.e(TAG, " => ERROR LISTA LEAGUES => onFailure: " + t.getMessage());
-            }
-        });
     }
 }
 
