@@ -31,16 +31,22 @@ import net.jaumebalmes.grincon17.futchamp.adapters.MyJugadorRecyclerViewAdapter;
 import net.jaumebalmes.grincon17.futchamp.adapters.MyLeagueRecyclerViewAdapter;
 import net.jaumebalmes.grincon17.futchamp.fragments.LeagueFragment;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnListEquipoInteractionListener;
+import net.jaumebalmes.grincon17.futchamp.interfaces.OnListJornadaInteractionListener;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnListJugadorInteractionListener;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnListLeagueInteractionListener;
+import net.jaumebalmes.grincon17.futchamp.models.Calendario;
 import net.jaumebalmes.grincon17.futchamp.models.Equipo;
 import net.jaumebalmes.grincon17.futchamp.models.Jugador;
 import net.jaumebalmes.grincon17.futchamp.models.League;
+import net.jaumebalmes.grincon17.futchamp.repositoryApi.CalendarioReposirotyApi;
 import net.jaumebalmes.grincon17.futchamp.repositoryApi.CoordinadorRepositoryApi;
 import net.jaumebalmes.grincon17.futchamp.repositoryApi.EquipoRepositoryApi;
 import net.jaumebalmes.grincon17.futchamp.repositoryApi.JugadorRepositoryApi;
 import net.jaumebalmes.grincon17.futchamp.repositoryApi.LeagueRepositoryApi;
 
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -497,6 +503,59 @@ public class Api {
                 toast.setGravity(Gravity.CENTER, 0, 500);
                 toast.show();
                 Log.e("TAG", " => ERROR LISTA EQUIPOS => onFailure: " + t.getMessage());
+            }
+        });
+    }
+
+    public void postCalendar(Calendario calendario, final Context context) {
+        retrofit = getConexion(enlace.getLink(enlace.CALENDARIO));
+        CalendarioReposirotyApi calendarioReposirotyApi = retrofit.create(CalendarioReposirotyApi.class);
+        Call<Calendario> calendarioCall = calendarioReposirotyApi.postCalendario(calendario);
+        calendarioCall.enqueue(new Callback<Calendario>() {
+            @Override
+            public void onResponse(Call<Calendario> call, Response<Calendario> response) {
+                if(response.isSuccessful()) {
+                    Log.i("Calendario", " RESPUESTA_OK: " + response.body());
+                    Toast toast = Toast.makeText(context, "Calendario añadido", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER, 0, 500);
+                    toast.show();
+                } else {
+                    try {
+                        assert response.errorBody() != null;
+                        Log.e("Calendario", " RESPUESTA_FAILED: " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Toast toast = Toast.makeText(context, "error al añadir calendario", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER, 0, 500);
+                    toast.show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Calendario> call, Throwable t) {
+                Toast toast = Toast.makeText(context, "Error en la conexion a la red.", Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER, 0, 500);
+                toast.show();
+                Log.e("TAG", " => ERROR CALENDARIO => onFailure: " + t.getMessage());
+            }
+        });
+    }
+
+    public void getCalendar(final View view, final FragmentActivity fragmentActivity, final OnListJornadaInteractionListener mListener,
+                            final String userName, final String pwd){
+        retrofit = getConexion(enlace.getLink(enlace.CALENDARIO));
+        CalendarioReposirotyApi calendarioReposirotyApi = retrofit.create(CalendarioReposirotyApi.class);
+        Call<Calendario> calendarioCall = calendarioReposirotyApi.obtenerCalendario(userName, pwd);
+        calendarioCall.enqueue(new Callback<Calendario>() {
+            @Override
+            public void onResponse(Call<Calendario> call, Response<Calendario> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<Calendario> call, Throwable t) {
+
             }
         });
     }

@@ -55,4 +55,16 @@ public class Calendario implements Serializable {
     public void setHora(LocalTime hora) {
         this.hora = hora;
     }
+
+    @Override
+    public String toString() {
+        return "Calendario{" +
+                "league='" + league + '\'' +
+                ", fecha=" + fecha +
+                ", hora=" + hora +
+                '}';
+    }
 }
+
+
+

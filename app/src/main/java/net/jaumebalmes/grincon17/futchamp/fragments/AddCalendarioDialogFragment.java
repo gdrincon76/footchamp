@@ -16,26 +16,22 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
-
-import com.google.android.material.textfield.TextInputLayout;
-
 import net.jaumebalmes.grincon17.futchamp.R;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnAddCalendarioDialogListener;
-
 import java.util.Calendar;
+import java.util.Date;
 
 public class AddCalendarioDialogFragment extends DialogFragment  {
 
     private OnAddCalendarioDialogListener mListener;
     private TextView date;
     private TextView hour;
-
+    Date timeSelected;
+    Date dateSelected;
     @SuppressLint("InflateParams")
     @NonNull
     @Override
@@ -66,7 +62,7 @@ public class AddCalendarioDialogFragment extends DialogFragment  {
 
                 if (!TextUtils.isEmpty(selectedDate) && !TextUtils.isEmpty(selectedHour)) {
 
-                    mListener.onAddCalendarioClickListener(selectedDate, selectedHour);
+                    mListener.onAddCalendarioClickListener(dateSelected, timeSelected);
                 }
 
 
@@ -92,13 +88,15 @@ public class AddCalendarioDialogFragment extends DialogFragment  {
 
 
     private void showDatePicker() {
-        Calendar calendar = Calendar.getInstance();
+        final Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         int month = calendar.get(Calendar.MONTH);
         int year = calendar.get(Calendar.YEAR);
+
         DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                dateSelected = calendar.getTime();
                 date.setText(dayOfMonth + "/" + month +"/" + year);
             }
         }, year, month, day);
@@ -107,12 +105,13 @@ public class AddCalendarioDialogFragment extends DialogFragment  {
     }
 
     private void showTimePicker() {
-        Calendar calendar = Calendar.getInstance();
+        final Calendar calendar = Calendar.getInstance();
         final int time = calendar.get(Calendar.HOUR_OF_DAY);
         int minutes = calendar.get(Calendar.HOUR);
         TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                timeSelected = calendar.getTime();
                 if (hourOfDay < 10 && minute < 10) {
                     hour.setText("0" + hourOfDay + ":" + "0" + minute);
                 } else if (hourOfDay < 10) {

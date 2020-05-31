@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -28,6 +29,7 @@ import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -51,6 +53,7 @@ import net.jaumebalmes.grincon17.futchamp.interfaces.OnListEquipoInteractionList
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnListJornadaInteractionListener;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnListJugadorInteractionListener;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnLoginDialogListener;
+import net.jaumebalmes.grincon17.futchamp.models.Calendario;
 import net.jaumebalmes.grincon17.futchamp.models.Equipo;
 import net.jaumebalmes.grincon17.futchamp.models.Jornada;
 import net.jaumebalmes.grincon17.futchamp.models.Jugador;
@@ -58,6 +61,10 @@ import net.jaumebalmes.grincon17.futchamp.models.League;
 import net.jaumebalmes.grincon17.futchamp.repositoryApi.CoordinadorRepositoryApi;
 import net.jaumebalmes.grincon17.futchamp.repositoryApi.LeagueRepositoryApi;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.UUID;
 
 import retrofit2.Call;
@@ -302,8 +309,17 @@ public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDi
         api.postEquipo(name, league, filePath, getApplicationContext(), this);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
-    public void onAddCalendarioClickListener(String date, String hour) {
-        Toast.makeText(this, date + " " + hour, Toast.LENGTH_SHORT).show();
+    public void onAddCalendarioClickListener(Date date, Date hour) {
+        LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalTime localTime = date.toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
+        Calendario calendario = new Calendario();
+        calendario.setLeague(league.getName());
+        calendario.setFecha(localDate);
+        calendario.setHora(localTime);
+        Log.i("DATE", localDate + " " + localTime);
+        api.postCalendar(calendario, getApplicationContext());
+        Log.i("DATE", calendario.toString());
     }
 }
