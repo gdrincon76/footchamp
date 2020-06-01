@@ -7,8 +7,8 @@ import java.time.LocalTime;
 public class Partido implements Serializable {
 
     private Long id;
-    private LocalDate fecha; // Fecha del partido
-    private LocalTime hora; // Hora de inicio
+    private String fecha; // Fecha del partido
+    private String hora; // Hora de inicio
     private int jornada; // sera el numero de la jornada en donde se encuentra el partido
     private Equipo local;  // id de equipo y otros datos
     private Equipo visitante; // id de equipo y otros datos
@@ -30,19 +30,19 @@ public class Partido implements Serializable {
         this.id = id;
     }
 
-    public LocalDate getFecha() {
+    public String getFecha() {
         return fecha;
     }
 
-    public void setFecha(LocalDate fecha) {
+    public void setFecha(String fecha) {
         this.fecha = fecha;
     }
 
-    public LocalTime getHora() {
+    public String getHora() {
         return hora;
     }
 
-    public void setHora(LocalTime hora) {
+    public void setHora(String hora) {
         this.hora = hora;
     }
 

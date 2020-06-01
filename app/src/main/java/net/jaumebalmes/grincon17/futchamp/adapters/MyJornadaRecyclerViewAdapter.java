@@ -43,7 +43,7 @@ public class MyJornadaRecyclerViewAdapter extends RecyclerView.Adapter<MyJornada
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mNameView.setText(holder.mItem.getJornada());
+        holder.mNameView.setText(holder.mItem.getFecha());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override

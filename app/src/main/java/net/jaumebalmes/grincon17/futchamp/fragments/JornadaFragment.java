@@ -2,6 +2,7 @@ package net.jaumebalmes.grincon17.futchamp.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ public class JornadaFragment extends Fragment {
 
     private List<Partido> jornadaList;
     private OnListJornadaInteractionListener mListener;
+    private String leagueName;
     private Api api;
 
     public JornadaFragment() { }
@@ -36,20 +38,17 @@ public class JornadaFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        api = new Api();
-        jornadaList = new ArrayList<>();
-        // TODO -> sustituir por retrofit
-        try {
-            InputStream stream = requireActivity().getAssets().open("jornadas.json");
-            int size = stream.available();
-            byte[] buffer = new byte[size];
-            stream.read(buffer);
-            String json = new String(buffer);
-            jornadaList = Arrays.asList(new Gson().fromJson(json, Partido[].class));
-            stream.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+        if(getArguments() != null) {
+            leagueName = getArguments().getString("LEAGUE");
+            Log.d("LEAGUE_NAME", leagueName);
         }
+        api = new Api();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
     }
 
     @Override
