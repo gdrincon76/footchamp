@@ -25,4 +25,7 @@ public interface LeagueRepositoryApi {
     @POST("agregar")
     Call<League> postLeague(@Body League league);
 
+    @DELETE("eliminar/{idleague}")
+    Call<League> deleteLeague(@Path("idleague") long id);
+
 }

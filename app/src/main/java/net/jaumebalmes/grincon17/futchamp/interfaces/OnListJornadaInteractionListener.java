@@ -1,7 +1,7 @@
 package net.jaumebalmes.grincon17.futchamp.interfaces;
 
-import net.jaumebalmes.grincon17.futchamp.models.Jornada;
+import net.jaumebalmes.grincon17.futchamp.models.Partido;
 
 public interface OnListJornadaInteractionListener {
-    void onJornadaClickListener(Jornada jornada);
+    void onJornadaClickListener(Partido partido);
 }

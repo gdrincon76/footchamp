@@ -27,6 +27,7 @@ import com.google.firebase.storage.UploadTask;
 import net.jaumebalmes.grincon17.futchamp.R;
 import net.jaumebalmes.grincon17.futchamp.activities.AddJugadorActivity;
 import net.jaumebalmes.grincon17.futchamp.adapters.MyEquipoRecyclerViewAdapter;
+import net.jaumebalmes.grincon17.futchamp.adapters.MyJornadaRecyclerViewAdapter;
 import net.jaumebalmes.grincon17.futchamp.adapters.MyJugadorRecyclerViewAdapter;
 import net.jaumebalmes.grincon17.futchamp.adapters.MyLeagueRecyclerViewAdapter;
 import net.jaumebalmes.grincon17.futchamp.fragments.LeagueFragment;
@@ -38,11 +39,13 @@ import net.jaumebalmes.grincon17.futchamp.models.Calendario;
 import net.jaumebalmes.grincon17.futchamp.models.Equipo;
 import net.jaumebalmes.grincon17.futchamp.models.Jugador;
 import net.jaumebalmes.grincon17.futchamp.models.League;
+import net.jaumebalmes.grincon17.futchamp.models.Partido;
 import net.jaumebalmes.grincon17.futchamp.repositoryApi.CalendarioReposirotyApi;
 import net.jaumebalmes.grincon17.futchamp.repositoryApi.CoordinadorRepositoryApi;
 import net.jaumebalmes.grincon17.futchamp.repositoryApi.EquipoRepositoryApi;
 import net.jaumebalmes.grincon17.futchamp.repositoryApi.JugadorRepositoryApi;
 import net.jaumebalmes.grincon17.futchamp.repositoryApi.LeagueRepositoryApi;
+import net.jaumebalmes.grincon17.futchamp.repositoryApi.PartidosRepositoryApi;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -556,6 +559,111 @@ public class Api {
 
             @Override
             public void onFailure(Call<Calendario> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void getPartidos(final View view, final FragmentActivity fragmentActivity,
+                                    final OnListJornadaInteractionListener mListener) {
+        final String TAG = "PARTIDO";
+        retrofit = getConexion(enlace.getLink(enlace.PARTIDO));
+        PartidosRepositoryApi partidosRepositoryApi = retrofit.create(PartidosRepositoryApi.class);
+        Call<ArrayList<Partido>> equipoAnswerCall = partidosRepositoryApi.obtenerListaPartidos();
+
+        equipoAnswerCall.enqueue(new Callback<ArrayList<Partido>>() {
+            // Aqui nos indicara si se realiza una conexion, y esta puede tener 2 tipos de ella
+            @Override
+            public void onResponse(Call<ArrayList<Partido>> call, Response<ArrayList<Partido>> response) {
+                if (response.isSuccessful()) {
+                    List<Partido> partidoList = response.body();
+                    // Aqui se aplica a la vista los datos obtenidos de la API que estan almacenados en el ArrayList
+                    Context context = view.getContext();
+                    RecyclerView recyclerView = (RecyclerView) view;
+                    recyclerView.setLayoutManager(new LinearLayoutManager(context));
+                    recyclerView.setAdapter(new MyJornadaRecyclerViewAdapter(fragmentActivity, partidoList, mListener));
+                    // Muestra los datos que llegan en la consola
+                    for (int i = 0; i < partidoList.size(); i++) {
+                        Log.d(TAG, "Equipo: " + partidoList.get(i));
+                    }
+                } else {
+                    Toast toast = Toast.makeText(view.getContext(), "Error en la descarga.", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER, 0, 500);
+                    toast.show();
+                    Log.e(TAG, " ERROR AL CARGAR PARTIDOS: onResponse" + response.errorBody());
+                }
+            }
+
+            // Aqui, se mostrara si la conexion a la API falla.
+            @Override
+            public void onFailure(Call<ArrayList<Partido>> call, Throwable t) {
+                Toast toast = Toast.makeText(view.getContext(), "Error en la conexion a la red.", Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER, 0, 500);
+                toast.show();
+                Log.e(TAG, " => ERROR LISTA PARTIDOS => onFailure: " + t.getMessage());
+            }
+        });
+    }
+
+    public void deleteLiga(long id, final Context context, final FragmentManager fragmentManager) {
+
+        retrofit = getConexion(enlace.getLink(enlace.LIGA));
+        LeagueRepositoryApi leagueRepositoryApi = retrofit.create(LeagueRepositoryApi.class);
+        Call<League> answerDeleteLeague = leagueRepositoryApi.deleteLeague(id);
+        answerDeleteLeague.enqueue(new Callback<League>() {
+            @Override
+            public void onResponse(Call<League> call, Response<League> response) {
+                if(response.isSuccessful()) {
+                    Toast.makeText(context, "Liga eliminada", Toast.LENGTH_SHORT).show();
+                    fragmentManager.beginTransaction().replace(R.id.fragmentLeagueList, new LeagueFragment()).commit();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<League> call, Throwable t) {
+
+            }
+        });
+
+    }
+
+    public void deleteEquipo(long id, final Context context, final FragmentManager fragmentManager) {
+
+        retrofit = getConexion(enlace.getLink(enlace.LIGA));
+        LeagueRepositoryApi leagueRepositoryApi = retrofit.create(LeagueRepositoryApi.class);
+        Call<League> answerDeleteLeague = leagueRepositoryApi.deleteLeague(id);
+        answerDeleteLeague.enqueue(new Callback<League>() {
+            @Override
+            public void onResponse(Call<League> call, Response<League> response) {
+                if(response.isSuccessful()) {
+                    Toast.makeText(context, "Liga eliminada", Toast.LENGTH_SHORT).show();
+                    fragmentManager.beginTransaction().replace(R.id.fragmentLeagueList, new LeagueFragment()).commit();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<League> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void deleteJugador(long id, final Context context, final FragmentManager fragmentManager) {
+
+        retrofit = getConexion(enlace.getLink(enlace.LIGA));
+        LeagueRepositoryApi leagueRepositoryApi = retrofit.create(LeagueRepositoryApi.class);
+        Call<League> answerDeleteLeague = leagueRepositoryApi.deleteLeague(id);
+        answerDeleteLeague.enqueue(new Callback<League>() {
+            @Override
+            public void onResponse(Call<League> call, Response<League> response) {
+                if(response.isSuccessful()) {
+                    Toast.makeText(context, "Liga eliminada", Toast.LENGTH_SHORT).show();
+                    fragmentManager.beginTransaction().replace(R.id.fragmentLeagueList, new LeagueFragment()).commit();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<League> call, Throwable t) {
 
             }
         });

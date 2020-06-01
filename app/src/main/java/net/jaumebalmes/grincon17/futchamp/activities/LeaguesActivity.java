@@ -4,8 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,22 +18,15 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
 import net.jaumebalmes.grincon17.futchamp.R;
 import net.jaumebalmes.grincon17.futchamp.conexion.Api;
-import net.jaumebalmes.grincon17.futchamp.conexion.Enlace;
 import net.jaumebalmes.grincon17.futchamp.conexion.Firebase;
 import net.jaumebalmes.grincon17.futchamp.fragments.AddLeagueDialogFragment;
 import net.jaumebalmes.grincon17.futchamp.fragments.LeagueFragment;
@@ -39,13 +35,9 @@ import net.jaumebalmes.grincon17.futchamp.interfaces.OnAddLeagueDialogListener;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnListLeagueInteractionListener;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnLoginDialogListener;
 import net.jaumebalmes.grincon17.futchamp.models.League;
-import net.jaumebalmes.grincon17.futchamp.repositoryApi.CoordinadorRepositoryApi;
-import net.jaumebalmes.grincon17.futchamp.repositoryApi.LeagueRepositoryApi;
-import java.util.UUID;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Esta activity carga las listas de ligas
@@ -58,6 +50,7 @@ public class LeaguesActivity extends AppCompatActivity implements OnListLeagueIn
     private SharedPreferences preferences;
     private boolean longClick;
     private Api api;
+    private League leagueClicked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +60,7 @@ public class LeaguesActivity extends AppCompatActivity implements OnListLeagueIn
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         new Firebase().authFirebaseUser();
-        api = new Api(); // para obtener la conexion a la API
+        api = new Api();
         getSupportFragmentManager().beginTransaction().add(R.id.fragmentLeagueList, new LeagueFragment()).commit();
      }
 
@@ -80,6 +73,7 @@ public class LeaguesActivity extends AppCompatActivity implements OnListLeagueIn
         if(!storagePermissionGranted()) {
             requestPermission();
         }
+        leagueClicked = new League();
         preferences = getSharedPreferences(getString(R.string.my_pref), Context.MODE_PRIVATE);
         invalidateOptionsMenu();
     }
@@ -131,7 +125,7 @@ public class LeaguesActivity extends AppCompatActivity implements OnListLeagueIn
                 return true;
             case R.id.trash_icon:
                 longClick = false;
-                // TODO: implementar borrar
+                api.deleteLiga(leagueClicked.getId(), getApplicationContext(), getSupportFragmentManager());
                 invalidateOptionsMenu();
                 return true;
             case R.id.edit_icon:
@@ -193,7 +187,9 @@ public class LeaguesActivity extends AppCompatActivity implements OnListLeagueIn
      */
     @Override
     public void onLeagueLongClickListener(League league) {
-        longClick = !longClick;
+        longClick = ! longClick;
+        leagueClicked = league;
+        
         invalidateOptionsMenu();
     }
 

@@ -43,6 +43,7 @@ import net.jaumebalmes.grincon17.futchamp.models.Equipo;
 import net.jaumebalmes.grincon17.futchamp.models.Jornada;
 import net.jaumebalmes.grincon17.futchamp.models.Jugador;
 import net.jaumebalmes.grincon17.futchamp.models.League;
+import net.jaumebalmes.grincon17.futchamp.models.Partido;
 
 /**
  * Esta activity carga la vista principal que consiste en un menu inferior de navegación de tres pestañas
@@ -237,7 +238,7 @@ public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDi
     }
 
     @Override
-    public void onJornadaClickListener(Jornada jornada) {
+    public void onJornadaClickListener(Partido partido) {
 
     }
 

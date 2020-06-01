@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import net.jaumebalmes.grincon17.futchamp.R;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnListJornadaInteractionListener;
 import net.jaumebalmes.grincon17.futchamp.models.Jornada;
+import net.jaumebalmes.grincon17.futchamp.models.Partido;
 
 import java.util.List;
 
@@ -21,11 +22,11 @@ import java.util.List;
  */
 public class MyJornadaRecyclerViewAdapter extends RecyclerView.Adapter<MyJornadaRecyclerViewAdapter.ViewHolder> {
 
-    private final List<Jornada> mValues;
+    private final List<Partido> mValues;
     private final OnListJornadaInteractionListener mListener;
     private final Context mContent;
 
-    public MyJornadaRecyclerViewAdapter(Context context, List<Jornada> items, OnListJornadaInteractionListener listener) {
+    public MyJornadaRecyclerViewAdapter(Context context, List<Partido> items, OnListJornadaInteractionListener listener) {
         mContent = context;
         mValues = items;
         mListener = listener;
@@ -42,7 +43,7 @@ public class MyJornadaRecyclerViewAdapter extends RecyclerView.Adapter<MyJornada
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mNameView.setText(holder.mItem.getName());
+        holder.mNameView.setText(holder.mItem.getJornada());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,7 +63,7 @@ public class MyJornadaRecyclerViewAdapter extends RecyclerView.Adapter<MyJornada
     static class ViewHolder extends RecyclerView.ViewHolder {
         final View mView;
         final TextView mNameView;
-        Jornada mItem;
+        Partido mItem;
 
         ViewHolder(View view) {
             super(view);

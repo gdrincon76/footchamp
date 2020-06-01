@@ -12,8 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.Gson;
 import net.jaumebalmes.grincon17.futchamp.R;
 import net.jaumebalmes.grincon17.futchamp.adapters.MyJornadaRecyclerViewAdapter;
+import net.jaumebalmes.grincon17.futchamp.conexion.Api;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnListJornadaInteractionListener;
 import net.jaumebalmes.grincon17.futchamp.models.Jornada;
+import net.jaumebalmes.grincon17.futchamp.models.Partido;
+
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,14 +27,16 @@ import java.util.List;
  */
 public class JornadaFragment extends Fragment {
 
-    private List<Jornada> jornadaList;
+    private List<Partido> jornadaList;
     private OnListJornadaInteractionListener mListener;
+    private Api api;
 
     public JornadaFragment() { }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        api = new Api();
         jornadaList = new ArrayList<>();
         // TODO -> sustituir por retrofit
         try {
@@ -40,7 +45,7 @@ public class JornadaFragment extends Fragment {
             byte[] buffer = new byte[size];
             stream.read(buffer);
             String json = new String(buffer);
-            jornadaList = Arrays.asList(new Gson().fromJson(json, Jornada[].class));
+            jornadaList = Arrays.asList(new Gson().fromJson(json, Partido[].class));
             stream.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -52,10 +57,7 @@ public class JornadaFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_jornada_list, container, false);
         if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(new MyJornadaRecyclerViewAdapter(getActivity(), jornadaList, mListener));
+            api.getPartidos(view, getActivity(), mListener);
         }
         return view;
     }

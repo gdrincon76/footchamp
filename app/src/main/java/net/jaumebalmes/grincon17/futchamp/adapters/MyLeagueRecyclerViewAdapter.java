@@ -63,7 +63,12 @@ public class MyLeagueRecyclerViewAdapter extends RecyclerView.Adapter<MyLeagueRe
             public boolean onLongClick(View v) {
                 if (null != mListener) {
                     mListener.onLeagueLongClickListener(holder.mItem);
-                   // holder.mCheckedItem.setVisibility(View.VISIBLE);
+
+                    if(holder.mCheckedItem.getVisibility() != View.VISIBLE) {
+                        holder.mCheckedItem.setVisibility(View.VISIBLE);
+                    } else {
+                        holder.mCheckedItem.setVisibility(View.INVISIBLE);
+                    }
                 }
                 return true;
             }

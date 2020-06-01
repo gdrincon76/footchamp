@@ -23,5 +23,7 @@ public interface PartidosRepositoryApi {
     @GET("mostrar/jornada/{jornada}")
     Call<ArrayList<Partido>> obtenerListaPartidosJornada(@Path("jornada") int jornada);
 
+    @GET("mostrar")
+    Call<ArrayList<Partido>> obtenerListaPartidos();
 
 }
