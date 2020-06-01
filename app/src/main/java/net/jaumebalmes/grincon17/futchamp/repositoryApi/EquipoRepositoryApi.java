@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -26,4 +27,6 @@ public interface EquipoRepositoryApi {
     @POST("agregar")
     Call<Equipo> postEquipo(@Body Equipo equipo);
 
+    @DELETE("eliminar/{idequipo}")
+    Call<Equipo> deleteEquipo(@Path("idequipo") long id);
 }

@@ -59,9 +59,8 @@ public class JugadorDetailActivity extends AppCompatActivity implements OnLoginD
 
     private SharedPreferences preferences;
     private Equipo equipo;
+    private Jugador jugador;
     private Api api;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +70,7 @@ public class JugadorDetailActivity extends AppCompatActivity implements OnLoginD
         new Firebase().authFirebaseUser();
         api = new Api(); // para obtener la conexion a la API
         Gson gson = new Gson();
-        Jugador jugador = gson.fromJson(getIntent().getStringExtra(getString(R.string.jugador_json)), Jugador.class);
+        jugador = gson.fromJson(getIntent().getStringExtra(getString(R.string.jugador_json)), Jugador.class);
         equipo = jugador.getEquipo();
         toolbarConf();
 
@@ -168,8 +167,7 @@ public class JugadorDetailActivity extends AppCompatActivity implements OnLoginD
                 loginDialogFragment.show(getSupportFragmentManager(), getString(R.string.login_txt));
                 return true;
             case R.id.trash_icon:
-                // TODO: implementar borrar
-
+                api.deleteJugador(jugador.getId(), getApplicationContext(), null);
                 return true;
             case R.id.edit_icon:
                 // TODO: implementar editar

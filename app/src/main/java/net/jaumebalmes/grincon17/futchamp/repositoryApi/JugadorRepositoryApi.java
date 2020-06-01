@@ -1,11 +1,13 @@
 package net.jaumebalmes.grincon17.futchamp.repositoryApi;
 
+import net.jaumebalmes.grincon17.futchamp.models.Equipo;
 import net.jaumebalmes.grincon17.futchamp.models.Jugador;
 
 import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -23,7 +25,8 @@ public interface JugadorRepositoryApi {
     @POST("agregar")
     Call<Jugador> postJugador(@Body Jugador jugador);
 
-
+    @DELETE("eliminar/id/{idjugador}")
+    Call<Jugador> deleteJugador(@Path("idjugador") long id);
 
 
 }

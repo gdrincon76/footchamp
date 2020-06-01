@@ -59,6 +59,8 @@ public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDi
     private Bundle bundle;
     private boolean longClick;
     private Api api;
+    private Equipo equipoClicked;
+    private Jugador jugadorClicked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +70,10 @@ public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDi
         api = new Api(); // para obtener la conexion a la API
         Gson gson = new Gson();
         league = gson.fromJson(getIntent().getStringExtra(getString(R.string.league_json)), League.class);
-        bundle = new Bundle();
-        bundle.putString("LEAGUE", league.getName());
+        if(league != null) {
+            bundle = new Bundle();
+            bundle.putString("LEAGUE", league.getName());
+        }
         toolbarConf();
         BottomNavigationView navView = findViewById(R.id.nav_view);
         getSupportFragmentManager().beginTransaction()
@@ -81,6 +85,7 @@ public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDi
     protected void onResume() {
         super.onResume();
         preferences = getSharedPreferences(getString(R.string.my_pref), Context.MODE_PRIVATE);
+        equipoClicked = new Equipo();
         invalidateOptionsMenu();
     }
 
@@ -192,7 +197,12 @@ public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDi
 
                 return true;
             case R.id.trash_icon:
-                // TODO: implementar borrar
+                if(equipoClicked != null) {
+                    api.deleteEquipo(equipoClicked.getId(), getApplicationContext(), getSupportFragmentManager());
+                }
+                if(jugadorClicked != null) {
+                    api.deleteJugador(jugadorClicked.getId(), getApplicationContext(), getSupportFragmentManager());
+                }
                 longClick = false;
                 invalidateOptionsMenu();
                 return true;
@@ -255,6 +265,8 @@ public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDi
 
     @Override
     public void onEquipoLongClickListener(Equipo equipo) {
+        jugadorClicked = null;
+        equipoClicked = equipo;
         longClick = !longClick;
         invalidateOptionsMenu();
     }
@@ -272,6 +284,8 @@ public class LeagueDetailActivity extends AppCompatActivity implements OnLoginDi
 
     @Override
     public void onJugadorLongClickListener(Jugador jugador) {
+        equipoClicked = null;
+        jugadorClicked = jugador;
         longClick = !longClick;
         invalidateOptionsMenu();
     }

@@ -30,6 +30,8 @@ import net.jaumebalmes.grincon17.futchamp.adapters.MyEquipoRecyclerViewAdapter;
 import net.jaumebalmes.grincon17.futchamp.adapters.MyJornadaRecyclerViewAdapter;
 import net.jaumebalmes.grincon17.futchamp.adapters.MyJugadorRecyclerViewAdapter;
 import net.jaumebalmes.grincon17.futchamp.adapters.MyLeagueRecyclerViewAdapter;
+import net.jaumebalmes.grincon17.futchamp.fragments.EquipoFragment;
+import net.jaumebalmes.grincon17.futchamp.fragments.JugadorFragment;
 import net.jaumebalmes.grincon17.futchamp.fragments.LeagueFragment;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnListEquipoInteractionListener;
 import net.jaumebalmes.grincon17.futchamp.interfaces.OnListJornadaInteractionListener;
@@ -584,7 +586,7 @@ public class Api {
                     recyclerView.setAdapter(new MyJornadaRecyclerViewAdapter(fragmentActivity, partidoList, mListener));
                     // Muestra los datos que llegan en la consola
                     for (int i = 0; i < partidoList.size(); i++) {
-                        Log.d(TAG, "Equipo: " + partidoList.get(i));
+                        Log.d(TAG, "fecha partidos: " + partidoList.get(i));
                     }
                 } else {
                     Toast toast = Toast.makeText(view.getContext(), "Error en la descarga.", Toast.LENGTH_LONG);
@@ -629,41 +631,42 @@ public class Api {
 
     public void deleteEquipo(long id, final Context context, final FragmentManager fragmentManager) {
 
-        retrofit = getConexion(enlace.getLink(enlace.LIGA));
-        LeagueRepositoryApi leagueRepositoryApi = retrofit.create(LeagueRepositoryApi.class);
-        Call<League> answerDeleteLeague = leagueRepositoryApi.deleteLeague(id);
-        answerDeleteLeague.enqueue(new Callback<League>() {
+        retrofit = getConexion(enlace.getLink(enlace.EQUIPO));
+        EquipoRepositoryApi equipoRepositoryApi = retrofit.create(EquipoRepositoryApi.class);
+        Call<Equipo> answerDeleteEquipo = equipoRepositoryApi.deleteEquipo(id);
+        answerDeleteEquipo.enqueue(new Callback<Equipo>() {
             @Override
-            public void onResponse(Call<League> call, Response<League> response) {
+            public void onResponse(Call<Equipo> call, Response<Equipo> response) {
                 if(response.isSuccessful()) {
-                    Toast.makeText(context, "Liga eliminada", Toast.LENGTH_SHORT).show();
-                    fragmentManager.beginTransaction().replace(R.id.fragmentLeagueList, new LeagueFragment()).commit();
+                    Toast.makeText(context, "Equipo eliminado", Toast.LENGTH_SHORT).show();
+                    fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, new EquipoFragment()).commit();
                 }
             }
 
             @Override
-            public void onFailure(Call<League> call, Throwable t) {
+            public void onFailure(Call<Equipo> call, Throwable t) {
 
             }
         });
     }
 
     public void deleteJugador(long id, final Context context, final FragmentManager fragmentManager) {
-
-        retrofit = getConexion(enlace.getLink(enlace.LIGA));
-        LeagueRepositoryApi leagueRepositoryApi = retrofit.create(LeagueRepositoryApi.class);
-        Call<League> answerDeleteLeague = leagueRepositoryApi.deleteLeague(id);
-        answerDeleteLeague.enqueue(new Callback<League>() {
+        retrofit = getConexion(enlace.getLink(enlace.JUGADOR));
+        JugadorRepositoryApi jugadorRepositoryApi = retrofit.create(JugadorRepositoryApi.class);
+        Call<Jugador> answerDeleteJugador = jugadorRepositoryApi.deleteJugador(id);
+        answerDeleteJugador.enqueue(new Callback<Jugador>() {
             @Override
-            public void onResponse(Call<League> call, Response<League> response) {
+            public void onResponse(Call<Jugador> call, Response<Jugador> response) {
                 if(response.isSuccessful()) {
-                    Toast.makeText(context, "Liga eliminada", Toast.LENGTH_SHORT).show();
-                    fragmentManager.beginTransaction().replace(R.id.fragmentLeagueList, new LeagueFragment()).commit();
+                    Toast.makeText(context, "Jugador eliminado", Toast.LENGTH_SHORT).show();
+                    if (fragmentManager != null) {
+                        fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, new JugadorFragment()).commit();
+                    }
                 }
             }
 
             @Override
-            public void onFailure(Call<League> call, Throwable t) {
+            public void onFailure(Call<Jugador> call, Throwable t) {
 
             }
         });

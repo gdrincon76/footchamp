@@ -1,5 +1,7 @@
 package net.jaumebalmes.grincon17.futchamp.repositoryApi;
 
+import com.google.android.gms.common.internal.safeparcel.SafeParcelable;
+
 import net.jaumebalmes.grincon17.futchamp.models.Partido;
 
 import java.util.ArrayList;
@@ -25,5 +27,8 @@ public interface PartidosRepositoryApi {
 
     @GET("mostrar")
     Call<ArrayList<Partido>> obtenerListaPartidos();
+
+    @GET("mostrar/calendario")
+    Call<ArrayList<Partido>> obtenerListaPartidosPorCalendario();
 
 }
