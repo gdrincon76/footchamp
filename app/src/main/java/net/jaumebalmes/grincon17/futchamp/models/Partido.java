@@ -53,4 +53,28 @@ public class Partido implements Serializable {
     public void setJornada(int jornada) {
         this.jornada = jornada;
     }
+
+    public Equipo getLocal() {
+        return local;
+    }
+
+    public void setLocal(Equipo local) {
+        this.local = local;
+    }
+
+    public Equipo getVisitante() {
+        return visitante;
+    }
+
+    public void setVisitante(Equipo visitante) {
+        this.visitante = visitante;
+    }
+
+    public Calendario getCalendario() {
+        return calendario;
+    }
+
+    public void setCalendario(Calendario calendario) {
+        this.calendario = calendario;
+    }
 }

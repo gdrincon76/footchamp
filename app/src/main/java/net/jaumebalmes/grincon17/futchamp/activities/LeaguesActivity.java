@@ -189,7 +189,7 @@ public class LeaguesActivity extends AppCompatActivity implements OnListLeagueIn
     public void onLeagueLongClickListener(League league) {
         longClick = ! longClick;
         leagueClicked = league;
-        
+
         invalidateOptionsMenu();
     }
 
